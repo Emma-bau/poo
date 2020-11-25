@@ -10,7 +10,7 @@ public class Agent {
 	
 	public Agent() {
 		this.interfaceManager = new InterfaceManager(this);
-		this.idManager = new IDManager(this);
+		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		//this.networkManager = new NetworkManager(this);
