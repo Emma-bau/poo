@@ -1,7 +1,7 @@
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class NetworkManager {
+public class NetworkManager extends Thread {
 
 	public void server() 
 	{
