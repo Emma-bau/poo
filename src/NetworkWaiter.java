@@ -23,7 +23,7 @@ public class NetworkWaiter implements Runnable {
 		try 
 		{
 			boolean connexion = true; 
-			/*On se met en écoute tant que la session est ouverte*/
+			/*On se met en écoute tant que la session est ouverte,truover comment gérer la connexion*/
 			while(connexion)
 			{
 				String send = networkManager.getSendMessage();

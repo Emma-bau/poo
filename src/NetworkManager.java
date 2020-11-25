@@ -3,12 +3,15 @@ import java.net.Socket;
 
 public class NetworkManager extends Thread {
 	private String SendMessage = "";
-	private String RecieveMessage="";
+	private String ReceiveMessage;
 	private Agent agent;
+
 	
 	
 	public NetworkManager(Agent agent) {
 		this.agent = agent;
+		//Créer un nouveau thread pour lui ?//
+		server();
 	}
 
 	public String getSendMessage() {
@@ -19,12 +22,18 @@ public class NetworkManager extends Thread {
 		SendMessage = sendMessage;
 	}
 
-	public String getRecieveMessage() {
-		return RecieveMessage;
+	public String getReceiveMessage() {
+		/*gérer avec data history*/
+		return ReceiveMessage;
 	}
 
-	public void setRecieveMessage(String recieveMessage) {
-		RecieveMessage = recieveMessage;
+	public void setReceiveMessage(String recieveMessage) {
+		ReceiveMessage = recieveMessage;
+	}
+	
+	public void NotifyPseudoChange()
+	{
+		
 	}
 
 	public void server() 
@@ -40,8 +49,6 @@ public class NetworkManager extends Thread {
 				System.out.println("Awaiting connection");
 				Socket SocketTCP = serv.accept();
 				new Thread(new NetworkWaiter(SocketTCP,this)).start();
-				
-
 			}
 		}
 		catch (Exception e) {
@@ -49,5 +56,26 @@ public class NetworkManager extends Thread {
 		}
 		
 	}
+	
+	public void client()
+	{
+		try 
+		{
+			System.out.println("connexion au serveur");
+			/*adresse IP et num de port à récupérer, à faire le tableau des récupération et envoit au début*/
+			Socket clientSocket = new Socket("127.0.0.1",1999);
+			
+			
+			
+			
+			
+			
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 }
