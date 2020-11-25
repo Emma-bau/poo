@@ -1,7 +1,6 @@
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
+import java.io.*;
+
 
 /*Serveur en attente d'une connexion de quelqu'un à notre client */
 
@@ -27,20 +26,32 @@ public class NetworkWaiter implements Runnable {
 			/*On se met en écoute tant que la session est ouverte*/
 			while(connexion)
 			{
-				String rec = NetworkManager.getRecieveMessage();
-				if( rec != "" )
-				in = link.getInputStream();
-				int rcv = 0;
-				while ((rcv = in.read()) != 0)
+				String recieve = networkManager.getRecieveMessage();
+				String send = networkManager.getSendMessage();
+				/*si on reçoit un message*/
+				if( recieve != "" )
 				{
+					BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));					
+					String input = in.readLine();
 					/*On a besoin d'une fonction qui reçoit ce message et l'envoit à l'interface*/
-					System.out.println("Received : "+rcv);
+					System.out.println("Received : "+input);
+					networkManager.setRecieveMessage("");
 				}
+				/*Si on a un message à envoyer*/
+				if (send != "")
+				{
+					PrintWriter out = new PrintWriter(link.getOutputStream(),true);
+					/*Fonction du message envoyé voulu*/
+					out.println("Courgette");
+					networkManager.setSendMessage("");	
+				}
+				
+				
 				
 				
 			}
 			System.out.println("Session finie");
-			in.close();
+			link.close();
 			
 			
 			
