@@ -12,9 +12,11 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	final JLabel label = new JLabel("Connexion");
 	final static String LOOKANDFEEL = "Motif";
-
-	public InterfaceManager() 
+	private Agent agent;
+	
+	public InterfaceManager(Agent agent) 
 	{
+		this.agent = agent;
 		initLookAndFeel();
 		
 		//fenêtre de connexion 

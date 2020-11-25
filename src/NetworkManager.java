@@ -4,8 +4,11 @@ import java.net.Socket;
 public class NetworkManager extends Thread {
 	private String SendMessage = "";
 	private String RecieveMessage="";
+	private Agent agent;
 	
-	public NetworkManager() {};
+	public NetworkManager(Agent agent) {
+		this.agent = agent;
+	}
 
 	public String getSendMessage() {
 		return SendMessage;
