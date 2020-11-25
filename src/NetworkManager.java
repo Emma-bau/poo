@@ -6,6 +6,7 @@ public class NetworkManager extends Thread {
 	private String RecieveMessage="";
 	private Agent agent;
 	
+	
 	public NetworkManager(Agent agent) {
 		this.agent = agent;
 	}
@@ -28,7 +29,8 @@ public class NetworkManager extends Thread {
 
 	public void server() 
 	{
-		try {
+		try 
+		{
 			/*Création de notre serveur locale d'écoute*/
 			ServerSocket serv = new ServerSocket(1234);
 			/*On se met en écoute tant que la session est ouverte*/

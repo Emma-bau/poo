@@ -26,17 +26,7 @@ public class NetworkWaiter implements Runnable {
 			/*On se met en écoute tant que la session est ouverte*/
 			while(connexion)
 			{
-				String recieve = networkManager.getRecieveMessage();
 				String send = networkManager.getSendMessage();
-				/*si on reçoit un message*/
-				if( recieve != "" )
-				{
-					BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));					
-					String input = in.readLine();
-					/*On a besoin d'une fonction qui reçoit ce message et l'envoit à l'interface*/
-					System.out.println("Received : "+input);
-					networkManager.setRecieveMessage("");
-				}
 				/*Si on a un message à envoyer*/
 				if (send != "")
 				{
@@ -45,6 +35,17 @@ public class NetworkWaiter implements Runnable {
 					out.println("Courgette");
 					networkManager.setSendMessage("");	
 				}
+				BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
+				
+				/*ou si on reçoit un message, le buffer read_line n'est pas vide*/
+				if(in.ready())
+				{					
+					String input = in.readLine();
+					/*Network récupère notre message*/
+					System.out.println("Received : "+input);
+					networkManager.setRecieveMessage(input);	
+				}
+				
 				
 				
 				
