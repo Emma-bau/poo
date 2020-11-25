@@ -32,11 +32,11 @@ public class NetworkWaiter implements Runnable {
 				{
 					PrintWriter out = new PrintWriter(link.getOutputStream(),true);
 					/*Fonction du message envoyé voulu*/
-					out.println("Courgette");
+					out.println(networkManager.getSendMessage());
 					networkManager.setSendMessage("");	
 				}
-				BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
 				
+				BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
 				/*ou si on reçoit un message, le buffer read_line n'est pas vide*/
 				if(in.ready())
 				{					
