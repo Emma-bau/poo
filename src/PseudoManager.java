@@ -10,8 +10,8 @@ public class PseudoManager {
 	public PseudoManager(Agent agent) {
 		this.agent = agent;
 		this.usersPseudoList = new ArrayList<String>();
-		
 	}
+	
 	public String getPseudo() {
 		return pseudo;
 	}
@@ -19,8 +19,7 @@ public class PseudoManager {
 	public void setPseudo(String pseudo) {
 		this.pseudo = pseudo;
 		this.usersPseudoList.add(pseudo);
-		agent.getNetworkManager.notifyPseudo();
-		
+		agent.getNetworkManager().notifyPseudoChange(pseudo); //Change le pseudo
 	}
 	
 	public ArrayList<String> getUsersPseudoList() {
