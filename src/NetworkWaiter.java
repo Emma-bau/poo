@@ -43,7 +43,7 @@ public class NetworkWaiter implements Runnable {
 					String input = in.readLine();
 					/*Network récupère notre message*/
 					System.out.println("Received : "+input);
-					networkManager.setRecieveMessage(input);	
+					networkManager.setReceiveMessage(input);	
 				}
 				
 				

@@ -31,7 +31,7 @@ public class NetworkManager extends Thread {
 		ReceiveMessage = recieveMessage;
 	}
 	
-	public void NotifyPseudoChange()
+	public void notifyPseudoChange(String pseudo)
 	{
 		
 	}
