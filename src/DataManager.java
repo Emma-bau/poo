@@ -1,6 +1,5 @@
 import java.util.ArrayList;
-import java.util.Date;
-import java.lang.Object;
+import java.time.LocalDate;
 
 public class DataManager {
 
@@ -16,9 +15,9 @@ public class DataManager {
 		return messagesHistory;
 	}
 	
-	public void updateMessagesHistory(Message message) {
-		this.messagesHistory.add(message);
-		
+	public void updateMessagesHistory(String texte) {
+		Message m = new Message(texte,LocalDate.now());
+		this.messagesHistory.add(m);
 	}
 	
 	
