@@ -7,22 +7,42 @@ import java.net.Socket;
 
 public class NetworkWaiter implements Runnable {
 	
-	final Socket link;
-	public NetworkWaiter(Socket link) {this.link = link;}
+	private final Socket link;
+	private final NetworkManager networkManager;
+	
+	public NetworkWaiter(Socket link, NetworkManager networkManager) 
+	{
+		this.link = link;
+		this.networkManager = networkManager;
+	}
 	
 	/*On gère la connexion de nos nouveaux utilisateurs dans un thread*/
 	@Override
 	public void run()
 	{
 		System.out.println("Thread lancé");
-		try {
+		try 
+		{
+			boolean connexion = true; 
 			/*On se met en écoute tant que la session est ouverte*/
-			while(true)
+			while(connexion)
 			{
-				InputStream in = link.getInputStream();
+				String rec = NetworkManager.getRecieveMessage();
+				if( rec != "" )
+				in = link.getInputStream();
+				int rcv = 0;
+				while ((rcv = in.read()) != 0)
+				{
+					/*On a besoin d'une fonction qui reçoit ce message et l'envoit à l'interface*/
+					System.out.println("Received : "+rcv);
+				}
+				
 				
 			}
 			System.out.println("Session finie");
+			in.close();
+			
+			
 			
 		
 		}

@@ -2,6 +2,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class NetworkManager extends Thread {
+	private String SendMessage = "";
+	private String RecieveMessage="";
+	
+	public NetworkManager() {};
+
+	public String getSendMessage() {
+		return SendMessage;
+	}
+
+	public void setSendMessage(String sendMessage) {
+		SendMessage = sendMessage;
+	}
+
+	public String getRecieveMessage() {
+		return RecieveMessage;
+	}
+
+	public void setRecieveMessage(String recieveMessage) {
+		RecieveMessage = recieveMessage;
+	}
 
 	public void server() 
 	{
@@ -14,6 +34,8 @@ public class NetworkManager extends Thread {
 				/*Attente de connexion*/
 				System.out.println("Awaiting connection");
 				Socket SocketTCP = serv.accept();
+				new Thread(new NetworkWaiter(SocketTCP,this)).start();
+				
 
 			}
 		}
