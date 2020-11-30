@@ -14,9 +14,12 @@ public class IDManager {
 	//Retourne un int en fonction de si l'id et le password donnés correspondent
 	public int verifyID(int id, String password) {
 		for (User u:usersTable) {
+			System.out.println("User:"+u);
 			if (id == u.getId() ) {
-				if (password == u.getPassword()) {
-					return 1; //1 = valid ID
+				System.out.println("id of user "+u+" : " +id);
+				System.out.println("password of user "+u+" : " +u.getPassword());
+				if (password.equals(u.getPassword())) {
+					return 1; //1 = valid ID and password
 				} else {
 					return 2; //2 = bad password
 				}
