@@ -12,7 +12,8 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	final static String LOOKANDFEEL = "System";
 	private Agent agent;
 
-	JButton SUBMIT;
+	JButton LOG_IN;
+	JButton pseudoChange;
 	JPanel panel;
 	JLabel labelId, labelPassword;
 	final JTextField  inputId, inputPassword;
@@ -24,56 +25,75 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		initLookAndFeel();
 		JFrame.setDefaultLookAndFeelDecorated(true);
 
+
 		labelId = new JLabel();
-		labelId.setText("Username:");
+		labelId.setText("ID:");
 		inputId = new JTextField(15);
 		labelPassword = new JLabel();
 		labelPassword.setText("Password:");
 		inputPassword = new JPasswordField(15);
 
-		SUBMIT = new JButton("SUBMIT");
+		LOG_IN = new JButton("Log In");
 
 		panel = new JPanel(new GridLayout(3,1));
 		panel.add(labelId);
 		panel.add(inputId);
 		panel.add(labelPassword);
 		panel.add(inputPassword);
-		panel.add(SUBMIT);
+		panel.add(LOG_IN);
 		add(panel,BorderLayout.CENTER);
-		SUBMIT.addActionListener(this);
+		LOG_IN.addActionListener(this);
 		setTitle("Log In Chat Session");
 	}
 
 	public void actionPerformed(ActionEvent ae){
-		String strid = inputId.getText();
-		int id = Integer.parseInt(strid);
-		String password = inputPassword.getText();
-		if (agent.getIdManager().verifyID(id,password) == 1) {
-			/*PseudoInterface page=new PseudoInterface();
-			page.setVisible(true);
-			JLabel label = new JLabel("Welcome:"+id);
-			page.getContentPane().add(label);*/
-			System.out.println("identifiants valides, connexion...");
+		//boutton log_in
+		if (ae.getSource() == LOG_IN) {
 
+			String strid = inputId.getText();
+			int id = Integer.parseInt(strid);
+			String password = inputPassword.getText();
+			if (agent.getIdManager().verifyID(id,password) == 1) {
+				System.out.println("identifiants valides, connexion...");
+				labelId.setText("Chose a pseudo (username): ");
+				pseudoChange = new JButton("Enter");
+				panel.remove(labelPassword);
+				panel.remove(inputPassword);
+				panel.remove(LOG_IN);
+				inputId.setText("");
+				panel.add(pseudoChange);
+				pseudoChange.addActionListener(this);
+			}
+
+			else if (agent.getIdManager().verifyID(id,password) == 2) {
+				System.out.println("mauvais mot de passe");
+				JOptionPane.showMessageDialog(this,"Incorrect password",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
+
+			else {
+				System.out.println("enter the valid username and password");
+				JOptionPane.showMessageDialog(this,"Incorrect ID",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}
-		else if(agent.getIdManager().verifyID(id,password) == 2){
-			System.out.println("mauvais mot de passe");
-		}
-		else{
-			System.out.println("enter the valid username and password");
-			JOptionPane.showMessageDialog(this,"Incorrect login or password",
-					"Error",JOptionPane.ERROR_MESSAGE);
+		
+		//boutton pseudoChange
+		else {
+			String pseudo = inputId.getText();
+			boolean result = agent.getPseudoManager().setPseudo(pseudo);
+			if (result) {
+				System.out.println("valid");
+			}
+			else {
+				System.out.println("bad pseudo");
+				JOptionPane.showMessageDialog(this,"Bad pseudo, try again",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
-	/*public void actionPerformed(ActionEvent e) {
-		agent.getIdManager().verifyID(id,password);
-		System.out.println("Connexion réussie");
-	}*/
-
-	//Style 
 	private static void initLookAndFeel() { 
-
 		// Swing allows you to specify which look and feel your program uses--Java,
 		// GTK+, Windows, and so on as shown below.
 		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();

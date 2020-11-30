@@ -6,26 +6,27 @@ public class PseudoManager {
 	/*Liste des pseudos des utilisateurs en ligne*/
 	private ArrayList<String> usersPseudoList;
 	public Agent agent;
-	
+
 	public PseudoManager(Agent agent) {
 		this.agent = agent;
 		this.usersPseudoList = new ArrayList<String>();
 	}
-	
+
 	public String getPseudo() {
 		return pseudo;
 	}
-	
-	public void setPseudo(String pseudo) {
+
+	public boolean setPseudo(String pseudo) { //doit à terme, vérifier si le pseudo est valide
 		this.pseudo = pseudo;
 		this.usersPseudoList.add(pseudo);
-		agent.getNetworkManager().notifyPseudoChange(pseudo); //Change le pseudo
+		//agent.getNetworkManager().notifyPseudoChange(pseudo); //envoie le nouveau pseudo sur le reseau
+		return true;
 	}
-	
+
 	public ArrayList<String> getUsersPseudoList() {
 		return usersPseudoList;
 	}
-	
-	
-	
+
+
+
 }
