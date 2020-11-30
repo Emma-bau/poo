@@ -11,9 +11,8 @@ public class IDManager {
 		createUsersTable();
 	}
 	
-
+	//Retourne un int en fonction de si l'id et le password donnés correspondent
 	public int verifyID(int id, String password) {
-
 		for (User u:usersTable) {
 			if (id == u.getId() ) {
 				if (password == u.getPassword()) {
@@ -26,7 +25,7 @@ public class IDManager {
 		return 3; // 3 = wrong ID
 	}
 	
-	
+	//Liste provisoire des comptes valides
 	private void createUsersTable() {
 		User user1 = new User(100,"toto");
 		User user2 = new User(101,"toto");
