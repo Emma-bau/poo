@@ -1,12 +1,41 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 
 public class NetworkManager extends Thread {
+	private Agent agent;
+	private ArrayList<Agent> connectedUser = new ArrayList<Agent>();
+	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String SendMessage = "";
 	private String ReceiveMessage;
-	private Agent agent;
-	private boolean Connexion = false;
+	private boolean Connexion = true;
+	private int numPort;
+	
+	
+	
+	//getter and setter//
+	
+	public void setNumPort(int numPort) {
+		this.numPort = numPort;
+	}
+
+	/*Retourne la liste des utilisateurs connectés*/
+	public ArrayList<Agent> getConnectedUser() {
+		return connectedUser;
+	}
+
+	public void setConnectedUser(ArrayList<Agent> connectedUser) {
+		this.connectedUser = connectedUser;
+	}
+
+	public ArrayList<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(ArrayList<Message> messages) {
+		this.messages = messages;
+	}
 
 
 	public boolean isConnexion() {
@@ -17,13 +46,6 @@ public class NetworkManager extends Thread {
 		Connexion = connexion;
 	}
 	
-	public NetworkManager(Agent agent) {
-		this.agent = agent;
-		//Créer un nouveau thread pour lui ?//
-		server();
-		client();
-	}
-
 
 	public String getSendMessage() {
 		return SendMessage;
@@ -46,8 +68,25 @@ public class NetworkManager extends Thread {
 	{
 		
 	}
+	
+	
+	/* Constructeur*/
+	
+	public NetworkManager(/*Agent agent*/) {
+		/*this.agent = agent;*/
+		//void connexion : on récupère toutes les personnes connectées//
+		//On créer notre serveur//
+		start();
+		client();
+	}
 
-	public void server() 
+	
+	
+	
+	/*Gestion du serveur*/
+	
+
+	public void run() 
 	{
 		try 
 		{
@@ -68,11 +107,13 @@ public class NetworkManager extends Thread {
 		
 	}
 	
+	
+	/*Gestion du client*/
 	public void client()
 	{
 		try 
 		{
-			System.out.println("connexion au serveur");
+			System.out.println("connexion au serveur coté client");
 			/*adresse IP et num de port à récupérer, à faire le tableau des récupération et envoit au début*/
 			Socket clientSocket = new Socket("127.0.0.1",1999);
 			while(Connexion==true)
@@ -112,6 +153,8 @@ public class NetworkManager extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	
 	
 
 }

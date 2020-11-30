@@ -45,7 +45,8 @@ public class Agent {
 
 
 	public static void main(String[] args) {
-		Agent main = new Agent();
+		NetworkManager networkManager = new NetworkManager();
+		/*Agent main = new Agent();*/
 
 	}
 }
