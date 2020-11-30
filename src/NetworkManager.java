@@ -77,7 +77,7 @@ public class NetworkManager extends Thread {
 		//void connexion : on récupère toutes les personnes connectées//
 		//On créer notre serveur//
 		start();
-		client();
+		//client();
 	}
 
 	
@@ -92,6 +92,7 @@ public class NetworkManager extends Thread {
 		{
 			/*Création de notre serveur locale d'écoute*/
 			ServerSocket serv = new ServerSocket(1234);
+			
 			/*On se met en écoute tant que la session est ouverte*/
 			while(true)
 			{
@@ -102,7 +103,7 @@ public class NetworkManager extends Thread {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Erreur au niveau du serveur");
 		}
 		
 	}
