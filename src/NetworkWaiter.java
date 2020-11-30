@@ -22,9 +22,9 @@ public class NetworkWaiter implements Runnable {
 		System.out.println("Thread lancé");
 		try 
 		{
-			boolean connexion = true; 
-			/*On se met en écoute tant que la session est ouverte,truover comment gérer la connexion*/
-			while(connexion)
+			networkManager.setConnexion(true); 
+			/*On se met en écoute tant que la session est ouverte,trouver comment gérer la connexion*/
+			while(networkManager.isConnexion()==true)
 			{
 				String send = networkManager.getSendMessage();
 				/*Si on a un message à envoyer*/

@@ -1,18 +1,29 @@
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+
 
 public class NetworkManager extends Thread {
 	private String SendMessage = "";
 	private String ReceiveMessage;
 	private Agent agent;
+	private boolean Connexion = false;
 
-	
+
+	public boolean isConnexion() {
+		return Connexion;
+	}
+
+	public void setConnexion(boolean connexion) {
+		Connexion = connexion;
+	}
 	
 	public NetworkManager(Agent agent) {
 		this.agent = agent;
 		//Créer un nouveau thread pour lui ?//
 		server();
+		client();
 	}
+
 
 	public String getSendMessage() {
 		return SendMessage;
@@ -64,6 +75,31 @@ public class NetworkManager extends Thread {
 			System.out.println("connexion au serveur");
 			/*adresse IP et num de port à récupérer, à faire le tableau des récupération et envoit au début*/
 			Socket clientSocket = new Socket("127.0.0.1",1999);
+			while(Connexion==true)
+			{
+				
+				/*Si on a un message à envoyer*/
+				if (getSendMessage()!="")
+				{
+					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+					/*Fonction du message envoyé voulu*/
+					out.println(getSendMessage());
+					setSendMessage("");	
+				}
+				
+				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+				/*ou si on reçoit un message, le buffer read_line n'est pas vide*/
+				if(in.ready())
+				{					
+					String input = in.readLine();
+					/*Network récupère notre message*/
+					System.out.println("Received : "+input);
+					setReceiveMessage(input);	
+				}
+				
+			}
+			
+			
 			
 			
 			
