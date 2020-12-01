@@ -8,13 +8,12 @@ public class ClientHandler extends Thread {
 
 	private NetworkManager manager;
 	private final Scanner sc = new Scanner(System.in);
-	private final int idClient;
+	private final int id_port;
 
-    public ClientHandler(NetworkManager Manager, int idUser)
+    public ClientHandler(NetworkManager Manager, int idPort)
     {
 		this.manager = Manager;
-		this.idClient=idUser;
-		manager.setIDUser();
+		this.id_port=idPort;
     }
 
 	public void run()
@@ -23,7 +22,7 @@ public class ClientHandler extends Thread {
 		{
 			System.out.println("connexion cote client");
 			/*adresse IP et num de port a recuperer, a faire le tableau des recuperation et envoit au debut*/
-			Socket clientSocket = new Socket("127.0.0.1",5000);
+			Socket clientSocket = new Socket("127.0.0.1",id_port);
 			/*On enregistre dans un tableau l'adresse*/
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
