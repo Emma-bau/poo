@@ -43,9 +43,6 @@ public class MainInterface extends JFrame implements ActionListener{
         panel1.setLayout(layout1);
         panel2.setLayout(layout3);
 
-        
-
-         
         jb5.setAlignmentX(Component.RIGHT_ALIGNMENT);
         jb6.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panel2.add(jb5);

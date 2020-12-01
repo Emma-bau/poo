@@ -45,10 +45,10 @@ public class Agent {
 
 
 	public static void main(String[] args) {
-		int numportServer = Integer.parseInt(args[0]);
+		//int numportServer = Integer.parseInt(args[0]);
 
-		NetworkManager networkManager = new NetworkManager(numportServer);
-		/*Agent main = new Agent();*/
+		//NetworkManager networkManager = new NetworkManager(numportServer);
+		Agent main = new Agent();
 
 	}
 }
