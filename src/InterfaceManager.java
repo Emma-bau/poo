@@ -80,32 +80,32 @@ public class InterfaceManager extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(this,"ID is not a number",
 						"Error",JOptionPane.ERROR_MESSAGE);
 			}
-			
-			
 		}
 		
 		//bouton pseudoChange
 		else {
-			String pseudo = inputId.getText();
-			boolean result = agent.getPseudoManager().setPseudo(pseudo);
-			if (result) {
-				System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
-				this.mInterface = new MainInterface(this.agent);
-				
-			}
-			else {
-				System.out.println("bad pseudo");
-				JOptionPane.showMessageDialog(this,"Bad pseudo, try again",
-						"Error",JOptionPane.ERROR_MESSAGE);
-			}
+			askPseudoInterface();
 		}
 	}
 
+	
+	public void askPseudoInterface() {
+		String pseudo = inputId.getText();
+		boolean result = agent.getPseudoManager().setPseudo(pseudo);
+		if (result) {
+			System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
+			this.mInterface = new MainInterface(this.agent);
+			panel.setVisible(false);
+		}
+		else {
+			System.out.println("bad pseudo");
+			JOptionPane.showMessageDialog(this,"Bad pseudo, try again",
+					"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	private static void initLookAndFeel() { 
-		// Swing allows you to specify which look and feel your program uses--Java,
-		// GTK+, Windows, and so on as shown below.
 		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
-
 		try {
 			UIManager.setLookAndFeel(lookAndFeel);
 		} catch (ClassNotFoundException e) {

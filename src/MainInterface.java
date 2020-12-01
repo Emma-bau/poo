@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class MainInterface extends JFrame implements ActionListener{
+public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = 1L;
 	final static String LOOKANDFEEL = "System";
 	private Agent agent;
@@ -21,11 +21,13 @@ public class MainInterface extends JFrame implements ActionListener{
     public void layout(JFrame frame) {
         JLabel welcomeText = new JLabel();
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
-        float fontSize = 40;
-        welcomeText.setFont(welcomeText.getFont().deriveFont(fontSize));
+        welcomeText.setFont(welcomeText.getFont().deriveFont(40,0));
         
-        JButton jb5 = new JButton("Button 5 -");        
-        JButton jb6 = new JButton("Button 6 --------");
+        JButton jb5 = new JButton("Refresh");        
+        
+        JLabel connectedListLb = new JLabel();
+        connectedListLb.setText("Chose a connected user to talk to:");
+        connectedListLb.setFont(welcomeText.getFont().deriveFont(40,0));
          
         // Define the panel to hold the buttons 
         JPanel panel1 = new JPanel();
@@ -33,21 +35,19 @@ public class MainInterface extends JFrame implements ActionListener{
          
         // Set up the title for different panels
         panel1.setBorder(BorderFactory.createTitledBorder("Infos"));
-        panel2.setBorder(BorderFactory.createTitledBorder("RIGHT"));
+        panel2.setBorder(BorderFactory.createTitledBorder("Connected Users List"));
          
         
         // Set up the BoxLayout
-        BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.Y_AXIS);
-        BoxLayout layout3 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
+        //BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.Y_AXIS);
+        //BoxLayout layout3 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
         panel1.add(welcomeText);
-        panel1.setLayout(layout1);
-        panel2.setLayout(layout3);
+        //panel1.setLayout(layout1);
+        //panel2.setLayout(layout3);
 
         jb5.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        jb6.setAlignmentX(Component.RIGHT_ALIGNMENT);
         panel2.add(jb5);
-        panel2.add(jb6);
-         
+        
         // Add the three panels into the frame
         frame.setLayout(new GridLayout());
         frame.add(panel1);
@@ -65,7 +65,14 @@ public class MainInterface extends JFrame implements ActionListener{
     }
 
 	public void actionPerformed(ActionEvent ae){
-		int x;
+		System.out.println("ne fais rien");
+	}
+
+	@Override
+	public void run() {
+		while(true) {
+			
+		}
 	}
 
 }
