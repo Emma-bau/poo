@@ -46,7 +46,7 @@ public class ClientHandler extends Thread {
 				  try {
 					msg = in.readLine();
 					while(msg!=null){
-					   System.out.println("Serveur " + idClient+ " : "+msg);
+					   System.out.println("Serveur "+ " : "+msg);
 					   msg = in.readLine();
 					}
 					System.out.println("Serveur déconecté");
