@@ -5,9 +5,6 @@ import java.awt.event.*;
 
 public class InterfaceManager extends JFrame implements ActionListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	final static String LOOKANDFEEL = "System";
 	private Agent agent;
@@ -17,14 +14,15 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	JPanel panel;
 	JLabel labelId, labelPassword;
 	final JTextField  inputId, inputPassword;
-
+	MainInterface mInterface;
 
 	public InterfaceManager(Agent agent) 
 	{
 		this.agent = agent;
 		initLookAndFeel();
 		JFrame.setDefaultLookAndFeelDecorated(true);
-
+		
+		this.mInterface = null;
 
 		labelId = new JLabel();
 		labelId.setText("ID:");
@@ -46,13 +44,15 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		setTitle("Log In Chat Session");
 	}
 
+	
 	public void actionPerformed(ActionEvent ae){
-		//boutton log_in
+		//bouton log_in
 		if (ae.getSource() == LOG_IN) {
 
 			String strid = inputId.getText();
 			int id = Integer.parseInt(strid);
 			String password = inputPassword.getText();
+			
 			if (agent.getIdManager().verifyID(id,password) == 1) {
 				System.out.println("identifiants valides, connexion...");
 				labelId.setText("Chose a pseudo (username): ");
@@ -78,12 +78,14 @@ public class InterfaceManager extends JFrame implements ActionListener {
 			}
 		}
 		
-		//boutton pseudoChange
+		//bouton pseudoChange
 		else {
 			String pseudo = inputId.getText();
 			boolean result = agent.getPseudoManager().setPseudo(pseudo);
 			if (result) {
-				System.out.println("valid");
+				System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
+				this.mInterface = new MainInterface(this.agent);
+				
 			}
 			else {
 				System.out.println("bad pseudo");
