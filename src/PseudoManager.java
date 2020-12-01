@@ -16,7 +16,7 @@ public class PseudoManager {
 		return pseudo;
 	}
 
-	public boolean setPseudo(String pseudo) { //doit à terme, vérifier si le pseudo est valide
+	public boolean setPseudo(String pseudo) { //doit a terme, verifier si le pseudo est valide
 		this.pseudo = pseudo;
 		this.usersPseudoList.add(pseudo);
 		//agent.getNetworkManager().notifyPseudoChange(pseudo); //envoie le nouveau pseudo sur le reseau

@@ -11,7 +11,7 @@ public class IDManager {
 		createUsersTable();
 	}
 	
-	//Retourne un int en fonction de si l'id et le password donnés correspondent
+	//Retourne un int en fonction de si l'id et le password donnes correspondent
 	public int verifyID(int id, String password) {
 		for (User u:usersTable) {
 			if (id == u.getId() ) {
