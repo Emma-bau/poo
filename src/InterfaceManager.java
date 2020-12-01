@@ -50,32 +50,38 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		if (ae.getSource() == LOG_IN) {
 
 			String strid = inputId.getText();
-			int id = Integer.parseInt(strid);
-			String password = inputPassword.getText();
+			try {
+				int id = Integer.parseInt(strid);
+				String password = inputPassword.getText();
+				
+				if (agent.getIdManager().verifyID(id,password) == 1) {
+					System.out.println("identifiants valides, connexion...");
+					labelId.setText("Chose a pseudo (username): ");
+					pseudoChange = new JButton("Enter");
+					panel.remove(labelPassword);
+					panel.remove(inputPassword);
+					panel.remove(LOG_IN);
+					inputId.setText("");
+					panel.add(pseudoChange);
+					pseudoChange.addActionListener(this);
+				}
+
+				else if (agent.getIdManager().verifyID(id,password) == 2) {
+					JOptionPane.showMessageDialog(this,"Incorrect password",
+							"Error",JOptionPane.ERROR_MESSAGE);
+				}
+
+				else {
+					JOptionPane.showMessageDialog(this,"Incorrect ID",
+							"Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			catch (NumberFormatException e){
+				JOptionPane.showMessageDialog(this,"ID is not a number",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
 			
-			if (agent.getIdManager().verifyID(id,password) == 1) {
-				System.out.println("identifiants valides, connexion...");
-				labelId.setText("Chose a pseudo (username): ");
-				pseudoChange = new JButton("Enter");
-				panel.remove(labelPassword);
-				panel.remove(inputPassword);
-				panel.remove(LOG_IN);
-				inputId.setText("");
-				panel.add(pseudoChange);
-				pseudoChange.addActionListener(this);
-			}
-
-			else if (agent.getIdManager().verifyID(id,password) == 2) {
-				System.out.println("mauvais mot de passe");
-				JOptionPane.showMessageDialog(this,"Incorrect password",
-						"Error",JOptionPane.ERROR_MESSAGE);
-			}
-
-			else {
-				System.out.println("enter the valid username and password");
-				JOptionPane.showMessageDialog(this,"Incorrect ID",
-						"Error",JOptionPane.ERROR_MESSAGE);
-			}
+			
 		}
 		
 		//bouton pseudoChange
