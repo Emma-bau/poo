@@ -5,37 +5,56 @@ import java.util.*;
 
 public class UDPManager extends Thread{
 	
-	private int portNum;
-	private NetworkManager networkManager;
+	private int portNumReception = 65534;
+	private int portNumEnvoie = 65535;
+	private DatagramSocket udpSocket;
+	private InetAddress adress;
 
-	
-	/* Statut de connexion*/
-	public static final int NONE_STATUS = -1;
-	public static final int CONNECTION_STATUS = 0;
-	public static final int DECONNECTION_STATUS = 1;
-	public static final int USERNAME_CHANGED_OCCUPIED = 2;
-	
 	public UDPManager() throws SocketException
 	{
-		//Choix d'un port random pour le nouveau USER, compris entre 2000 et 65500//
-		Random rand = new Random();
-		this.portNum = 1999;
-				/*rand.nextInt(65500-2000+1)+2000*/ ;
-		networkManager.setNumPort(portNum);
-		
-		
-		//this.udpSocket = new DatagramSocket(portNum);
-		
-		
-		
+		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
+		//65534 pour recevoir
+		this.udpSocket = new DatagramSocket(portNumEnvoie);	
 	}
 	
 	
-	public void broadcast(byte [] message, InetAddress address, int portNum) throws IOException
+	public void broadcast(String message, InetAddress address, int portNum) throws IOException
 	{
-		//udpSocket.setBroadcast(true);
-		DatagramPacket packet = new DatagramPacket (message, message.length, address, portNum);
-		//udpSocket.send(packet);
+		udpSocket.setBroadcast(true);
+		byte [] buffer = message.getBytes();
+		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
+		udpSocket.send(packet);
+		udpSocket.close();
+		
+	}
+
+
+
+
+
+
+	public void run()
+	{
+		try
+		{
+			adress = InetAddress.getByName("255.255.255.255");
+		}
+		catch(UnknownHostException e)
+		{
+			System.out.println("Erreur dans le broadcast, hote inconnu");
+		}
+		try
+		{
+			broadcast("Hello",adress , portNumReception);
+		}
+		catch(IOException e )
+		{
+			System.out.println("Erreur envoie du message en broadcast");
+		}
+		//Création de notre serveur UDP en écoute sur le port 65534
+		DatagramSocket dgramSocket = new DatagramSocket()
+
+		
 		
 	}
  	
