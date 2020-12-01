@@ -89,7 +89,7 @@ public class UDPManager extends Thread{
 
 	public void update_contact(InetAddress clientAddress, int clientPort, String login)
 	{
-		if()
+		
 	}
  	
  	

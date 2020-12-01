@@ -7,7 +7,7 @@ public class Contact
     private String pseudo;
     private InetAddress adresse;
 
-    public Contact(int broad, int serv, String pseudo, InetAdress adresse)
+    public Contact(int broad, int serv, String pseudo, InetAddress adresse)
     {
         this.broadPort = broad;
         this.servPort=serv;
