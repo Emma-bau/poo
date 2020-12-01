@@ -58,8 +58,8 @@ public class NetworkManager extends Thread {
 	public NetworkManager(int Numport) 
 	{
 		//On creer notre serveur//
-		UDPManager udpserver = new UDPManager(Numport);
-		udp.start();
+		/*UDPManager udpserver = new UDPManager(Numport);
+		udpserver.start();*/
 		ServerHandler server = new ServerHandler(this);
 		server.start();
 		//On creer notre client à la demande d'une connexion
