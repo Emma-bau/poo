@@ -1,6 +1,5 @@
-import java.io.*;
 import java.net.*;
-import java.util.*;
+
 
 public class ServerHandler extends Thread{
 
@@ -28,7 +27,6 @@ public class ServerHandler extends Thread{
 				System.out.println("Awaiting connection");
 				Socket SocketTCP = server.accept();
 				System.out.println("Connexion du Client " + idClient);
-				manager.setIDUser();
 				NetworkWaiter N1 = new NetworkWaiter(SocketTCP, manager, idClient);
 				idClient++;
 				Thread t1 = new Thread(N1);

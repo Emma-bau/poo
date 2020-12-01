@@ -7,13 +7,46 @@ public class Contact
     private String pseudo;
     private InetAddress adresse;
 
-    public Contact(int broad, int serv, String pseudo, InetAddress adresse)
+    public Contact(int serv, String pseudo, InetAddress adresse)
     {
-        this.broadPort = broad;
         this.servPort=serv;
         this.pseudo=pseudo;
         this.adresse=adresse;
     }
+
+    public int getBroadPort() {
+        return broadPort;
+    }
+
+    public void setBroadPort(int broadPort) {
+        this.broadPort = broadPort;
+    }
+
+    public int getServPort() {
+        return servPort;
+    }
+
+    public void setServPort(int servPort) {
+        this.servPort = servPort;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public InetAddress getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(InetAddress adresse) {
+        this.adresse = adresse;
+    }
+
+    
 
 
     

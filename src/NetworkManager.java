@@ -1,31 +1,30 @@
-import java.io.*;
-import java.net.*;
 import java.util.*;
 
 
 public class NetworkManager extends Thread {
 	private Agent agent;
-	private ArrayList<Agent> connectedUser = new ArrayList<Agent>();
+	private ArrayList<Contact> connectedUser = new ArrayList<Contact>();
 	private Message SendMessage;
 	private Message ReceiveMessage;
 	private boolean Connexion = true;
 	private int numPort = 2001;
-	private int idUser = 0;
 	
 	
 	
 	//getter and setter//
-	
+	public void setconnectedUser(ArrayList<Contact> connectedUser )
+	{
+		this.connectedUser=connectedUser;
+	}
+
+	public ArrayList<Contact> getconnectedUser()
+	{
+		return this.connectedUser;
+	}
+
 	public void setNumPort(int numPort) {
 		this.numPort = numPort;
 	}
-	//On incrémente notre userID
-	public void setIDUser()
-	{
-		this.idUser++;
-	}
-
-
 
 	public boolean isConnexion() {
 		return Connexion;
