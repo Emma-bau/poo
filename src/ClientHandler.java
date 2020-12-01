@@ -3,19 +3,19 @@ import java.net.*;
 import java.util.*;
 
 
+
 public class ClientHandler extends Thread {
 
-    private NetworkManager manager;
+	private NetworkManager manager;
+	private final Scanner sc = new Scanner(System.in);
+	private final int idClient;
 
-    public ClientHandler(NetworkManager Manager)
+    public ClientHandler(NetworkManager Manager, int idUser)
     {
-        this.manager = Manager;
+		this.manager = Manager;
+		this.idClient=idUser;
+		manager.setIDUser();
     }
-
-
-
-
-
 
 	public void run()
 	{
@@ -23,28 +23,41 @@ public class ClientHandler extends Thread {
 		{
 			System.out.println("connexion cote client");
 			/*adresse IP et num de port a recuperer, a faire le tableau des recuperation et envoit au debut*/
-			Socket clientSocket = new Socket("127.0.0.1",1234);
-			while(manager.isConnexion()==true)
-			{
-				
-				/*Si on a un message a envoyer*/
-				/*if (getSendMessage()!="")
-				{*/
-					PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
-					/*Fonction du message envoye voulu*/
-					out.println("courgette");
-					manager.setSendMessage("");
-				/*}*/
-				
-				/*BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				/*ou si on recoit un message, le buffer read_line n'est pas vide*/
-				//String input = in.readLine();
-				/*Network recupere notre message*/
-				//System.out.println("Received : "+input);
-				//setReceiveMessage(input);	
-				
-			}
-			clientSocket.close();	
+			Socket clientSocket = new Socket("127.0.0.1",5000);
+			/*On enregistre dans un tableau l'adresse*/
+			PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+			Thread envoyer = new Thread(new Runnable() {
+				String msg;
+				 @Override
+				 public void run() {
+				   while(true){
+					 msg = sc.nextLine();
+					 out.println(msg);
+				   }
+				}
+			});
+			envoyer.start();
+	  
+		   Thread recevoir = new Thread(new Runnable() {
+			   String msg;
+			   @Override
+			   public void run() {
+				  try {
+					msg = in.readLine();
+					while(msg!=null){
+					   System.out.println("Serveur " + idClient+ " : "+msg);
+					   msg = in.readLine();
+					}
+					System.out.println("Serveur déconecté");
+					out.close();
+				  } catch (IOException e) {
+					  e.printStackTrace();
+				  }
+			   }
+		   	});
+		   	recevoir.start();
 			
 		}
 		catch (Exception e)

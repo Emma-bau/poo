@@ -6,11 +6,11 @@ import java.util.*;
 public class NetworkManager extends Thread {
 	private Agent agent;
 	private ArrayList<Agent> connectedUser = new ArrayList<Agent>();
-	private ArrayList<Message> messages = new ArrayList<Message>();
-	private String SendMessage = "";
-	private String ReceiveMessage;
+	private Message SendMessage;
+	private Message ReceiveMessage;
 	private boolean Connexion = true;
-	private int numPort;
+	private int numPort = 2000;
+	private int idUser = 0;
 	
 	
 	
@@ -19,23 +19,12 @@ public class NetworkManager extends Thread {
 	public void setNumPort(int numPort) {
 		this.numPort = numPort;
 	}
-
-	/*Retourne la liste des utilisateurs connectes*/
-	public ArrayList<Agent> getConnectedUser() {
-		return connectedUser;
+	//On incrémente notre userID
+	public void setIDUser()
+	{
+		this.idUser++;
 	}
 
-	public void setConnectedUser(ArrayList<Agent> connectedUser) {
-		this.connectedUser = connectedUser;
-	}
-
-	public ArrayList<Message> getMessages() {
-		return messages;
-	}
-
-	public void setMessages(ArrayList<Message> messages) {
-		this.messages = messages;
-	}
 
 
 	public boolean isConnexion() {
@@ -46,21 +35,15 @@ public class NetworkManager extends Thread {
 		Connexion = connexion;
 	}
 	
-
-	public String getSendMessage() {
+	public Message getSendMessage() {
 		return SendMessage;
 	}
 
-	public void setSendMessage(String sendMessage) {
+	public void setSendMessage(Message sendMessage) {
 		SendMessage = sendMessage;
 	}
 
-	public String getReceiveMessage() {
-		/*gerer avec data history*/
-		return ReceiveMessage;
-	}
-
-	public void setReceiveMessage(String recieveMessage) {
+	public void setReceiveMessage(Message recieveMessage) {
 		ReceiveMessage = recieveMessage;
 	}
 	
@@ -74,27 +57,13 @@ public class NetworkManager extends Thread {
 	
 	public NetworkManager(int Numport) 
 	{
-
 		//On creer notre serveur//
-		ServerHandler server = new ServerHandler(Numport,this);
+		ServerHandler server = new ServerHandler(Numport,this, idUser);
 		server.start();
-		//On creer notre client
-		ClientHandler client = new ClientHandler(this);
-		client.start();
-
+		//On creer notre client à la demande d'une connexion
+		//ClientHandler client = new ClientHandler(this,idUser);
+		//client.start();
 	}
 
-	
-	
-	
-	/*Gestion du serveur*/
-	
-
-	
-	
-	
-	
-	
-	
 
 }
