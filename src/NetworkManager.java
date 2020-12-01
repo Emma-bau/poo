@@ -9,7 +9,7 @@ public class NetworkManager extends Thread {
 	private Message SendMessage;
 	private Message ReceiveMessage;
 	private boolean Connexion = true;
-	private int numPort = 2000;
+	private int numPort = 2001;
 	private int idUser = 0;
 	
 	
@@ -58,11 +58,19 @@ public class NetworkManager extends Thread {
 	public NetworkManager(int Numport) 
 	{
 		//On creer notre serveur//
-		ServerHandler server = new ServerHandler(Numport,this, idUser);
+		ServerHandler server = new ServerHandler(this);
 		server.start();
 		//On creer notre client à la demande d'une connexion
-		//ClientHandler client = new ClientHandler(this,idUser);
-		//client.start();
+		
+	}
+
+	public void connexion()
+	{
+		if(Connexion)
+		{
+			ClientHandler client = new ClientHandler(this,numPort);
+			client.start();
+		}
 	}
 
 
