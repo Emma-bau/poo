@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = 1L;
@@ -9,7 +10,8 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private Agent agent;
 	private JFrame frame;
 	private JPanel panel1,panel2;
-	private JButton bContact;
+	private BoutonSession bContact;
+	private ArrayList<BoutonSession> listBouton;
     
     public MainInterface(Agent agent) {
 		this.agent = agent;
@@ -42,14 +44,13 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         
         // Set up the BoxLayout
         BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.Y_AXIS);
-        BoxLayout layout3 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
+        BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
         panel1.add(welcomeText);
         panel2.add(connectedListLb);
         panel1.setLayout(layout1);
-        panel2.setLayout(layout3);
+        panel2.setLayout(layout2);
 
-        jb5.setAlignmentX(Component.RIGHT_ALIGNMENT);
-        panel2.add(jb5);
+        
         
         // Add the three panels into the frame
         frame.setLayout(new GridLayout());
@@ -69,21 +70,44 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	public void actionPerformed(ActionEvent ae){
 		System.out.println("ne fais rien");
-		if (ae.getSource() == bContact) {
-			System.out.println("ouai ouai");
+		int i = 0;
+		for(BoutonSession b:listBouton) {
+			i++;
+			if (ae.getSource() == b.getBouton()) {
+				System.out.println("ouai ouai");
+			}
 		}
 	}
 
 	@Override
 	public void run() {
 		while(true) {
+			//liste des boutons qui lancent un contact
+			listBouton = new ArrayList<BoutonSession>();
 			int i = 0;
+			
+			//efface les boutons deja presents de l'ecran et vide la liste
+			for (BoutonSession b:listBouton) {
+				frame.remove(b.getBouton());
+			}
+			listBouton.clear();
+			frame.pack();
+			
+			//cree un bouton par contact connecte et lajoute a la liste
 			for (Contact c: agent.getNetworkManager().getconnectedUser()) {
 				i++;
-				bContact = new JButton(i + " : " + c.getPseudo() );
-				panel2.add(bContact);
-				
+				bContact = new BoutonSession(i + " : " + c.getPseudo(),i);
+				listBouton.add(bContact);
+				panel2.add(bContact.getBouton());
+				bContact.getBouton().addActionListener(this);
+				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);
+				frame.pack();
+				toScreenSize();
 			}
+			try {
+				Thread.sleep(8000);
+			}
+			catch(InterruptedException e) {}
 		}
 	}
 
