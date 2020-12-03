@@ -68,15 +68,8 @@ public class NetworkManager extends Thread {
 	
 	public NetworkManager (int Numport) 
 	{
-		//On creer notre serveur//
-		try{
-			UDPManager udpserver = new UDPManager(Numport,this);
-			udpserver.start();
-		}
-		catch(SocketException e)
-		{
-			System.out.println("Erreur des le début");
-		}
+		try {
+			InetAddress adress = InetAddress.getLocalHost
 		
 		
 		//ServerHandler server = new ServerHandler(this);
