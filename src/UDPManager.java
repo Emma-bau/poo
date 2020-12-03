@@ -11,7 +11,7 @@ public class UDPManager extends Thread{
 	private InetAddress adress;
 	private NetworkManager manager;
 
-	private static final int CHANGE_LOGIN = 0;
+		private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
 	private static final int DECONNEXION= 2;
 
@@ -103,7 +103,7 @@ public class UDPManager extends Thread{
 					{
 						if(i != portNumReception)
 						{
-							broadcast("1",adress,i,envoie);
+							broadcast("1"+manager.getPseudo(),adress,i,envoie);
 						}
 					}
 					envoie.close();
