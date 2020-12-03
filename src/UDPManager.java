@@ -56,14 +56,34 @@ public class UDPManager extends Thread{
 							//Réception de l'adresse et du port associé//
 							InetAddress clientAddress = inPacket.getAddress();
 							//broadcast numéro port
+							//Changement de login//
+							String pseudo = manager.getPseudo();
 							int clientPort = inPacket.getPort();
-							String pseudo="";
-							for(int i=1; i<buffer.length; i++)
+							int state = 4;
+
+							if(buffer[0]==CHANGE_LOGIN)
 							{
-								pseudo += (char)buffer[i];
+								update_contact(clientAddress,clientPort,pseudo);
+								//Changer le pseudo à envoyer à l'interface//
 							}
-							System.out.println("Message courgette: "+pseudo);
+							//Nouvelle Connexion
+							else if(buffer[0]==CONNEXION)
+							{
+								create_contact(clientAddress,clientPort,pseudo);
+
+							}
+							else if(buffer[0]==DECONNEXION)
+							{
+								remove_contact(clientAddress, clientPort, pseudo);
+							}
+							else       
+							{
+								System.out.println("Problème avec le broadcast, non lecture du buffer");
+							}
+							
 						}
+
+						
 					}
 					catch(IOException e )
 					{
@@ -72,8 +92,10 @@ public class UDPManager extends Thread{
 		
 
 				}
+				
 			});
 			serveur.start();
+
 		}
 		catch(IOException e )
 		{
@@ -99,11 +121,15 @@ public class UDPManager extends Thread{
 					Scanner sc = new Scanner(System.in);
 					int monEntier = sc.nextInt();
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+					String message = "1"+manager.getPseudo();
+					System.out.println(message);
 					for (int i=65333; i>65233;i--)
 					{
 						if(i != portNumReception)
 						{
-							broadcast("1"+manager.getPseudo(),adress,i,envoie);
+							
+							broadcast(message,adress,i,envoie);
+
 						}
 					}
 					envoie.close();
@@ -115,6 +141,40 @@ public class UDPManager extends Thread{
 			}
 		});
 		connexion.start();
+	}
+
+	public void update_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	{
+		ArrayList<Contact> connectedUser = manager.getconnectedUser();
+		for (Contact c : connectedUser)
+		{
+			if(c.getAdresse() == clientAddress)
+			{
+				c.setPseudo(pseudo);
+			}
+		}
+	}
+
+	public void create_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	{
+		ArrayList<Contact> connectedUser = manager.getconnectedUser();
+		Contact C = new Contact(clientPort,pseudo,clientAddress);
+		connectedUser.add(C);
+		System.out.println("Client créer : "+clientPort);
+
+			
+	}
+
+	public void remove_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	{
+		ArrayList<Contact> connectedUser = manager.getconnectedUser();
+		for(Contact c : connectedUser)
+		{
+			if(c.getAdresse() == clientAddress)
+			{
+				connectedUser.remove(c);
+			}
+		}	
 	}
 	
 
