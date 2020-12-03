@@ -69,11 +69,33 @@ public class NetworkManager extends Thread {
 	public NetworkManager (int Numport) 
 	{
 		try {
-			InetAddress adress = InetAddress.getLocalHost
+			InetAddress adress = InetAddress.getLocalHost();
+			Contact c1 = new Contact(6,"courgette",adress);
+			Contact c2 = new Contact(6,"salut",adress);
+			Contact c3 = new Contact(6,"toto",adress);
+			
+			connectedUser.add(c1);
+			connectedUser.add(c2);
+			connectedUser.add(c3);
+		}
+		catch(UnknownHostException e) {
+			
+		}
+	
+		//On creer notre serveur//
+		try{
+			UDPManager udpserver = new UDPManager(Numport,this);
+			udpserver.start();
+		}
+		catch(SocketException e)
+		{
+			System.out.println("Erreur des le debut");
+		}
+
 		
 		
-		//ServerHandler server = new ServerHandler(this);
-		//server.start();
+		ServerHandler server = new ServerHandler(this);
+		server.start();
 		//On creer notre client à la demande d'une connexion
 		
 	}
