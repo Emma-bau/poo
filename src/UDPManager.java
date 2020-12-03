@@ -4,11 +4,11 @@ import java.util.*;
 
 
 
-public class UDPManager implements Runnable{
+public class UDPManager extends Thread{
 	
 	private int portNumReception; //= 65534;
-	private int portNumEnvoie; //= 65535;
-	private DatagramSocket udpSocket;
+	private int portNumEnvoie = 65335; 
+	private DatagramSocket udpSocketEnvoie;
 	private InetAddress adress;
 	private NetworkManager manager;
 
@@ -24,7 +24,8 @@ public class UDPManager implements Runnable{
 		this.portNumReception=numPort;
 		this.manager=net;
 		try{
-			this.udpSocket = new DatagramSocket(portNumEnvoie);	
+			System.out.println("Port d'envoie créer");
+			this.udpSocketEnvoie = new DatagramSocket(portNumEnvoie);	
 		}
 		catch(SocketException e )
 		{
@@ -35,11 +36,13 @@ public class UDPManager implements Runnable{
 	/*Revoir avec nouvelle norme*/
 	public void broadcast(String message, InetAddress address, int portNum) throws IOException
 	{
-		udpSocket.setBroadcast(true);
+		System.out.println("ENtrer dans la fonction broadcsat ");
+		System.out.println("Création du buffer");
 		byte [] buffer = message.getBytes();
+		System.out.println("Création du datagamme packet");
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
-		udpSocket.send(packet);
-		udpSocket.close();
+		System.out.println("Envoie ");
+		udpSocketEnvoie.send(packet);
 		
 	}
 
@@ -48,16 +51,19 @@ public class UDPManager implements Runnable{
 		
 	//Création de notre serveur UDP en écoute sur le port 65534
 		try{
-			DatagramSocket dgramSocket = new DatagramSocket(portNumReception);
+			//Création du port de réception
+			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
-			
+			System.out.println("Avant le Thread");
+
 			Thread serveur = new Thread(new Runnable()
 			{
 				public void run()
 				{
 					try{
-						dgramSocket.receive(inPacket);
+						System.out.println("Serveur créer");
+						dgramSocketReception.receive(inPacket);
 						//Réception de l'adresse et du port associé//
 						InetAddress clientAddress = inPacket.getAddress();
 						//broadcast numéro port
@@ -77,6 +83,7 @@ public class UDPManager implements Runnable{
 
 				}
 			});
+			serveur.start();
 		}
 		catch(IOException e )
 		{
@@ -114,9 +121,13 @@ public class UDPManager implements Runnable{
 		}
 		try
 		{
-			for (int i=65335; i>65333;i++)
+			System.out.println("Attente de lancement");
+			Scanner sc = new Scanner(System.in);
+			int monEntier = sc.nextInt();
+			for (int i=65333; i>65233;i--)
 			{
-				broadcast("Hello",adress , portNumReception);
+				broadcast("Hello",adress ,i);
+				System.out.println("Envoyé sur le port "+ i);
 			}
 		}
 		catch(IOException e )

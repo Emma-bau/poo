@@ -60,12 +60,12 @@ public class NetworkManager extends Thread {
 	{
 		//On creer notre serveur//
 		try{
-			/*UDPManager udpserver = new UDPManager(Numport,this);
-			udpserver.start();*/
+			UDPManager udpserver = new UDPManager(Numport,this);
+			udpserver.start();
 		}
 		catch(SocketException e)
 		{
-
+			System.out.println("Erreur des le début");
 		}
 		
 		
