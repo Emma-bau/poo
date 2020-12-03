@@ -4,7 +4,7 @@ import java.util.*;
 
 
 
-public class UDPManager extends Thread{
+public class UDPManager implements Runnable{
 	
 	private int portNumReception; //= 65534;
 	private int portNumEnvoie; //= 65535;
@@ -17,17 +17,19 @@ public class UDPManager extends Thread{
 	private static final int DECONNEXION= 2;
 
 
-
-
-
-
 	public UDPManager(int numPort, NetworkManager net ) throws SocketException
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
 		this.portNumReception=numPort;
 		this.manager=net;
-		this.udpSocket = new DatagramSocket(portNumEnvoie);	
+		try{
+			this.udpSocket = new DatagramSocket(portNumEnvoie);	
+		}
+		catch(SocketException e )
+		{
+			System.out.println("Problème dans la création du socket");
+		}
 	}
 	
 	/*Revoir avec nouvelle norme*/
@@ -43,45 +45,47 @@ public class UDPManager extends Thread{
 
 	public void run()
 	{
-		try
-		{
-			adress = InetAddress.getByName("255.255.255.255");
-		}
-		catch(UnknownHostException e)
-		{
-			System.out.println("Erreur dans le broadcast, hote inconnu");
-		}
-		try
-		{
-			for (int i=65335; i>65235;i++)
-			{
-				broadcast("Hello",adress , portNumReception);
-			}
-		}
-		catch(IOException e )
-		{
-			System.out.println("Erreur envoie du message en broadcast");
-		}
-		//Création de notre serveur UDP en écoute sur le port 65534
+		
+	//Création de notre serveur UDP en écoute sur le port 65534
 		try{
 			DatagramSocket dgramSocket = new DatagramSocket(portNumReception);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
-			try
+			
+			Thread serveur = new Thread(new Runnable()
 			{
-
-				dgramSocket.receive(inPacket);
-				//Réception de l'adresse et du port associé//
-				InetAddress clientAddress = inPacket.getAddress();
-				//broadcast numéro port
-				int clientPort = inPacket.getPort();
-				String pseudo="";
-				for(int i=1; i<buffer.length; i++)
+				public void run()
 				{
-					pseudo += (char)buffer[i];
+					try{
+						dgramSocket.receive(inPacket);
+						//Réception de l'adresse et du port associé//
+						InetAddress clientAddress = inPacket.getAddress();
+						//broadcast numéro port
+						int clientPort = inPacket.getPort();
+						String pseudo="";
+						for(int i=1; i<buffer.length; i++)
+						{
+							pseudo += (char)buffer[i];
+						}
+						System.out.println("Message : "+pseudo);
+					}
+					catch(IOException e )
+					{
+						System.out.println("Thread UDP socket");
+					}
+		
+
 				}
+			});
+		}
+		catch(IOException e )
+		{
+			System.out.println("Erreur UDP socket");
+		}
+
+			
 				//Changement de login//
-				if(buffer[0]==CHANGE_LOGIN)
+				/*if(buffer[0]==CHANGE_LOGIN)
 				{
 					update_contact(clientAddress,clientPort,pseudo);
 					//Changer le pseudo à envoyer à l'interface//
@@ -99,30 +103,28 @@ public class UDPManager extends Thread{
 				else       
 				{
 					System.out.println("Problème avec le broadcast, non lecture du buffer");
-				}
-				
-			}	
-			catch(IOException e)
+				}*/
+		try
+		{
+			adress = InetAddress.getByName("255.255.255.255");
+		}
+		catch(UnknownHostException e)
+		{
+			System.out.println("Erreur dans le broadcast, hote inconnu");
+		}
+		try
+		{
+			for (int i=65335; i>65333;i++)
 			{
-				System.out.println("Erreur au niveau du receive du Datagramme");
+				broadcast("Hello",adress , portNumReception);
 			}
 		}
-		catch(SocketException e)
+		catch(IOException e )
 		{
-			System.out.println("Erreur création du datagramme");
+			System.out.println("Erreur envoie du message en broadcast");
 		}
-		
-		
-		
-		
-		
-
-
-
-
-		
-		
 	}
+
 
 
 	public void update_contact(InetAddress clientAddress, int clientPort, String pseudo)

@@ -1,4 +1,6 @@
 import java.util.*;
+import java.net.*;
+import java.io.* ;
 
 
 public class NetworkManager extends Thread {
@@ -11,7 +13,7 @@ public class NetworkManager extends Thread {
 	
 	
 	
-	//getter and setter//
+	//getter and setter// 
 	public void setconnectedUser(ArrayList<Contact> connectedUser )
 	{
 		this.connectedUser=connectedUser;
@@ -54,13 +56,21 @@ public class NetworkManager extends Thread {
 	
 	/* Constructeur*/
 	
-	public NetworkManager(int Numport) 
+	public NetworkManager (int Numport) 
 	{
 		//On creer notre serveur//
-		/*UDPManager udpserver = new UDPManager(Numport);
-		udpserver.start();*/
-		ServerHandler server = new ServerHandler(this);
-		server.start();
+		try{
+			/*UDPManager udpserver = new UDPManager(Numport,this);
+			udpserver.start();*/
+		}
+		catch(SocketException e)
+		{
+
+		}
+		
+		
+		//ServerHandler server = new ServerHandler(this);
+		//server.start();
 		//On creer notre client à la demande d'une connexion
 		
 	}
