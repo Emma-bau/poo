@@ -10,10 +10,20 @@ public class NetworkManager extends Thread {
 	private Message ReceiveMessage;
 	private boolean Connexion = true;
 	private int numPort = 2001;
+	private String pseudo =  "Jean";
 	
 	
 	
 	//getter and setter// 
+
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
 	public void setconnectedUser(ArrayList<Contact> connectedUser )
 	{
 		this.connectedUser=connectedUser;
@@ -84,5 +94,6 @@ public class NetworkManager extends Thread {
 		}
 	}
 
+	
 
 }
