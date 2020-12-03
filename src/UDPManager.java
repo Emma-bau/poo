@@ -8,7 +8,6 @@ public class UDPManager extends Thread{
 	
 	private int portNumReception; //= 65534;
 	private int portNumEnvoie = 65335; 
-	private DatagramSocket udpSocketEnvoie;
 	private InetAddress adress;
 	private NetworkManager manager;
 
@@ -17,32 +16,21 @@ public class UDPManager extends Thread{
 	private static final int DECONNEXION= 2;
 
 
+
 	public UDPManager(int numPort, NetworkManager net ) throws SocketException
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
 		this.portNumReception=numPort;
 		this.manager=net;
-		try{
-			System.out.println("Port d'envoie créer");
-			this.udpSocketEnvoie = new DatagramSocket(portNumEnvoie);	
-		}
-		catch(SocketException e )
-		{
-			System.out.println("Problème dans la création du socket");
-		}
 	}
 	
 	/*Revoir avec nouvelle norme*/
-	public void broadcast(String message, InetAddress address, int portNum) throws IOException
+	public void broadcast(String message, InetAddress address, int portNum, DatagramSocket envoie) throws IOException
 	{
-		System.out.println("ENtrer dans la fonction broadcsat ");
-		System.out.println("Création du buffer");
 		byte [] buffer = message.getBytes();
-		System.out.println("Création du datagamme packet");
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
-		System.out.println("Envoie ");
-		udpSocketEnvoie.send(packet);
+		envoie.send(packet);
 		
 	}
 
@@ -55,7 +43,6 @@ public class UDPManager extends Thread{
 			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
-			System.out.println("Avant le Thread");
 
 			Thread serveur = new Thread(new Runnable()
 			{
@@ -63,17 +50,20 @@ public class UDPManager extends Thread{
 				{
 					try{
 						System.out.println("Serveur créer");
-						dgramSocketReception.receive(inPacket);
-						//Réception de l'adresse et du port associé//
-						InetAddress clientAddress = inPacket.getAddress();
-						//broadcast numéro port
-						int clientPort = inPacket.getPort();
-						String pseudo="";
-						for(int i=1; i<buffer.length; i++)
+						while(true)
 						{
-							pseudo += (char)buffer[i];
+							dgramSocketReception.receive(inPacket);
+							//Réception de l'adresse et du port associé//
+							InetAddress clientAddress = inPacket.getAddress();
+							//broadcast numéro port
+							int clientPort = inPacket.getPort();
+							String pseudo="";
+							for(int i=1; i<buffer.length; i++)
+							{
+								pseudo += (char)buffer[i];
+							}
+							System.out.println("Message : "+pseudo);
 						}
-						System.out.println("Message : "+pseudo);
 					}
 					catch(IOException e )
 					{
@@ -90,88 +80,42 @@ public class UDPManager extends Thread{
 			System.out.println("Erreur UDP socket");
 		}
 
-			
-				//Changement de login//
-				/*if(buffer[0]==CHANGE_LOGIN)
-				{
-					update_contact(clientAddress,clientPort,pseudo);
-					//Changer le pseudo à envoyer à l'interface//
-				}
-				//Nouvelle Connexion
-				else if(buffer[0]==CONNEXION)
-				{
-					create_contact(clientAddress,clientPort,pseudo);
-
-				}
-				else if(buffer[0]==DECONNEXION)
-				{
-					remove_contact(clientAddress, clientPort, pseudo);
-				}
-				else       
-				{
-					System.out.println("Problème avec le broadcast, non lecture du buffer");
-				}*/
-		try
+		//Envoie de la connexion de notre client
+		Thread connexion = new Thread(new Runnable()
 		{
-			adress = InetAddress.getByName("255.255.255.255");
-		}
-		catch(UnknownHostException e)
-		{
-			System.out.println("Erreur dans le broadcast, hote inconnu");
-		}
-		try
-		{
-			System.out.println("Attente de lancement");
-			Scanner sc = new Scanner(System.in);
-			int monEntier = sc.nextInt();
-			for (int i=65333; i>65233;i--)
+			public void run()
 			{
-				broadcast("Hello",adress ,i);
-				System.out.println("Envoyé sur le port "+ i);
+				try
+				{
+					adress = InetAddress.getByName("localhost");
+				}
+				catch(UnknownHostException e)
+				{
+					System.out.println("Erreur dans le broadcast, hote inconnu");
+				}
+				try
+				{
+					System.out.println("Attente de lancement");
+					Scanner sc = new Scanner(System.in);
+					int monEntier = sc.nextInt();
+					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+					for (int i=65333; i>65233;i--)
+					{
+						if(i != portNumReception)
+						{
+							broadcast("1",adress,i,envoie);
+						}
+					}
+					envoie.close();
+				}
+				catch(IOException e )
+				{
+					System.out.println("Erreur envoie du message en broadcast");
+				}
 			}
-		}
-		catch(IOException e )
-		{
-			System.out.println("Erreur envoie du message en broadcast");
-		}
+		});
+		connexion.start();
 	}
-
-
-
-	public void update_contact(InetAddress clientAddress, int clientPort, String pseudo)
-	{
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
-		for (Contact c : connectedUser)
-		{
-			if(c.getAdresse() == clientAddress)
-			{
-				c.setPseudo(pseudo);
-			}
-		}
-	}
-
-	public void create_contact(InetAddress clientAddress, int clientPort, String pseudo)
-	{
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
-		Contact C = new Contact(clientPort,pseudo,clientAddress);
-		connectedUser.add(C);
-
-			
-	}
-
-	public void remove_contact(InetAddress clientAddress, int clientPort, String pseudo)
-	{
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
-		for(Contact c : connectedUser)
-		{
-			if(c.getAdresse() == clientAddress)
-			{
-				connectedUser.remove(c);
-			}
-		}	
-	}
-	
-	
 	
 
 }
