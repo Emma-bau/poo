@@ -62,7 +62,7 @@ public class UDPManager extends Thread{
 							{
 								pseudo += (char)buffer[i];
 							}
-							System.out.println("Message : "+pseudo);
+							System.out.println("Message courgette: "+pseudo);
 						}
 					}
 					catch(IOException e )
