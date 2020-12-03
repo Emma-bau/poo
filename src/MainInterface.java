@@ -75,6 +75,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 			i++;
 			if (ae.getSource() == b.getBouton()) {
 				System.out.println("ouai ouai");
+				PrivateChatSession pcs = new PrivateChatSession(b.getContact());
+				pcs.setVisible(true);
+				pcs.setSize(400,150);
 			}
 		}
 	}
@@ -96,7 +99,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 			//cree un bouton par contact connecte et lajoute a la liste
 			for (Contact c: agent.getNetworkManager().getconnectedUser()) {
 				i++;
-				bContact = new BoutonSession(i + " : " + c.getPseudo(),i);
+				bContact = new BoutonSession(i + " : " + c.getPseudo(),i,c);
 				listBouton.add(bContact);
 				panel2.add(bContact.getBouton());
 				bContact.getBouton().addActionListener(this);
