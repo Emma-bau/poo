@@ -22,7 +22,7 @@ public class PseudoManager {
 				return false;
 			}
 		}
-		if (pseudo.length()>=30) {
+		if (pseudo.length()>=20 || pseudo.contains(" ") || pseudo.contains("/")) {
 			return false;
 		}
 		this.pseudo = pseudo;
@@ -34,7 +34,5 @@ public class PseudoManager {
 	public ArrayList<String> getUsersPseudoList() {
 		return usersPseudoList;
 	}
-
-
 
 }
