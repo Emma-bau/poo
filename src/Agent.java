@@ -7,7 +7,7 @@ public class Agent {
 
 	private InterfaceManager interfaceManager;
 	private IDManager idManager;
-	private DataManager dataManager;
+	private DataManager dataManager; 
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
 
