@@ -7,13 +7,21 @@ public class BoutonSession {
 	private String text;
 	private int nb;
 	private JButton bouton;
+	private Contact contact;
 	
-	public BoutonSession(String text, int nb) {
+	public BoutonSession(String text, int nb, Contact c) {
 		this.text = text;
 		this.nb = nb;
+		this.contact = c;
 		this.bouton = new JButton(text);
 	}
 
+	public Contact getContact() {
+		return contact;
+	}
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
 	public String getText() {
 		return text;
 	}
