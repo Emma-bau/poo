@@ -17,7 +17,7 @@ public class NetworkWaiter implements Runnable {
 	}
 
 	/* On gere la connexion de nos nouveaux utilisateurs dans un thread */
-	/*Reste à gérer avec l'id à qui on envoit*/
+	/*Reste a gerer avec l'id a qui on envoit*/
 	@Override
 	public void run()
 	{
@@ -49,22 +49,22 @@ public class NetworkWaiter implements Runnable {
 			public void run() {
 				try {
 					msg = in.readLine();
-					//tant que le client est connecté
+					//tant que le client est connecte
 					while(msg!=null){
-						System.out.println("Client côté serveur n°"+idClient+": "+msg);
+						System.out.println("Client cote serveur n°"+idClient+": "+msg);
 						msg = in.readLine();
 						//revoir id source ? 
 						Message m = new Message(0, idClient,msg,java.time.LocalDate.now());
 						networkManager.setReceiveMessage(m);
 					}
-					//sortir de la boucle si le client a déconecté
-					System.out.println("Client serveur déconecté");
+					//sortir de la boucle si le client a deconecte
+					System.out.println("Client serveur deconecte");
 					//fermer le flux et la session socket
 					out.close();
 					link.close();
 					} 
 				catch (IOException e) {
-						System.out.println("problème dans recevoir");
+						System.out.println("probleme dans recevoir");
 					}
 			}
 		});

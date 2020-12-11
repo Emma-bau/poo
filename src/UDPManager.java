@@ -1,6 +1,9 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 
 
@@ -11,9 +14,10 @@ public class UDPManager extends Thread{
 	private InetAddress adress;
 	private NetworkManager manager;
 
-		private static final int CHANGE_LOGIN = 0;
+	private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
 	private static final int DECONNEXION= 2;
+	private static final int ANSWER_CONNEXION = 3;
 
 
 
@@ -37,9 +41,9 @@ public class UDPManager extends Thread{
 	public void run()
 	{
 		
-	//Création de notre serveur UDP en écoute sur le port 65534
+	//Creation de notre serveur UDP en ecoute sur le port 65534
 		try{
-			//Création du port de réception
+			//Creation du port de reception
 			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
@@ -49,32 +53,42 @@ public class UDPManager extends Thread{
 				public void run()
 				{
 					try{
-						System.out.println("Serveur créer");
-						while(true)
+						System.out.println("Serveur creer");
+						while(manager.isConnexion())
 						{
 							dgramSocketReception.receive(inPacket);
-							//Réception de l'adresse et du port associé//
+							//Reception de l'adresse et du port associe//
 							InetAddress clientAddress = inPacket.getAddress();
-							//broadcast numéro port
-							//Changement de login//
-							String pseudo = manager.getPseudo();
-							int clientPort = inPacket.getPort();
-							int state = 4;
-
-							if(buffer[0]==CHANGE_LOGIN)
+							
+							//Recuperation des informations du message						
+							String input="";
+							for(int i=0; i<buffer.length; i++)
 							{
-								update_contact(clientAddress,clientPort,pseudo);
-								//Changer le pseudo à envoyer à l'interface//
+								input += (char)buffer[i];
+							}
+
+							String etat_String = regexSearch("(?<=etat: )\\d+", input);
+							String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
+							String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+
+							int etat = Integer.parseInt(etat_String);
+							int servPort= Integer.parseInt(servPort_String);
+
+							//Changement de login//
+							if(etat==CHANGE_LOGIN)
+							{
+								update_contact(clientAddress,pseudo);
+								//Changer le pseudo a envoyer a l'interface//
 							}
 							//Nouvelle Connexion
-							else if(buffer[0]==CONNEXION)
+							else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
 							{
-								create_contact(clientAddress,clientPort,pseudo);
+								create_contact(clientAddress,pseudo,servPort,etat);
 
 							}
-							else if(buffer[0]==DECONNEXION)
+							else if(etat==DECONNEXION)
 							{
-								remove_contact(clientAddress, clientPort, pseudo);
+								remove_contact(clientAddress,pseudo);
 							}
 							else       
 							{
@@ -82,6 +96,8 @@ public class UDPManager extends Thread{
 							}
 							
 						}
+						dgramSocketReception.close();
+
 
 						
 					}
@@ -117,12 +133,9 @@ public class UDPManager extends Thread{
 				}
 				try
 				{
-					System.out.println("Attente de lancement");
-					Scanner sc = new Scanner(System.in);
-					int monEntier = sc.nextInt();
+					System.out.println("Connexion envoye");
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-					String message = "1"+manager.getPseudo();
-					System.out.println(message);
+					String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
 					for (int i=65333; i>65233;i--)
 					{
 						if(i != portNumReception)
@@ -143,7 +156,7 @@ public class UDPManager extends Thread{
 		connexion.start();
 	}
 
-	public void update_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void update_contact(InetAddress clientAddress, String pseudo)
 	{
 		ArrayList<Contact> connectedUser = manager.getconnectedUser();
 		for (Contact c : connectedUser)
@@ -155,17 +168,53 @@ public class UDPManager extends Thread{
 		}
 	}
 
-	public void create_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat)
 	{
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
-		Contact C = new Contact(clientPort,pseudo,clientAddress);
-		connectedUser.add(C);
-		System.out.println("Client créer : "+clientPort);
 
-			
+		try{
+			//Mise a jour de nos contacts//
+			ArrayList<Contact> connectedUser = manager.getconnectedUser();
+
+			Contact C = new Contact(ServPort,pseudo,clientAddress);
+			connectedUser.add(C);
+			manager.setconnectedUser(connectedUser);
+
+			//Verification console//
+			for (Contact c :  manager.getconnectedUser())
+			{
+				c.afficher();
+			}
+
+			//Si c'est une première connexion alors on repond, sinon c'est une reponse a notre premier envoie	
+			if (etat == 1)
+			{
+				String message="etat: 3 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+				byte [] buffer = message.getBytes();
+				try
+				{
+					//Envoie de nos informations
+					System.out.println("Envoie du message de connexion");
+					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
+					envoie.send(packet);
+					envoie.close();
+				}
+				catch(SocketException e)
+				{
+					System.out.println("Erreur message dans la reponse a une connexion");
+				}
+			}
+
+		}
+		catch(IOException e)
+		{
+			System.out.println("Erreur message dans la reponse a une connexion");
+		}
+
+		
 	}
 
-	public void remove_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void remove_contact(InetAddress clientAddress, String pseudo)
 	{
 		ArrayList<Contact> connectedUser = manager.getconnectedUser();
 		for(Contact c : connectedUser)
@@ -176,6 +225,12 @@ public class UDPManager extends Thread{
 			}
 		}	
 	}
-	
+
+	public static String regexSearch(String regex, String input) {
+        Matcher m = Pattern.compile(regex).matcher(input);
+        if (m.find()) return m.group();
+        return null;
+    }
+
 
 }
