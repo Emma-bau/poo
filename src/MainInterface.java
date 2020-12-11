@@ -57,7 +57,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         frame.add(panel1);
         frame.add(panel2);
        
-        frame.pack();
+        //frame.pack();
         frame.setVisible(true);
     }
     
