@@ -46,6 +46,11 @@ public class Contact
         this.adresse = adresse;
     }
 
+    public void afficher ()
+    {
+        System.out.println(" Port : " + servPort+ " Login : " + pseudo+ " adresse : " +  adresse);
+    }
+
     
 
 

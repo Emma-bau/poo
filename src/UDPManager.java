@@ -4,6 +4,7 @@ import java.util.*;
 
 
 
+
 public class UDPManager extends Thread{
 	
 	private int portNumReception; //= 65534;
@@ -55,26 +56,32 @@ public class UDPManager extends Thread{
 							dgramSocketReception.receive(inPacket);
 							//Réception de l'adresse et du port associé//
 							InetAddress clientAddress = inPacket.getAddress();
-							//broadcast numéro port
-							//Changement de login//
-							String pseudo = manager.getPseudo();
-							int clientPort = inPacket.getPort();
-							int state = 4;
-
-							if(buffer[0]==CHANGE_LOGIN)
+							//broadcast numéro port							
+							String pseudo="";
+							for(int i=1; i<buffer.length; i++)
 							{
-								update_contact(clientAddress,clientPort,pseudo);
+								pseudo += (char)buffer[i];
+							}
+							System.out.println("Message : "+pseudo);
+
+							char etat_char = (char)buffer[0];
+							int etat = Character.getNumericValue(etat_char);
+
+							//Changement de login//
+							if(etat==CHANGE_LOGIN)
+							{
+								update_contact(clientAddress,pseudo);
 								//Changer le pseudo à envoyer à l'interface//
 							}
 							//Nouvelle Connexion
-							else if(buffer[0]==CONNEXION)
+							else if(etat==CONNEXION)
 							{
-								create_contact(clientAddress,clientPort,pseudo);
+								create_contact(clientAddress,pseudo);
 
 							}
-							else if(buffer[0]==DECONNEXION)
+							else if(etat==DECONNEXION)
 							{
-								remove_contact(clientAddress, clientPort, pseudo);
+								remove_contact(clientAddress,pseudo);
 							}
 							else       
 							{
@@ -82,6 +89,8 @@ public class UDPManager extends Thread{
 							}
 							
 						}
+						dgramSocketReception.close();
+
 
 						
 					}
@@ -120,6 +129,7 @@ public class UDPManager extends Thread{
 					System.out.println("Attente de lancement");
 					Scanner sc = new Scanner(System.in);
 					int monEntier = sc.nextInt();
+					sc.close();
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 					String message = "1"+manager.getPseudo();
 					System.out.println(message);
@@ -143,7 +153,7 @@ public class UDPManager extends Thread{
 		connexion.start();
 	}
 
-	public void update_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void update_contact(InetAddress clientAddress, String pseudo)
 	{
 		ArrayList<Contact> connectedUser = manager.getconnectedUser();
 		for (Contact c : connectedUser)
@@ -155,17 +165,25 @@ public class UDPManager extends Thread{
 		}
 	}
 
-	public void create_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void create_contact(InetAddress clientAddress, String pseudo)
 	{
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
-		Contact C = new Contact(clientPort,pseudo,clientAddress);
-		connectedUser.add(C);
-		System.out.println("Client créer : "+clientPort);
+		System.out.println("Cool arrivée ici");
 
+		ArrayList<Contact> connectedUser = manager.getconnectedUser();
+
+		Contact C = new Contact(2000,pseudo,clientAddress);
+		connectedUser.add(C);
+		manager.setconnectedUser(connectedUser);
+
+		System.out.println("Client créer : "+2000);
+		for (Contact c :  manager.getconnectedUser())
+		{
+			c.afficher();
+		}	
 			
 	}
 
-	public void remove_contact(InetAddress clientAddress, int clientPort, String pseudo)
+	public void remove_contact(InetAddress clientAddress, String pseudo)
 	{
 		ArrayList<Contact> connectedUser = manager.getconnectedUser();
 		for(Contact c : connectedUser)
@@ -176,6 +194,6 @@ public class UDPManager extends Thread{
 			}
 		}	
 	}
-	
+
 
 }
