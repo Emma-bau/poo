@@ -7,9 +7,12 @@ public class NetworkManager extends Thread {
 	private ArrayList<Contact> connectedUser = new ArrayList<Contact>();
 	private Message SendMessage;
 	private Message ReceiveMessage;
-	private boolean Connexion = true;
+	
 	private int numPort = 2001;
 	private String pseudo =  "Jean";
+
+	private boolean change_pseudo = false;
+	private boolean Connexion = true;
 	
 	
 	
@@ -57,9 +60,15 @@ public class NetworkManager extends Thread {
 		ReceiveMessage = recieveMessage;
 	}
 	
+	public Message getReceiveMessage ()
+	{
+		return ReceiveMessage;
+	}
+	
 	public void notifyPseudoChange(String pseudo)
 	{
-		
+		change_pseudo = true;
+		this.pseudo = pseudo;
 	}
 	
 	
@@ -109,10 +118,7 @@ public class NetworkManager extends Thread {
 
 	public void run()
 	{
-		while (Connexion)
-		{
-
-		}
+		
 	}
 	
 
