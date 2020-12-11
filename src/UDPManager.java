@@ -1,6 +1,8 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -12,9 +14,10 @@ public class UDPManager extends Thread{
 	private InetAddress adress;
 	private NetworkManager manager;
 
-		private static final int CHANGE_LOGIN = 0;
+	private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
 	private static final int DECONNEXION= 2;
+	private static final int ANSWER_CONNEXION = 3;
 
 
 
@@ -51,21 +54,25 @@ public class UDPManager extends Thread{
 				{
 					try{
 						System.out.println("Serveur créer");
-						while(true)
+						while(manager.isConnexion())
 						{
 							dgramSocketReception.receive(inPacket);
 							//Réception de l'adresse et du port associé//
 							InetAddress clientAddress = inPacket.getAddress();
-							//broadcast numéro port							
-							String pseudo="";
-							for(int i=1; i<buffer.length; i++)
+							
+							//Récupération des informations du message						
+							String input="";
+							for(int i=0; i<buffer.length; i++)
 							{
-								pseudo += (char)buffer[i];
+								input += (char)buffer[i];
 							}
-							System.out.println("Message : "+pseudo);
 
-							char etat_char = (char)buffer[0];
-							int etat = Character.getNumericValue(etat_char);
+							String etat_String = regexSearch("(?<=etat: )\\d+", input);
+							String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
+							String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+
+							int etat = Integer.parseInt(etat_String);
+							int servPort= Integer.parseInt(servPort_String);
 
 							//Changement de login//
 							if(etat==CHANGE_LOGIN)
@@ -74,9 +81,9 @@ public class UDPManager extends Thread{
 								//Changer le pseudo à envoyer à l'interface//
 							}
 							//Nouvelle Connexion
-							else if(etat==CONNEXION)
+							else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
 							{
-								create_contact(clientAddress,pseudo);
+								create_contact(clientAddress,pseudo,servPort,etat);
 
 							}
 							else if(etat==DECONNEXION)
@@ -126,13 +133,9 @@ public class UDPManager extends Thread{
 				}
 				try
 				{
-					System.out.println("Attente de lancement");
-					Scanner sc = new Scanner(System.in);
-					int monEntier = sc.nextInt();
-					sc.close();
+					System.out.println("Connexion envoyée");
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-					String message = "1"+manager.getPseudo();
-					System.out.println(message);
+					String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
 					for (int i=65333; i>65233;i--)
 					{
 						if(i != portNumReception)
@@ -165,22 +168,50 @@ public class UDPManager extends Thread{
 		}
 	}
 
-	public void create_contact(InetAddress clientAddress, String pseudo)
+	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat)
 	{
-		System.out.println("Cool arrivée ici");
 
-		ArrayList<Contact> connectedUser = manager.getconnectedUser();
+		try{
+			//Mise à jur de nos contacts//
+			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
-		Contact C = new Contact(2000,pseudo,clientAddress);
-		connectedUser.add(C);
-		manager.setconnectedUser(connectedUser);
+			Contact C = new Contact(ServPort,pseudo,clientAddress);
+			connectedUser.add(C);
+			manager.setconnectedUser(connectedUser);
 
-		System.out.println("Client créer : "+2000);
-		for (Contact c :  manager.getconnectedUser())
+			//Vérification console//
+			for (Contact c :  manager.getconnectedUser())
+			{
+				c.afficher();
+			}
+
+			//Si c'est une première connexion alors on répond, sinon c'est une réponse à notre premier envoie	
+			if (etat == 1)
+			{
+				String message="etat: 3 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+				byte [] buffer = message.getBytes();
+				try
+				{
+					//Envoie de nos informations
+					System.out.println("Envoie du message de connexion");
+					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
+					envoie.send(packet);
+					envoie.close();
+				}
+				catch(SocketException e)
+				{
+					System.out.println("Erreur message dans la réponse à une connexion");
+				}
+			}
+
+		}
+		catch(IOException e)
 		{
-			c.afficher();
-		}	
-			
+			System.out.println("Erreur message dans la réponse à une connexion");
+		}
+
+		
 	}
 
 	public void remove_contact(InetAddress clientAddress, String pseudo)
@@ -194,6 +225,12 @@ public class UDPManager extends Thread{
 			}
 		}	
 	}
+
+	public static String regexSearch(String regex, String input) {
+        Matcher m = Pattern.compile(regex).matcher(input);
+        if (m.find()) return m.group();
+        return null;
+    }
 
 
 }

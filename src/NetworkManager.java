@@ -1,6 +1,6 @@
 import java.util.*;
 import java.net.*;
-import java.io.* ;
+
 
 
 public class NetworkManager extends Thread {
@@ -82,7 +82,7 @@ public class NetworkManager extends Thread {
 			
 		}
 	
-		//On creer notre serveur//
+		//On envoie en broadcast notre connexion, et on créer notre serveur udp en écoute//
 		try{
 			UDPManager udpserver = new UDPManager(Numport,this);
 			udpserver.start();
@@ -92,12 +92,9 @@ public class NetworkManager extends Thread {
 			System.out.println("Erreur des le debut");
 		}
 
-		
-		
+		//Création de notre serveur tcp
 		ServerHandler server = new ServerHandler(this);
-		server.start();
-		//On creer notre client à la demande d'une connexion
-		
+		server.start();	
 	}
 
 	public void connexion()

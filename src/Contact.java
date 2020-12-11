@@ -3,13 +3,13 @@ import java.net.InetAddress;
 public class Contact
 {
     private int broadPort;
-    private int servPort;
+    private int servPortUdp;
     private String pseudo;
     private InetAddress adresse;
 
     public Contact(int serv, String pseudo, InetAddress adresse)
     {
-        this.servPort=serv;
+        this.servPortUdp=serv;
         this.pseudo=pseudo;
         this.adresse=adresse;
     }
@@ -23,11 +23,11 @@ public class Contact
     }
 
     public int getServPort() {
-        return servPort;
+        return servPortUdp;
     }
 
     public void setServPort(int servPort) {
-        this.servPort = servPort;
+        this.servPortUdp = servPort;
     }
 
     public String getPseudo() {
@@ -48,7 +48,7 @@ public class Contact
 
     public void afficher ()
     {
-        System.out.println(" Port : " + servPort+ " Login : " + pseudo+ " adresse : " +  adresse);
+        System.out.println(" Port : " + servPortUdp+ " Login : " + pseudo+ " adresse : " +  adresse);
     }
 
     
