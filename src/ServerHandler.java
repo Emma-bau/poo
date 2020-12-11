@@ -21,7 +21,7 @@ public class ServerHandler extends Thread{
 			/*Pour tous nos serveurs, le num de port est 2000*/
 			ServerSocket server = new ServerSocket(2000);
 			/*On se met en ecoute tant que la session est ouverte*/
-			while(true)
+			while(manager.isConnexion())
 			{
 				/*Attente de connexion*/
 				System.out.println("Awaiting connection");
@@ -32,6 +32,7 @@ public class ServerHandler extends Thread{
 				Thread t1 = new Thread(N1);
 				t1.start();
 			}
+			server.close();
 		}
 		
 		catch (Exception e) {
