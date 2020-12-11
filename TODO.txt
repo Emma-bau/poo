@@ -1,0 +1,10 @@
+Demander les pseudos des autres dès la connexion -> les ajouter à la liste de contacts
+Verifier la liste de contact dans setPseudo de PseudoManager
+Envoyer le nouveau pseudo aux autres dans setPseudo
+
+----------
+
+Faire l'interface de tchat
+
+-------------
+

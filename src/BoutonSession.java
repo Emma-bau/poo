@@ -16,6 +16,10 @@ public class BoutonSession {
 		this.bouton = new JButton(text);
 	}
 
+	public String toString() {
+		String strself = "Bouton du contact " + contact.getPseudo();
+		return strself;
+	}
 	public Contact getContact() {
 		return contact;
 	}

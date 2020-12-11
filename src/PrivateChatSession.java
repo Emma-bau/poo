@@ -15,6 +15,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		JLabel labeltest = new JLabel();
 		panel.add(labeltest);
 	}
+	
+	
 
 	
 	
