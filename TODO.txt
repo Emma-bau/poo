@@ -4,9 +4,10 @@ Envoyer le nouveau pseudo aux autres dans setPseudo
 
 ----------
 
-Mettre un JScrollPane pour l'interface de tchat
+Mettre un JScrollPane pour l'interface de tchat?
 
 -------------
 
+Faire en sorte que l'agent ai plus de responsabilité pour eviter les double références
 
 -----------

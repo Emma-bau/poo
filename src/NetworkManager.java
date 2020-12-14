@@ -8,22 +8,17 @@ public class NetworkManager extends Thread {
 	private ArrayList<Message> message_recu= new ArrayList<Message>();
 	private Message SendMessage;
 	private Message ReceiveMessage;
-	
+	private Agent agent;
 	private int numPort = 2001;
-	private String pseudo =  "Jean";
 
 	private boolean change_pseudo = false;
 	private boolean Connexion = true;
 	
 	
 	//getter and setter// 
-
-	public String getPseudo() {
-		return pseudo;
-	}
-
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
+	
+	public Agent getAgent() {
+		return agent;
 	}
 
 	public void setconnectedUser(ArrayList<Contact> connectedUser )
@@ -68,7 +63,6 @@ public class NetworkManager extends Thread {
 	public void notifyPseudoChange(String pseudo)
 	{
 		change_pseudo = true;
-		this.pseudo = pseudo;
 	}
 	
 	public boolean isChange_pseudo() {
@@ -82,8 +76,9 @@ public class NetworkManager extends Thread {
 
 	/* Constructeur*/
 	
-	public NetworkManager (int Numport) 
+	public NetworkManager (int Numport, Agent agent) 
 	{
+		this.agent = agent;
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact c1 = new Contact(6,"courgette",adress);

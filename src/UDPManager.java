@@ -40,7 +40,7 @@ public class UDPManager extends Thread{
 
 	public void run()
 	{
-		//Creation de notre serveur UDP en ecoute et envoie de notre première connexion
+		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion
 		Thread serveur = new Thread(new Runnable() 
 		{
 			public void run (){
@@ -65,7 +65,7 @@ public class UDPManager extends Thread{
 							System.out.println("Erreur dans le broadcast, hote inconnu");
 						}
 						DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-						String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+						String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
 						for (int i=65334; i>65233;i--)
 						{
 							if(i != portNumReception)
@@ -140,7 +140,7 @@ public class UDPManager extends Thread{
 		});
 		serveur.start();
 
-		//On gère les changements de pseudo pendant une connexion
+		//On gere les changements de pseudo pendant une connexion
 		Thread change = new Thread(new Runnable() 
 		{
 			
@@ -150,8 +150,8 @@ public class UDPManager extends Thread{
 				{
 					if (manager.isChange_pseudo())
 					{
-						//On envoie en broadcast le changement de pseudo à tous les utilisateurs 
-						String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+						//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
+						String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
 						try {
 							DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 							for (int i=65335; i>65233;i--)
@@ -168,7 +168,7 @@ public class UDPManager extends Thread{
 						}
 						catch (IOException e)
 						{
-							System.out.println("Problème io envoie du nouveau login");
+							System.out.println("Probleme a lenvoi du nouveau login");
 						}
 					}
 				}
@@ -198,7 +198,7 @@ public class UDPManager extends Thread{
 
 		try{
 			//Mise a jour de nos contacts//
-			System.out.println("Connexion reçue");
+			System.out.println("Connexion recue");
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
 			Contact C = new Contact(ServPort,pseudo,clientAddress);
@@ -211,10 +211,10 @@ public class UDPManager extends Thread{
 				c.afficher();
 			}
 
-			//Si c'est une première connexion alors on repond, sinon c'est une reponse a notre premier envoie	
+			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+				String message="etat: 3 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
 				byte [] buffer = message.getBytes();
 				try
 				{

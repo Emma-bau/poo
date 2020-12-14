@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class PseudoManager {
 	/*pseudo de l'hote*/
-	private String pseudo; 
+	private String pseudo;
 	/*Liste des pseudos des utilisateurs en ligne*/
 	private ArrayList<String> usersPseudoList;
 	public Agent agent;

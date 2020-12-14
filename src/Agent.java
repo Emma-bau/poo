@@ -15,7 +15,7 @@ public class Agent {
 		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
-		this.networkManager = new NetworkManager(2005);
+		this.networkManager = new NetworkManager(2005,this);
 		
 		try {
 			this.interfaceManager = new InterfaceManager(this);
