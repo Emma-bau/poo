@@ -5,6 +5,7 @@ import java.net.*;
 
 public class NetworkManager extends Thread {
 	private ArrayList<Contact> connectedUser = new ArrayList<Contact>();
+	private ArrayList<Message> message_recu= new ArrayList<Message>();
 	private Message SendMessage;
 	private Message ReceiveMessage;
 	
@@ -13,7 +14,6 @@ public class NetworkManager extends Thread {
 
 	private boolean change_pseudo = false;
 	private boolean Connexion = true;
-	
 	
 	
 	//getter and setter// 
@@ -71,7 +71,15 @@ public class NetworkManager extends Thread {
 		this.pseudo = pseudo;
 	}
 	
-	
+	public boolean isChange_pseudo() {
+		return change_pseudo;
+	}
+
+	public void setPseudo_change(boolean change)
+	{
+		this.change_pseudo = change;
+	}
+
 	/* Constructeur*/
 	
 	public NetworkManager (int Numport) 
@@ -107,19 +115,37 @@ public class NetworkManager extends Thread {
 	
 
 
-	public void connexion()
+	public void connexion(String pseudo)
 	{
-		if(Connexion)
+		for(Contact C : connectedUser)
 		{
-			ClientHandler client = new ClientHandler(this,numPort);
-			client.start();
+			if (pseudo == C.getPseudo())
+			{	
+				ClientHandler client = new ClientHandler(this,numPort,C.getAdresse());
+				client.start();
+			}
+		}
+		
+	}
+
+	public void message_reception()
+	{
+		if(ReceiveMessage != null)
+		{
+			message_recu.add(ReceiveMessage);
 		}
 	}
 
 	public void run()
 	{
-		
+		while (Connexion)
+		{
+			message_reception();
+		}
 	}
+
+
+	
 	
 
 }

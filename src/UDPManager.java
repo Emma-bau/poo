@@ -40,95 +40,141 @@ public class UDPManager extends Thread{
 
 	public void run()
 	{
-		
-	//Creation de notre serveur UDP en ecoute sur le port 65534
-		try{
-			//Creation du port de reception
-			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
-			byte[] buffer = new byte[256];
-			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
-			try{
-				System.out.println("Serveur creer");
+		//Creation de notre serveur UDP en ecoute et envoie de notre première connexion
+		Thread serveur = new Thread(new Runnable() 
+		{
+			public void run (){
 
-				//Envoie de la premiere connexion//
+
 				try
 				{
-					adress = InetAddress.getByName("localhost");
-				}
-				catch(UnknownHostException e)
-				{
-					System.out.println("Erreur dans le broadcast, hote inconnu");
-				}
-				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
-				for (int i=65333; i>65233;i--)
-				{
-					if(i != portNumReception)
-					{
-						
-						broadcast(message,adress,i,envoie);
+					//Creation du port de reception
+					DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
+					byte[] buffer = new byte[256];
+					DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
+					try{
+						System.out.println("Serveur creer");
 
+						//Envoie de la premiere connexion//
+						try
+						{
+							adress = InetAddress.getByName("localhost");
+						}
+						catch(UnknownHostException e)
+						{
+							System.out.println("Erreur dans le broadcast, hote inconnu");
+						}
+						DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+						String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+						for (int i=65334; i>65233;i--)
+						{
+							if(i != portNumReception)
+							{
+								
+								broadcast(message,adress,i,envoie);
+
+							}
+						}
+						System.out.println("Premiere connexion effectuee");
+						envoie.close();
+					
+						while(manager.isConnexion())
+						{
+							dgramSocketReception.receive(inPacket);
+							//Reception de l'adresse et du port associe//
+							InetAddress clientAddress = inPacket.getAddress();
+							
+							//Recuperation des informations du message						
+							String input="";
+							for(int i=0; i<buffer.length; i++)
+							{
+								input += (char)buffer[i];
+							}
+
+							String etat_String = regexSearch("(?<=etat: )\\d+", input);
+							String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
+							String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+
+
+							int etat = Integer.parseInt(etat_String);
+							int servPort= Integer.parseInt(servPort_String);
+
+							//Changement de login//
+							if(etat==CHANGE_LOGIN)
+							{
+								update_contact(clientAddress,pseudo);
+								//Changer le pseudo a envoyer a l'interface//
+							}
+							//Nouvelle Connexion
+							else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
+							{
+								create_contact(clientAddress,pseudo,servPort,etat);
+
+							}
+							else if(etat==DECONNEXION)
+							{
+								remove_contact(clientAddress,pseudo);
+							}
+							else       
+							{
+								System.out.println("Problème avec le broadcast, non lecture du buffer");
+							}
+							
+						}
+						dgramSocketReception.close();
+
+
+						
+					}
+					catch(IOException e )
+					{
+						System.out.println("Thread UDP socket");
 					}
 				}
-				System.out.println("Premiere connexion effectuee");
-				envoie.close();
+				catch(SocketException e)
+				{
+					System.out.println("SocketException");
+				}
+			}
 			
+		});
+		serveur.start();
+
+		//On gère les changements de pseudo pendant une connexion
+		Thread change = new Thread(new Runnable() 
+		{
+			
+			public void run ()
+			{
 				while(manager.isConnexion())
 				{
-					dgramSocketReception.receive(inPacket);
-					//Reception de l'adresse et du port associe//
-					InetAddress clientAddress = inPacket.getAddress();
-					
-					//Recuperation des informations du message						
-					String input="";
-					for(int i=0; i<buffer.length; i++)
+					if (manager.isChange_pseudo())
 					{
-						input += (char)buffer[i];
-					}
+						//On envoie en broadcast le changement de pseudo à tous les utilisateurs 
+						String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+manager.getPseudo();
+						try {
+							DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+							for (int i=65335; i>65233;i--)
+							{
+								if(i != portNumReception)
+								{
+							
+									broadcast(message,adress,i,envoie);
 
-					String etat_String = regexSearch("(?<=etat: )\\d+", input);
-					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
-					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
-
-					int etat = Integer.parseInt(etat_String);
-					int servPort= Integer.parseInt(servPort_String);
-
-					//Changement de login//
-					if(etat==CHANGE_LOGIN)
-					{
-						update_contact(clientAddress,pseudo);
-						//Changer le pseudo a envoyer a l'interface//
+								}
+							}
+							manager.setPseudo_change(false);	
+							envoie.close();
+						}
+						catch (IOException e)
+						{
+							System.out.println("Problème io envoie du nouveau login");
+						}
 					}
-					//Nouvelle Connexion
-					else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
-					{
-						create_contact(clientAddress,pseudo,servPort,etat);
-
-					}
-					else if(etat==DECONNEXION)
-					{
-						remove_contact(clientAddress,pseudo);
-					}
-					else       
-					{
-						System.out.println("Problème avec le broadcast, non lecture du buffer");
-					}
-					
 				}
-				dgramSocketReception.close();
-
-
-				
 			}
-			catch(IOException e )
-			{
-				System.out.println("Thread UDP socket");
-			}
-		}
-		catch(SocketException e)
-		{
-			System.out.println("SocketException");
-		}
+		});
+		change.start();
 		
 		
 				
@@ -152,6 +198,7 @@ public class UDPManager extends Thread{
 
 		try{
 			//Mise a jour de nos contacts//
+			System.out.println("Connexion reçue");
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
 			Contact C = new Contact(ServPort,pseudo,clientAddress);

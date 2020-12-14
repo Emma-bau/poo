@@ -8,12 +8,12 @@ public class NetworkWaiter implements Runnable {
 
 	private final Socket link;
 	private final NetworkManager networkManager;
-	private final int idClient;
+	private final InetAddress adresse;
 
-	public NetworkWaiter(Socket link, NetworkManager networkManager, int id_Client) {
+	public NetworkWaiter(Socket link, NetworkManager networkManager, InetAddress adresse) {
 		this.link = link;
 		this.networkManager = networkManager;
-		this.idClient=id_Client;
+		this.adresse=adresse;
 	}
 
 	/* On gere la connexion de nos nouveaux utilisateurs dans un thread */
@@ -22,7 +22,6 @@ public class NetworkWaiter implements Runnable {
 	public void run()
 	{
 		System.out.println("Thread du serveur lance");
-		Scanner sc = new Scanner(System.in);
 		try 
 		{
 			PrintWriter out = new PrintWriter(link.getOutputStream(),true);
@@ -32,42 +31,55 @@ public class NetworkWaiter implements Runnable {
 				String msg;
 				@Override
 				public void run() {
-					while(true){
-						
-							msg = sc.nextLine();
-							out.println(msg);
-							out.flush();
+					while(true)
+					{
+							//On envoie le message si l'adresse correspond à l'adresse de notre client
+							if ((networkManager.getSendMessage() != null ) && (networkManager.getSendMessage().getContact().getAdresse()==adresse))
+							{
+								msg = networkManager.getSendMessage().getMessage();
+								out.println(msg);
+								out.flush();
+							}
+
 					}
 				}
-		});
-		envoie.start();
+			});
+			envoie.start();
 
-		/*Mise en place d'un thread pour recevoir les messages*/
-		Thread recevoir= new Thread(new Runnable() {
-			String msg ;
-			@Override
-			public void run() {
-				try {
-					msg = in.readLine();
-					//tant que le client est connecte
-					while(msg!=null){
-						System.out.println("Client cote serveur n°"+idClient+": "+msg);
+			/*Mise en place d'un thread pour recevoir les messages*/
+			Thread recevoir= new Thread(new Runnable() {
+				String msg ;
+				Contact client;
+				@Override
+				public void run() {
+					try {
 						msg = in.readLine();
-						//revoir id source ? 
-						Message m = new Message(0, idClient,msg,java.time.LocalDate.now());
-						networkManager.setReceiveMessage(m);
-					}
-					//sortir de la boucle si le client a deconecte
-					System.out.println("Client serveur deconecte");
-					//fermer le flux et la session socket
-					out.close();
-					link.close();
-					} 
-				catch (IOException e) {
-						System.out.println("probleme dans recevoir");
-					}
-			}
-		});
+						//tant que le client est connecte
+						while(msg!=null)
+						{
+							msg = in.readLine();
+							//revoir id source ? 
+							for (Contact C : networkManager.getconnectedUser())
+							{
+								if (C.getAdresse() == adresse)
+								{
+									client = C;
+								}
+							}
+							Message m = new Message(msg,java.time.LocalDate.now(),client);
+							networkManager.setReceiveMessage(m);
+						}
+						//sortir de la boucle si le client a deconecte
+						System.out.println("Client serveur deconecte");
+						//fermer le flux et la session socket
+						out.close();
+						link.close();
+						} 
+					catch (IOException e) {
+							System.out.println("probleme dans recevoir");
+						}
+				}
+			});
 		recevoir.start();
 				
 	}

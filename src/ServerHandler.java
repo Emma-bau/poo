@@ -26,9 +26,8 @@ public class ServerHandler extends Thread{
 				/*Attente de connexion*/
 				System.out.println("Awaiting connection");
 				Socket SocketTCP = server.accept();
-				System.out.println("Connexion du Client " + idClient);
-				NetworkWaiter N1 = new NetworkWaiter(SocketTCP, manager, idClient);
-				idClient++;
+				System.out.println("Connexion du Client ");
+				NetworkWaiter N1 = new NetworkWaiter(SocketTCP, manager, SocketTCP.getInetAddress());
 				Thread t1 = new Thread(N1);
 				t1.start();
 			}

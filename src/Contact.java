@@ -1,4 +1,5 @@
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 public class Contact
 {
@@ -6,6 +7,12 @@ public class Contact
     private int servPortUdp;
     private String pseudo;
     private InetAddress adresse;
+    
+
+    public Contact(InetAddress adresse)
+    {
+        this.adresse = adresse;
+    }
 
     public Contact(int serv, String pseudo, InetAddress adresse)
     {
