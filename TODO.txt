@@ -4,8 +4,9 @@ Envoyer le nouveau pseudo aux autres dans setPseudo
 
 ----------
 
-Faire l'interface de tchat
+Mettre un JScrollPane pour l'interface de tchat
 
 -------------
 
-deux threads : un qui gère la reception de paquet en udp l'autre qui gère l'envoie
+
+-----------

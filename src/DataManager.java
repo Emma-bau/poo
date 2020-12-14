@@ -15,8 +15,8 @@ public class DataManager {
 		return messagesHistory;
 	}
 	
-	public void updateMessagesHistory(int idSrc, int idDst, String texte) {
-		Message m = new Message(idSrc, idDst, texte, LocalDate.now());
+	public void updateMessagesHistory(Contact contact, String texte) {
+		Message m = new Message(texte, LocalDate.now(),contact);
 		this.messagesHistory.add(m);
 	}
 	
