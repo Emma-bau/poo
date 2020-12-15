@@ -35,7 +35,6 @@ public class UDPManager extends Thread{
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
 		envoie.send(packet);
-		
 	}
 
 	public void run()
@@ -168,7 +167,7 @@ public class UDPManager extends Thread{
 						}
 						catch (IOException e)
 						{
-							System.out.println("Probleme a lenvoi du nouveau login");
+							System.out.println("Probleme lenvoie du nouveau login");
 						}
 					}
 				}
