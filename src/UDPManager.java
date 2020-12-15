@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class UDPManager extends Thread{
 	
-	private int portNumReception; //= 65534;
+	private int portNumReception = 65534;
 	private int portNumEnvoie = 65335; 
 	private InetAddress adress;
 	private NetworkManager manager;
