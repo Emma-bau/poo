@@ -13,7 +13,7 @@ public class UDPManager extends Thread{
     int min = 65233; 
     int range = max - min + 1; 
 	
-	private int portNumReception =  (int)(Math.random() * range) + min; ;
+	private int portNumReception ;
 	private int portNumEnvoie = 65335; 
 	private InetAddress adress;
 	private NetworkManager manager;
@@ -31,6 +31,8 @@ public class UDPManager extends Thread{
 		//65534 pour recevoir
 		//this.portNumReception=numPort;
 		this.manager=net;
+		 portNumReception =  (int)(Math.random() * range) + min; ;
+		 System.out.println("Numéro de port de reception : "+ portNumReception);
 	}
 	
 	/*Revoir avec nouvelle norme*/
