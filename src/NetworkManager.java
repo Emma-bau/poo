@@ -21,6 +21,15 @@ public class NetworkManager extends Thread {
 	
 	
 	//getter and setter// 
+
+	public UDPManager getUdpserver() {
+		return udpserver;
+	}
+
+	public void setUdpserver(UDPManager udpserver) {
+		this.udpserver = udpserver;
+	}
+
 	
 	public Agent getAgent() {
 		return agent;
@@ -145,6 +154,7 @@ public class NetworkManager extends Thread {
 		}
 	}
 
+	
 	
 
 	
