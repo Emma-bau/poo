@@ -4,14 +4,18 @@ import java.net.*;
 
 
 public class NetworkManager extends Thread {
+
+	private Agent agent;
+
 	private ArrayList<Contact> connectedUser = new ArrayList<Contact>();
 	private ArrayList<Message> message_recu= new ArrayList<Message>();
+
 	private Message SendMessage;
 	private Message ReceiveMessage;
-	private Agent agent;
+	
+	//le server sera toujours sur ce numero de port
 	private int numPort = 2001;
 
-	private boolean change_pseudo = false;
 	private boolean Connexion = true;
 	
 	
@@ -65,15 +69,7 @@ public class NetworkManager extends Thread {
 		change_pseudo = true;
 	}
 	
-	public boolean isChange_pseudo() {
-		return change_pseudo;
-	}
-
-	public void setPseudo_change(boolean change)
-	{
-		this.change_pseudo = change;
-	}
-
+	
 	/* Constructeur*/
 	
 	public NetworkManager (int Numport, Agent agent) 
@@ -108,9 +104,12 @@ public class NetworkManager extends Thread {
 		server.start();	
 	}
 	
+	public void first_connexion_udp ()
+	{
 
+	}
 
-	public void connexion(String pseudo)
+	public void connexion_tcp(String pseudo)
 	{
 		for(Contact C : connectedUser)
 		{
@@ -139,6 +138,7 @@ public class NetworkManager extends Thread {
 		}
 	}
 
+	
 
 	
 	
