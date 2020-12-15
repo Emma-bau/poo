@@ -70,8 +70,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		if(ae.getSource() == bChangePseudo) {
 			interfaceM.askPseudoInterface(false);
 		}
+		
+		//Fonctionnement boutons chavardage
 		else {
-			System.out.println("su");
 			for(BoutonSession b:listBouton) {
 				if (ae.getSource() == b.getBouton()) {
 					PrivateChatSession pcs = new PrivateChatSession(b.getContact());
