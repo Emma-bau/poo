@@ -21,7 +21,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		this.agent = agent;
 		initLookAndFeel();
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		
+
 		this.mInterface = null;
 
 		labelId = new JLabel();
@@ -44,7 +44,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		setTitle("Log In Chat Session");
 	}
 
-	
+
 	public void actionPerformed(ActionEvent ae){
 		//bouton log_in
 		if (ae.getSource() == LOG_IN) {
@@ -53,7 +53,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 			try {
 				int id = Integer.parseInt(strid);
 				String password = inputPassword.getText();
-				
+
 				if (agent.getIdManager().verifyID(id,password) == 1) {
 					System.out.println("identifiants valides, connexion...");
 					labelId.setText("Chose a pseudo (username): ");
@@ -81,22 +81,23 @@ public class InterfaceManager extends JFrame implements ActionListener {
 						"Error",JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		
+
 		//bouton pseudoChange
 		else {
-			askPseudoInterface();
+			askPseudoInterface(true);
 		}
 	}
 
-	
-	public void askPseudoInterface() {
+
+	public void askPseudoInterface(boolean first_time) {
+		//panel.setVisible(first_time);
 		String pseudo = inputId.getText();
 		boolean result = agent.setPseudo(pseudo);
 		if (result) {
 			System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
-			
-			new Thread(new MainInterface(this.agent)).start();
-			panel.setVisible(false);
+
+			new Thread(new MainInterface(this.agent,this)).start();
+			//panel.setVisible(false);
 		}
 		else {
 			System.out.println("bad pseudo");
@@ -104,7 +105,9 @@ public class InterfaceManager extends JFrame implements ActionListener {
 					"Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
+
+	//look and feel
 	private static void initLookAndFeel() { 
 		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
 		try {

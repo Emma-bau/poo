@@ -10,13 +10,15 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	final static String LOOKANDFEEL = "System";
 	final static float TitleFontSize = 25;
 	private Agent agent;
+	private InterfaceManager interfaceM;
 	private JFrame frame;
 	private JPanel panel1,panel2;
-	private BoutonSession bContact;
+	private BoutonSession bContact, bChangePseudo;
 	private ArrayList<BoutonSession> listBouton;
     
-    public MainInterface(Agent agent) {
+    public MainInterface(Agent agent, InterfaceManager interfaceM) {
 		this.agent = agent;
+		this.interfaceM = interfaceM;
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		this.frame = new JFrame("Chat Session");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,10 +39,10 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         connectedListLb.setText("Chose a connected user to talk to:");
         connectedListLb.setFont(connectedListLb.getFont().deriveFont(TitleFontSize));
         
-        // Set up the title for different panels
+        JButton bChangePseudo = new JButton("Change Pseudo");
         panel1.setBorder(BorderFactory.createTitledBorder("Infos"));
         panel2.setBorder(BorderFactory.createTitledBorder("Connected Users List"));
-        // Set up the BoxLayout
+        
         BoxLayout layout1 = new BoxLayout(panel1, BoxLayout.Y_AXIS);
         BoxLayout layout2 = new BoxLayout(panel2, BoxLayout.Y_AXIS);
         panel1.add(welcomeText);
@@ -52,6 +54,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         frame.setLayout(new GridLayout());
         frame.add(panel1);
         frame.add(panel2);
+        panel1.add(bChangePseudo);
         
         frame.setVisible(true);
     }
@@ -64,13 +67,20 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
     }
     
 	public void actionPerformed(ActionEvent ae){
-		for(BoutonSession b:listBouton) {
-			if (ae.getSource() == b.getBouton()) {
-				PrivateChatSession pcs = new PrivateChatSession(b.getContact());
-				pcs.setVisible(true);
-				pcs.setSize(400,200);
+		if(ae.getSource() == bChangePseudo) {
+			interfaceM.askPseudoInterface(false);
+		}
+		else {
+			System.out.println("su");
+			for(BoutonSession b:listBouton) {
+				if (ae.getSource() == b.getBouton()) {
+					PrivateChatSession pcs = new PrivateChatSession(b.getContact());
+					pcs.setVisible(true);
+					pcs.setSize(400,200);
+				}
 			}
 		}
+		
 	}
 	
 	@Override
