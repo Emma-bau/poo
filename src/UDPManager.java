@@ -41,81 +41,75 @@ public class UDPManager extends Thread{
 	public void run()
 	{
 		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion
-		Thread serveur = new Thread(new Runnable() 
-		{
-			public void run (){
 
-
-				try
-				{
-					//Creation du port de reception
-					DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
-					byte[] buffer = new byte[256];
-					DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
-					try{
-						System.out.println("Serveur creer");
-					
-						while(manager.isConnexion())
-						{
-							dgramSocketReception.receive(inPacket);
-							//Reception de l'adresse et du port associe//
-							InetAddress clientAddress = inPacket.getAddress();
-							
-							//Recuperation des informations du message						
-							String input="";
-							for(int i=0; i<buffer.length; i++)
-							{
-								input += (char)buffer[i];
-							}
-
-							String etat_String = regexSearch("(?<=etat: )\\d+", input);
-							String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
-							String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
-
-
-							int etat = Integer.parseInt(etat_String);
-							int servPort= Integer.parseInt(servPort_String);
-
-							//Changement de login//
-							if(etat==CHANGE_LOGIN)
-							{
-								update_contact(clientAddress,pseudo);
-								//Changer le pseudo a envoyer a l'interface//
-							}
-							//Nouvelle Connexion
-							else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
-							{
-								create_contact(clientAddress,pseudo,servPort,etat);
-
-							}
-							else if(etat==DECONNEXION)
-							{
-								remove_contact(clientAddress,pseudo);
-							}
-							else       
-							{
-								System.out.println("Problème avec le broadcast, non lecture du buffer");
-							}
-							
-						}
-						dgramSocketReception.close();
-
-
-						
-					}
-					catch(IOException e )
-					{
-						System.out.println("Thread UDP socket");
-					}
-				}
-				catch(SocketException e)
-				{
-					System.out.println("SocketException");
-				}
-			}
 			
-		});
-		serveur.start();	
+		try
+		{
+			//Creation du port de reception
+			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
+			byte[] buffer = new byte[256];
+			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
+			try{
+				System.out.println("Serveur creer");
+			
+				while(manager.isConnexion())
+				{
+					dgramSocketReception.receive(inPacket);
+					//Reception de l'adresse et du port associe//
+					InetAddress clientAddress = inPacket.getAddress();
+					
+					//Recuperation des informations du message						
+					String input="";
+					for(int i=0; i<buffer.length; i++)
+					{
+						input += (char)buffer[i];
+					}
+
+					String etat_String = regexSearch("(?<=etat: )\\d+", input);
+					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
+					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+
+
+					int etat = Integer.parseInt(etat_String);
+					int servPort= Integer.parseInt(servPort_String);
+
+					//Changement de login//
+					if(etat==CHANGE_LOGIN)
+					{
+						update_contact(clientAddress,pseudo);
+						//Changer le pseudo a envoyer a l'interface//
+					}
+					//Nouvelle Connexion
+					else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
+					{
+						create_contact(clientAddress,pseudo,servPort,etat);
+
+					}
+					else if(etat==DECONNEXION)
+					{
+						remove_contact(clientAddress,pseudo);
+					}
+					else       
+					{
+						System.out.println("Problème avec le broadcast, non lecture du buffer");
+					}
+					
+				}
+				dgramSocketReception.close();
+
+
+				
+			}
+			catch(IOException e )
+			{
+				System.out.println("Thread UDP socket");
+			}
+		}
+		catch(SocketException e)
+		{
+			System.out.println("SocketException");
+		}
+
 	}
 
 	public void update_contact(InetAddress clientAddress, String pseudo)
