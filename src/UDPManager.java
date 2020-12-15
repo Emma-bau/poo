@@ -32,7 +32,7 @@ public class UDPManager extends Thread{
 		//this.portNumReception=numPort;
 		this.manager=net;
 		 portNumReception =  (int)(Math.random() * range) + min; ;
-		 System.out.println("Numéro de port de reception : "+ portNumReception);
+		 System.out.println("Numero de port de reception : "+ portNumReception);
 	}
 	
 	/*Revoir avec nouvelle norme*/
