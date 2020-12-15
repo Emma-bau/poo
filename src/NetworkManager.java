@@ -12,6 +12,7 @@ public class NetworkManager extends Thread {
 
 	private Message SendMessage;
 	private Message ReceiveMessage;
+	private UDPManager udpserver;
 	
 	//le server sera toujours sur ce numero de port
 	private int numPort = 2001;
@@ -78,6 +79,16 @@ public class NetworkManager extends Thread {
 			Contact c1 = new Contact(6,"courgette",adress);
 			Contact c2 = new Contact(6,"salut",adress);
 			Contact c3 = new Contact(6,"toto",adress);
+
+			try
+			{
+			
+				udpserver = new UDPManager(Numport,this);
+			}
+			catch(SocketException e)
+			{
+				System.out.println("Erreur des le debut avec le lanceùent de udp");
+			}
 			
 			connectedUser.add(c1);
 			connectedUser.add(c2);
@@ -87,24 +98,22 @@ public class NetworkManager extends Thread {
 			
 		}
 	
-		//On envoie en broadcast notre connexion, et on creer notre serveur udp en ecoute//
-		try{
-			UDPManager udpserver = new UDPManager(Numport,this);
-			udpserver.start();
-		}
-		catch(SocketException e)
-		{
-			System.out.println("Erreur des le debut");
-		}
 
 		//Creation de notre serveur tcp
 		ServerHandler server = new ServerHandler(this);
 		server.start();	
 	}
 	
-	public void first_connexion_udp ()
+	public void first_connexion_udp (String pseudo)
 	{
+		//On envoie en broadcast notre connexion, et on creer notre serveur udp en ecoute//
+		udpserver.start();
+		udpserver.first_connexion(pseudo);
+	}
 
+	public void change_pseudo(String pseudo )
+	{
+		udpserver.change_pseudo(pseudo);
 	}
 
 	public void connexion_tcp(String pseudo)
