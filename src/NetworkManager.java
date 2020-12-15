@@ -8,7 +8,7 @@ public class NetworkManager extends Thread {
 	private Agent agent;
 
 	private ArrayList<Contact> connectedUser ;
-	private ArrayList<Message> message_recu= new ArrayList<Message>();
+	private ArrayList<Message> message_recu;
 
 	private Message SendMessage;
 	private Message ReceiveMessage;
@@ -64,11 +64,6 @@ public class NetworkManager extends Thread {
 		return ReceiveMessage;
 	}
 	
-	public void notifyPseudoChange(String pseudo)
-	{
-		change_pseudo = true;
-	}
-	
 	
 	/* Constructeur*/
 	
@@ -76,6 +71,8 @@ public class NetworkManager extends Thread {
 	{
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
+		this.message_recu= new ArrayList<Message>();
+		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact c1 = new Contact(6,"courgette",adress);
