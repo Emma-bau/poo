@@ -120,7 +120,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 			if (j){
 				try {
 					InetAddress adress = InetAddress.getLocalHost();
-					Contact c4 = new Contact(6,"courgette2",adress);
+					Contact c4 = new Contact(6,7,"courgette2",adress);
 					agent.getNetworkManager().getconnectedUser().add(c4);
 					j = false;
 				}

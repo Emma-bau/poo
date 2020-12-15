@@ -16,7 +16,6 @@ public class Contact
         this.tcp_serv_port=tcp_port;
         this.pseudo=pseudo;
         this.adresse=adresse;
-        
     }
 
     public int getBroadPort() {

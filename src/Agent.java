@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.net.InetAddress;
+import java.net.*;
 
 public class Agent {
 
@@ -14,13 +14,18 @@ public class Agent {
 	private Contact self;
 
 	public Agent() {
-		InetAddress adress = InetAddress.getLocalHost();
-		Contact c1 = new Contact(6,"courgette",adress);
-		this.self = new Contact()
+
 		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
+		
+		try {
+			InetAddress adress = InetAddress.getLocalHost();
+			Contact self = new Contact(6,6,null,adress);
+			this.self = self;
+		} catch (UnknownHostException e) {}
+		
 		
 		try {
 			this.interfaceManager = new InterfaceManager(this);
@@ -49,8 +54,14 @@ public class Agent {
 	}
 
 	public boolean setPseudo(String pseudo) {
+		
 		if (pseudoManager.setPseudo(pseudo)) {
+			
+						
 			networkManager.getUdpserver().first_connexion(pseudo);
+			
+			
+
 			return true;
 		}
 		return false;

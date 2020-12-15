@@ -95,13 +95,12 @@ public class NetworkManager extends Thread {
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
-			Contact c1 = new Contact(6,"courgette",adress);
-			Contact c2 = new Contact(6,"salut",adress);
-			Contact c3 = new Contact(6,"toto",adress);
+			Contact c1 = new Contact(6,7,"courgette",adress);
+			Contact c2 = new Contact(6,7,"salut",adress);
+			Contact c3 = new Contact(6,7,"toto",adress);
 
 			try
 			{
-			
 				udpserver = new UDPManager(this);
 			}
 			catch(SocketException e)

@@ -5,9 +5,10 @@ public class Message {
 	private String message;
 	private LocalDate timestamp;
 	private Contact contact;
+	private Contact author;
 	
-	public Message( String message, LocalDate timestamp, Contact contact) {
-		this.self = 
+	public Message(String message, LocalDate timestamp,/* Contact author, */ Contact contact) {
+		//this.author = author;
 		this.contact = contact;
 		this.message = message;
 		this.timestamp = timestamp;
@@ -26,9 +27,13 @@ public class Message {
 		return contact;
 	}
 
+	public Contact getSelf() {
+		return author;
+	}
 	public void setContact(Contact contact) {
 		this.contact = contact;
 	}
+	
 	
 	
 }

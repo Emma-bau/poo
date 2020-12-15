@@ -150,7 +150,7 @@ public class UDPManager extends Thread{
 			System.out.println("Connexion recue");
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
-			Contact C = new Contact(ServPort,pseudo,clientAddress,tcp);
+			Contact C = new Contact(ServPort,tcp,pseudo,clientAddress);
 			connectedUser.add(C);
 			manager.setconnectedUser(connectedUser);
 
