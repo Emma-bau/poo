@@ -9,12 +9,18 @@ import java.util.regex.Pattern;
 
 public class UDPManager extends Thread{
 	// define the range 
-    int max = 65534; 
-    int min = 65233; 
-    int range = max - min + 1; 
+    int max = 65500; 
+    int min = 65300; 
+	int range = max - min + 1; 
+	
+	// define the range 
+    int max1 = 65300; 
+    int min1 = 65000; 
+	int range1 = max1 - min1 + 1; 
+	
 	
 	private int portNumReception ;
-	private int portNumEnvoie = 65335; 
+	private int portNumEnvoie; 
 	private InetAddress adress;
 	private NetworkManager manager;
 
@@ -25,14 +31,15 @@ public class UDPManager extends Thread{
 
 
 
-	public UDPManager(int numPort, NetworkManager net ) throws SocketException
+	public UDPManager(NetworkManager net ) throws SocketException
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
-		//this.portNumReception=numPort;
 		this.manager=net;
-		 portNumReception =  (int)(Math.random() * range) + min; ;
-		 System.out.println("Numero de port de reception : "+ portNumReception);
+		portNumReception =  (int)(Math.random() * range) + min;
+		portNumEnvoie = (int)(Math.random() * range1) + min1;
+		System.out.println("Numero de port de reception : "+ portNumReception);
+		System.out.println("Numero de port d'envoie : "+ portNumEnvoie);
 	}
 	
 	/*Revoir avec nouvelle norme*/
@@ -205,10 +212,12 @@ public class UDPManager extends Thread{
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)
 			{
+				System.out.println("Courgette");
 				if(i != portNumReception)
 				{
 			
 					broadcast(message,adress,i,envoie);
+					
 
 				}
 			}
@@ -236,12 +245,13 @@ public class UDPManager extends Thread{
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 				String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+pseudo;
-				for (int i=65334; i>65233;i--)
+				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)
 					{
 					
 						broadcast(message,adress,i,envoie);
+						//System.out.println("Envoie au port : "+i);
 
 					}
 				}

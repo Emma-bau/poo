@@ -15,7 +15,7 @@ public class Agent {
 		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
-		this.networkManager = new NetworkManager(2005,this);
+		this.networkManager = new NetworkManager(this);
 		
 		try {
 			this.interfaceManager = new InterfaceManager(this);
@@ -49,7 +49,6 @@ public class Agent {
 	}
 	
 	public static void main(String[] args) {
-		//int numportServer = Integer.parseInt(args[0]);
 
 		//NetworkManager networkManager = new NetworkManager(numportServer);
 		Agent main = new Agent();

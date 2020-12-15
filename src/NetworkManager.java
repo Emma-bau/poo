@@ -77,7 +77,7 @@ public class NetworkManager extends Thread {
 	
 	/* Constructeur*/
 	
-	public NetworkManager (int Numport, Agent agent) 
+	public NetworkManager (Agent agent) 
 	{
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
@@ -92,7 +92,7 @@ public class NetworkManager extends Thread {
 			try
 			{
 			
-				udpserver = new UDPManager(Numport,this);
+				udpserver = new UDPManager(this);
 				udpserver.start();
 			}
 			catch(SocketException e)
