@@ -44,8 +44,11 @@ public class Agent {
 	}
 
 	public boolean setPseudo(String pseudo) {
-		networkManager.getUdpserver().first_connexion(pseudo);;
-		return pseudoManager.setPseudo(pseudo);
+		if (pseudoManager.setPseudo(pseudo)) {
+			networkManager.getUdpserver().first_connexion(pseudo);
+			return true;
+		}
+		return false;
 	}
 	
 	public static void main(String[] args) {
