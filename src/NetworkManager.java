@@ -114,17 +114,6 @@ public class NetworkManager extends Thread {
 		server.start();	*/
 	}
 	
-	public void first_connexion_udp (String pseudo)
-	{
-		//On envoie en broadcast notre connexion, et on creer notre serveur udp en ecoute//
-		udpserver.first_connexion(pseudo);
-	}
-
-	public void change_pseudo(String pseudo )
-	{
-		udpserver.change_pseudo(pseudo);
-	}
-
 	public void connexion_tcp(String pseudo)
 	{
 		for(Contact C : connectedUser)
