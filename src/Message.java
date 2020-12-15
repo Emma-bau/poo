@@ -7,6 +7,7 @@ public class Message {
 	private Contact contact;
 	
 	public Message( String message, LocalDate timestamp, Contact contact) {
+		this.self = 
 		this.contact = contact;
 		this.message = message;
 		this.timestamp = timestamp;

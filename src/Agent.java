@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.InetAddress;
 
 public class Agent {
 
@@ -10,8 +11,12 @@ public class Agent {
 	private DataManager dataManager; 
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
+	private Contact self;
 
 	public Agent() {
+		InetAddress adress = InetAddress.getLocalHost();
+		Contact c1 = new Contact(6,"courgette",adress);
+		this.self = new Contact()
 		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
@@ -49,6 +54,10 @@ public class Agent {
 			return true;
 		}
 		return false;
+	}
+	
+	public void sendMessageTo(Message m) {
+		networkManager.connexion_tcp(m);
 	}
 	
 	public static void main(String[] args) {

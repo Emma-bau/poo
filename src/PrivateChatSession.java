@@ -9,18 +9,20 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private Contact contact;
 	private JPanel panel;
-	private final JTextField  inputId;
+	private final JTextField  inputText;
 	private JButton send;
+	private Agent agent;
 	
-	public PrivateChatSession(Contact contact) {
+	public PrivateChatSession(Contact contact, Agent agent) {
 		this.contact = contact;
+		this.agent = agent;
 		
 		panel = new JPanel(new GridLayout(8,1));
 		add(panel,BorderLayout.CENTER);
 		setTitle("Chat session with " + this.contact.getPseudo());
 		JLabel labelH = new JLabel();
 		
-		inputId = new JTextField(15);
+		inputText = new JTextField(15);
 		send = new JButton("Send");
 		
 		labelH.setText("Derniers messages: ");
@@ -29,7 +31,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		printHistory();
 		
 		
-		panel.add(inputId);
+		panel.add(inputText);
 		panel.add(send);
 		send.addActionListener(this);
 		panel.revalidate();
@@ -63,5 +65,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		//ENVOIE LE MESSAGE AU CONTACT
 		//Mettre a jour l'historique a chaque envoi
+		LocalDate date = LocalDate.now();
+		Message newm = new Message(inputText.getText(),date,contact);
+		agent.sendMessageTo(newm);
 	}
 }
