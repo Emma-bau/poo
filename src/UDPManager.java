@@ -55,6 +55,10 @@ public class UDPManager extends Thread{
 					try{
 						System.out.println("Serveur creer");
 
+						while(!isChange_pseudo())
+						{
+
+						}
 						//Envoie de la premiere connexion//
 						try
 						{
@@ -138,47 +142,7 @@ public class UDPManager extends Thread{
 			}
 			
 		});
-		serveur.start();
-
-		//On gere les changements de pseudo pendant une connexion
-		Thread change = new Thread(new Runnable() 
-		{
-			
-			public void run ()
-			{
-				while(manager.isConnexion())
-				{
-					if (manager.isChange_pseudo())
-					{
-						//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-						String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
-						try {
-							DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-							for (int i=65335; i>65233;i--)
-							{
-								if(i != portNumReception)
-								{
-							
-									broadcast(message,adress,i,envoie);
-
-								}
-							}
-							manager.setPseudo_change(false);	
-							envoie.close();
-						}
-						catch (IOException e)
-						{
-							System.out.println("Probleme a lenvoi du nouveau login");
-						}
-					}
-				}
-			}
-		});
-		change.start();
-		
-		
-				
-		
+		serveur.start();	
 	}
 
 	public void update_contact(InetAddress clientAddress, String pseudo)
@@ -256,7 +220,54 @@ public class UDPManager extends Thread{
         Matcher m = Pattern.compile(regex).matcher(input);
         if (m.find()) return m.group();
         return null;
-    }
+	}
+	
+	public void change_pseudo(String pseudo)
+	{
+		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
+		String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+pseudo;
+		try {
+			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+			for (int i=65335; i>65233;i--)
+			{
+				if(i != portNumReception)
+				{
+			
+					broadcast(message,adress,i,envoie);
+
+				}
+			}
+			envoie.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Probleme a lenvoi du nouveau login");
+		}
+	}
+
+	public void deconnexion (String pseudo)
+	{
+		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
+		String message = "etat: 3 servPort: "+portNumReception+"pseudo: "+pseudo;
+		try {
+			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+			for (int i=65335; i>65233;i--)
+			{
+				if(i != portNumReception)
+				{
+			
+					broadcast(message,adress,i,envoie);
+
+				}
+			}
+			envoie.close();
+		}
+		catch (IOException e)
+		{
+			System.out.println("Probleme a lenvoi du nouveau login");
+		}
+			
+	}
 
 
 }
