@@ -4,30 +4,19 @@ import java.util.ArrayList;
 public class Contact
 {
     private int broadPort;
-    private int servPortUdp;
+    
     private String pseudo;
     private InetAddress adresse;
+    private int udp_serv_port;
     private int tcp_serv_port;
-    
 
-    public Contact(InetAddress adresse)
+    public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse)
     {
-        this.adresse = adresse;
-    }
-
-    public Contact(int serv, String pseudo, InetAddress adresse, int tcp)
-    {
-        this.servPortUdp=serv;
+        this.udp_serv_port=udp_port;
+        this.tcp_serv_port=tcp_port;
         this.pseudo=pseudo;
         this.adresse=adresse;
-        this.tcp_serv_port=tcp;
-    }
-    
-    public Contact(int serv, String pseudo, InetAddress adresse)
-    {
-        this.servPortUdp=serv;
-        this.pseudo=pseudo;
-        this.adresse=adresse;
+        
     }
 
     public int getBroadPort() {
@@ -39,11 +28,11 @@ public class Contact
     }
 
     public int getServPort() {
-        return servPortUdp;
+        return udp_serv_port;
     }
 
     public void setServPort(int servPort) {
-        this.servPortUdp = servPort;
+        this.udp_serv_port = servPort;
     }
 
     public String getPseudo() {
@@ -64,7 +53,7 @@ public class Contact
 
     public void afficher ()
     {
-        System.out.println(" Port : " + servPortUdp+ " Login : " + pseudo+ " adresse : " +  adresse + "tcp : "+ tcp_serv_port);
+        System.out.println(" Port : " + udp_serv_port + " Login : " + pseudo+ " adresse : " +  adresse + "tcp : "+ tcp_serv_port);
     }
 
     public int getTcp_serv_port() {
