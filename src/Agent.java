@@ -44,9 +44,10 @@ public class Agent {
 	}
 
 	public boolean setPseudo(String pseudo) {
+		networkManager.getUdpserver().first_connexion(pseudo);;
 		return pseudoManager.setPseudo(pseudo);
 	}
-
+	
 	public static void main(String[] args) {
 		//int numportServer = Integer.parseInt(args[0]);
 

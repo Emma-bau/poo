@@ -90,14 +90,11 @@ public class InterfaceManager extends JFrame implements ActionListener {
 
 
 	public void askPseudoInterface(boolean first_time) {
-		//panel.setVisible(first_time);
 		String pseudo = inputId.getText();
 		boolean result = agent.setPseudo(pseudo);
 		if (result) {
 			System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
-
 			new Thread(new MainInterface(this.agent,this)).start();
-			//panel.setVisible(false);
 		}
 		else {
 			System.out.println("bad pseudo");
