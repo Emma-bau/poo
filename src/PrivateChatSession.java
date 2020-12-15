@@ -38,11 +38,11 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	}
 	
 	public void printHistory() {
-		// récuperer l'historique de conversation avec le contact
+		// recuperer l'historique de conversation avec le contact
 		
 		// a supp //
 		ArrayList<Message> messagesList = new ArrayList<Message>();
-		String txt1 = "salut ça va";
+		String txt1 = "salut ca va";
 		String txt2 = "REPONDS PTN";
 		LocalDate date = LocalDate.now();
 		Message m1 = new Message(txt1,date,contact);
@@ -63,6 +63,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		//ENVOIE LE MESSAGE AU CONTACT
-		//Mettre à jour l'historique a chaque envoi
+		//Mettre a jour l'historique a chaque envoi
 	}
 }
