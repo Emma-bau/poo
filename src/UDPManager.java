@@ -8,8 +8,12 @@ import java.util.regex.Pattern;
 
 
 public class UDPManager extends Thread{
+	// define the range 
+    int max = 65534; 
+    int min = 65233; 
+    int range = max - min + 1; 
 	
-	private int portNumReception = 65534;
+	private int portNumReception =  (int)(Math.random() * range) + min; ;
 	private int portNumEnvoie = 65335; 
 	private InetAddress adress;
 	private NetworkManager manager;
@@ -25,7 +29,7 @@ public class UDPManager extends Thread{
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
-		this.portNumReception=numPort;
+		//this.portNumReception=numPort;
 		this.manager=net;
 	}
 	
@@ -54,7 +58,9 @@ public class UDPManager extends Thread{
 			
 				while(manager.isConnexion())
 				{
+					System.out.println("Entree ici");
 					dgramSocketReception.receive(inPacket);
+					System.out.println("reception");
 					//Reception de l'adresse et du port associe//
 					InetAddress clientAddress = inPacket.getAddress();
 					
