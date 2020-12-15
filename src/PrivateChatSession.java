@@ -34,7 +34,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		send.addActionListener(this);
 		panel.revalidate();
 		
-		
 	}
 	
 	public void printHistory() {

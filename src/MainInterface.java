@@ -107,8 +107,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				bContact.getBouton().setSize(100,30);
 				panel2.add(bContact.getBouton());
 				bContact.getBouton().addActionListener(this);
-				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);
-							
+				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);			
 			}
 			panel2.repaint();
 			frame.revalidate();
