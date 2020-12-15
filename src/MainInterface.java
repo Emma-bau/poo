@@ -81,7 +81,6 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				}
 			}
 		}
-		
 	}
 	
 	@Override
