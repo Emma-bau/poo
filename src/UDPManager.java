@@ -55,10 +55,6 @@ public class UDPManager extends Thread{
 					try{
 						System.out.println("Serveur creer");
 
-						while(!isChange_pseudo())
-						{
-
-						}
 						//Envoie de la premiere connexion//
 						try
 						{
