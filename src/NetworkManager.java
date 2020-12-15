@@ -93,6 +93,7 @@ public class NetworkManager extends Thread {
 			{
 			
 				udpserver = new UDPManager(Numport,this);
+				udpserver.start();
 			}
 			catch(SocketException e)
 			{
@@ -109,14 +110,13 @@ public class NetworkManager extends Thread {
 	
 
 		//Creation de notre serveur tcp
-		ServerHandler server = new ServerHandler(this);
-		server.start();	
+		/*ServerHandler server = new ServerHandler(this);
+		server.start();	*/
 	}
 	
 	public void first_connexion_udp (String pseudo)
 	{
 		//On envoie en broadcast notre connexion, et on creer notre serveur udp en ecoute//
-		udpserver.start();
 		udpserver.first_connexion(pseudo);
 	}
 
