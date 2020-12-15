@@ -7,7 +7,7 @@ public class NetworkManager extends Thread {
 
 	private Agent agent;
 
-	private ArrayList<Contact> connectedUser = new ArrayList<Contact>();
+	private ArrayList<Contact> connectedUser ;
 	private ArrayList<Message> message_recu= new ArrayList<Message>();
 
 	private Message SendMessage;
@@ -75,6 +75,7 @@ public class NetworkManager extends Thread {
 	public NetworkManager (int Numport, Agent agent) 
 	{
 		this.agent = agent;
+		this.connectedUser = new ArrayList<Contact>();
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact c1 = new Contact(6,"courgette",adress);
