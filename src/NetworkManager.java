@@ -15,7 +15,12 @@ public class NetworkManager extends Thread {
 	private UDPManager udpserver;
 	
 	//le server sera toujours sur ce numero de port
-	private int numPort = 2001;
+	// define the range 
+    int max = 3000; 
+    int min = 2000; 
+	int range = max - min + 1; 
+	
+	private int numPort;
 
 	private boolean Connexion = true;
 	
@@ -45,12 +50,16 @@ public class NetworkManager extends Thread {
 		return this.connectedUser;
 	}
 
-	public void setNumPort(int numPort) {
-		this.numPort = numPort;
-	}
-
 	public boolean isConnexion() {
 		return Connexion;
+	}
+
+	public int getNumPort() {
+		return numPort;
+	}
+
+	public void setNumPort(int numPort) {
+		this.numPort = numPort;
 	}
 
 	public void setConnexion(boolean connexion) {
@@ -82,6 +91,7 @@ public class NetworkManager extends Thread {
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
 		this.message_recu= new ArrayList<Message>();
+		numPort = (int)(Math.random() * range) + min;
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
@@ -110,21 +120,15 @@ public class NetworkManager extends Thread {
 	
 
 		//Creation de notre serveur tcp
-		/*ServerHandler server = new ServerHandler(this);
+		/*ServerHandler server = new ServerHandler(this, numPort);
 		server.start();	*/
 	}
 	
-	public void connexion_tcp(String pseudo)
+	public void connexion_tcp(Message message)
 	{
-		for(Contact C : connectedUser)
-		{
-			if (pseudo == C.getPseudo())
-			{	
-				ClientHandler client = new ClientHandler(this,numPort,C.getAdresse());
-				client.start();
-			}
-		}
-		
+		Contact user = message.getContact();
+		ClientHandler client = new ClientHandler(this,user.getTcp_serv_port(),user.getAdresse());
+		client.start();
 	}
 
 	public void message_reception()
@@ -142,6 +146,8 @@ public class NetworkManager extends Thread {
 			message_reception();
 		}
 	}
+
+
 
 	
 	

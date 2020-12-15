@@ -82,11 +82,14 @@ public class UDPManager extends Thread{
 
 					String etat_String = regexSearch("(?<=etat: )\\d+", input);
 					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
+					String servPortTCP =  regexSearch("(?<=tcp: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+					
 
 
 					int etat = Integer.parseInt(etat_String);
 					int servPort= Integer.parseInt(servPort_String);
+					int tcpserv = Integer.parseInt(servPortTCP);
 
 					//Changement de login//
 					if(etat==CHANGE_LOGIN)
@@ -97,7 +100,7 @@ public class UDPManager extends Thread{
 					//Nouvelle Connexion
 					else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
 					{
-						create_contact(clientAddress,pseudo,servPort,etat);
+						create_contact(clientAddress,pseudo,servPort,etat,tcpserv);
 
 					}
 					else if(etat==DECONNEXION)
@@ -139,7 +142,7 @@ public class UDPManager extends Thread{
 		}
 	}
 
-	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat)
+	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat, int tcp)
 	{
 
 		try{
@@ -147,7 +150,7 @@ public class UDPManager extends Thread{
 			System.out.println("Connexion recue");
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
-			Contact C = new Contact(ServPort,pseudo,clientAddress);
+			Contact C = new Contact(ServPort,pseudo,clientAddress,tcp);
 			connectedUser.add(C);
 			manager.setconnectedUser(connectedUser);
 
@@ -160,7 +163,7 @@ public class UDPManager extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
+				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPort()+"pseudo: "+pseudo;
 				byte [] buffer = message.getBytes();
 				try
 				{
@@ -244,7 +247,7 @@ public class UDPManager extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+pseudo;
+				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPort()+"pseudo: "+pseudo;
 				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)

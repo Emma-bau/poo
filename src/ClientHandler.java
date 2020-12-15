@@ -21,8 +21,7 @@ public class ClientHandler extends Thread {
 		try 
 		{
 			System.out.println("connexion cote client");
-			/*adresse IP et num de port a recuperer, a faire le tableau des recuperation et envoit au debut*/
-			Socket clientSocket = new Socket("127.0.0.1",id_port);
+			Socket clientSocket = new Socket(adresse,id_port);
 			/*On enregistre dans un tableau l'adresse*/
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));

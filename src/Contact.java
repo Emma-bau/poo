@@ -7,6 +7,7 @@ public class Contact
     private int servPortUdp;
     private String pseudo;
     private InetAddress adresse;
+    private int tcp_serv_port;
     
 
     public Contact(InetAddress adresse)
@@ -14,6 +15,13 @@ public class Contact
         this.adresse = adresse;
     }
 
+    public Contact(int serv, String pseudo, InetAddress adresse, int tcp)
+    {
+        this.servPortUdp=serv;
+        this.pseudo=pseudo;
+        this.adresse=adresse;
+        this.tcp_serv_port=tcp;
+    }
     public Contact(int serv, String pseudo, InetAddress adresse)
     {
         this.servPortUdp=serv;
@@ -55,7 +63,15 @@ public class Contact
 
     public void afficher ()
     {
-        System.out.println(" Port : " + servPortUdp+ " Login : " + pseudo+ " adresse : " +  adresse);
+        System.out.println(" Port : " + servPortUdp+ " Login : " + pseudo+ " adresse : " +  adresse + "tcp : "+ tcp_serv_port);
+    }
+
+    public int getTcp_serv_port() {
+        return tcp_serv_port;
+    }
+
+    public void setTcp_serv_port(int tcp_serv_port) {
+        this.tcp_serv_port = tcp_serv_port;
     }
 
     
