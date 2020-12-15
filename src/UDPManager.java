@@ -54,29 +54,6 @@ public class UDPManager extends Thread{
 					DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
 					try{
 						System.out.println("Serveur creer");
-
-						//Envoie de la premiere connexion//
-						try
-						{
-							adress = InetAddress.getByName("localhost");
-						}
-						catch(UnknownHostException e)
-						{
-							System.out.println("Erreur dans le broadcast, hote inconnu");
-						}
-						DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-						String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
-						for (int i=65334; i>65233;i--)
-						{
-							if(i != portNumReception)
-							{
-								
-								broadcast(message,adress,i,envoie);
-
-							}
-						}
-						System.out.println("Premiere connexion effectuee");
-						envoie.close();
 					
 						while(manager.isConnexion())
 						{
@@ -238,6 +215,47 @@ public class UDPManager extends Thread{
 		catch (IOException e)
 		{
 			System.out.println("Probleme a lenvoi du nouveau login");
+		}
+	}
+
+	public void first_connexion (String pseudo)
+	{
+		//Envoie de la premiere connexion//
+		try
+		{
+			adress = InetAddress.getByName("localhost");
+		}
+		catch(UnknownHostException e)
+		{
+			System.out.println("Erreur dans le broadcast, hote inconnu");
+		}
+		try{
+			try 
+			{
+				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+				String message = "etat: 1 servPort: "+portNumReception+"pseudo: "+pseudo;
+				for (int i=65334; i>65233;i--)
+				{
+					if(i != portNumReception)
+					{
+					
+						broadcast(message,adress,i,envoie);
+
+					}
+				}
+				System.out.println("Premiere connexion effectuee");
+				envoie.close();
+			}
+			catch(SocketException e)
+			{
+				System.out.println("Probleme socket udp premier envoie");
+			}
+			
+			
+		}
+		catch (IOException e)
+		{
+			System.out.println("Première connexion erreur udp io");
 		}
 	}
 
