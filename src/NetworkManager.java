@@ -103,7 +103,6 @@ public class NetworkManager extends Thread {
 			{
 			
 				udpserver = new UDPManager(this);
-				udpserver.start();
 			}
 			catch(SocketException e)
 			{
@@ -127,9 +126,15 @@ public class NetworkManager extends Thread {
 	public void connexion_tcp(Message message)
 	{
 		Contact user = message.getContact();
-		ClientHandler client = new ClientHandler(this,user.getTcp_serv_port(),user.getAdresse());
+		ClientHandler client = new ClientHandler(this,user,message.getMessage());
 		client.start();
 	}
+
+	
+
+
+
+
 
 	public void message_reception()
 	{

@@ -237,6 +237,7 @@ public class UDPManager extends Thread{
 		//Envoie de la premiere connexion//
 		try
 		{
+			start();
 			adress = InetAddress.getByName("localhost");
 		}
 		catch(UnknownHostException e)

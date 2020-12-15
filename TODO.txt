@@ -11,3 +11,5 @@ Mettre un JScrollPane pour l'interface de tchat?
 Faire en sorte que l'agent ai plus de responsabilité pour eviter les double références
 
 -----------
+
+TCP : faire une fonction qui préiens d'une connexion + une fonction qui reçoit les messages et les traites ( voir comment gérer la sauvegarde de connexion : checker un appel constant à la fonction ? )

@@ -9,7 +9,7 @@ public class ClientHandler extends Thread {
 	private final int id_port;
 	private final InetAddress adresse;
 
-    public ClientHandler(NetworkManager Manager, int idPort, InetAddress adresse)
+    public ClientHandler(NetworkManager Manager, Contact contact, String message)
     {
 		this.manager = Manager;
 		this.id_port=idPort;

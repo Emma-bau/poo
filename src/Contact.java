@@ -22,6 +22,7 @@ public class Contact
         this.adresse=adresse;
         this.tcp_serv_port=tcp;
     }
+    
     public Contact(int serv, String pseudo, InetAddress adresse)
     {
         this.servPortUdp=serv;
