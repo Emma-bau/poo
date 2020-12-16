@@ -134,6 +134,10 @@ public class NetworkManager extends Thread {
 		connectedClient.get(numClient).start();
 		contact.setNumClient(numClient);
 		contact.setClient(true);
+		for (ClientHandler c : connectedClient)
+		{
+			c.afficher();
+		}
 		numClient ++;		
 	}
 

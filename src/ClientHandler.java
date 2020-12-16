@@ -57,4 +57,9 @@ public class ClientHandler extends Thread {
 		msg = message.getMessage();
 		out.println(msg);
 	}
+
+	public void afficher()
+	{
+		System.out.println ("Contact avec : "+user);
+	}
 }
