@@ -49,6 +49,7 @@ public class NetworkWaiter implements Runnable {
 				//tant que le client est connecte
 				while(msg!=null)
 				{
+					System.out.println("ON a quand meme recu un truc");
 					msg = in.readLine();
 					System.out.println(msg);
 					Message m = new Message(msg,java.time.LocalDate.now(),user);
@@ -83,6 +84,7 @@ public class NetworkWaiter implements Runnable {
 		String msg;
 		msg = message.getMessage();
 		out.println(msg);
+		System.out.println("Envoie de : " + msg);
 	}
 
 

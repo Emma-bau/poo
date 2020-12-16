@@ -17,9 +17,8 @@ public class ServerHandler extends Thread{
 	{
 		try 
 		{
-            System.out.println("Création sur serveur");
+            System.out.println("Création sur serveur TCP");
 			/*Creation de notre serveur locale d'ecoute*/
-			/*Pour tous nos serveurs, le num de port est 2000*/
 			ServerSocket server = new ServerSocket(numPortserv);
 			/*On se met en ecoute tant que la session est ouverte*/
 			while(manager.isConnexion())

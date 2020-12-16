@@ -63,13 +63,11 @@ public class UDPManager extends Thread{
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
 			try{
-				System.out.println("Serveur creer");
+				System.out.println("Serveur UDP creer");
 			
 				while(manager.isConnexion())
 				{
-					System.out.println("Entree ici");
 					dgramSocketReception.receive(inPacket);
-					System.out.println("reception");
 					//Reception de l'adresse et du port associe//
 					InetAddress clientAddress = inPacket.getAddress();
 					
@@ -147,7 +145,6 @@ public class UDPManager extends Thread{
 
 		try{
 			//Mise a jour de nos contacts//
-			System.out.println("Connexion recue");
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
 			Contact C = new Contact(ServPort,tcp,pseudo,clientAddress);
@@ -168,7 +165,6 @@ public class UDPManager extends Thread{
 				try
 				{
 					//Envoie de nos informations
-					System.out.println("Envoie du message de connexion");
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
 					envoie.send(packet);
@@ -215,7 +211,6 @@ public class UDPManager extends Thread{
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)
 			{
-				System.out.println("Courgette");
 				if(i != portNumReception)
 				{
 			

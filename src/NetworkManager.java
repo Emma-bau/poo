@@ -130,6 +130,7 @@ public class NetworkManager extends Thread {
 	
 	public void connexion_tcp(Contact contact)
 	{
+		System.out.println("On initie la connexion");
 		connectedClient.add(numClient,new ClientHandler(this,contact));
 		connectedClient.get(numClient).start();
 		contact.setNumClient(numClient);
@@ -147,6 +148,10 @@ public class NetworkManager extends Thread {
 		{
 			connectedClient.get(message.getContact().getNumClient()).envoie(message);
 		}
+		/*else
+		{
+			connectedNetwork.get((message.getContact().getNumClient())//.envoie(message);
+		}*/
 	}
 
 	

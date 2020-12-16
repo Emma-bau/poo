@@ -56,6 +56,7 @@ public class ClientHandler extends Thread {
 		String msg;
 		msg = message.getMessage();
 		out.println(msg);
+		System.out.println("Envoie de : " + msg);
 	}
 
 	public void afficher()
