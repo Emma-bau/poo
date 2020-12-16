@@ -7,14 +7,13 @@ public class NetworkWaiter implements Runnable {
 
 	private final Socket link;
 	private final NetworkManager networkManager;
+	
 	private Contact user;
 
 
-	public NetworkWaiter(Socket link, NetworkManager networkManager, InetAddress adresse) 
-	{
+	public NetworkWaiter(Socket link, NetworkManager networkManager, InetAddress adresse) {
 		this.link = link;
 		this.networkManager = networkManager;
-		/*On récupère le contact associé à l'adresse*/
 		for (Contact C : networkManager.getconnectedUser())
 		{
 			if (C.getAdresse() == adresse)
@@ -39,13 +38,13 @@ public class NetworkWaiter implements Runnable {
 				//tant que le client est connecte
 				while(msg!=null)
 				{
-					System.out.println("Message de "+user.getPseudo()+" : "+msg);
+					System.out.println("Message : "+msg);
 					msg = in.readLine();
 					Message m = new Message(msg,java.time.LocalDate.now(),user);
 					networkManager.setReceiveMessage(m);
 				}
 				//sortir de la boucle si le client a deconecte
-				System.out.println("Client serveur deconecte");
+				System.out.println("Client serveur deconnecte");
 				//fermer le flux et la session socket
 				link.close();
 				} 
@@ -70,11 +69,11 @@ public class NetworkWaiter implements Runnable {
 	public void envoie (Message message)
 	{
 		try{
-			String msg;
-			msg = message.getMessage();
 			try
 			{
 				PrintWriter out = new PrintWriter(link.getOutputStream());
+				String msg;
+				msg = message.getMessage();
 				System.out.println("Envoie de : " + msg);
 				out.println(msg);
 				out.flush();
@@ -88,7 +87,6 @@ public class NetworkWaiter implements Runnable {
 		{
 			System.out.println("Erreur ouverture buffer en out dans clienthandler");
 		}
-				
 	}
 
 

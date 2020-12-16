@@ -23,7 +23,7 @@ public class NetworkManager extends Thread {
 	private int numClient = 0;
 	private int numWaiter = 0;
 	
-	//le server sera toujours sur ce numero de port
+	/*Def du serveur pour le num port, pour utilisation sur un seul pc */
 	// define the range of the server
     int max = 3000; 
     int min = 2000; 
@@ -34,12 +34,28 @@ public class NetworkManager extends Thread {
 	
 	//getter and setter// 
 
+	public Agent getAgent() {
+		return agent;
+	}
+
+
 	public ArrayList<NetworkWaiter> getConnectedNetwork() {
 		return connectedNetwork;
 	}
 
 	public void setConnectedNetwork(ArrayList<NetworkWaiter> connectedNetwork) {
 		this.connectedNetwork = connectedNetwork;
+	}
+
+	public ArrayList<Contact> getconnectedUser()
+	{
+		return this.connectedUser;
+	}
+	
+	public void setconnectedUser(ArrayList<Contact> connectedUser )
+
+	{
+		this.connectedUser=connectedUser;
 	}
 
 
@@ -50,22 +66,14 @@ public class NetworkManager extends Thread {
 	public void setUdpserver(UDPManager udpserver) {
 		this.udpserver = udpserver;
 	}
-
 	
-	public Agent getAgent() {
-		return agent;
-	}
+	
 
-	public void setconnectedUser(ArrayList<Contact> connectedUser )
-	{
-		this.connectedUser=connectedUser;
-	}
+	public void setReceiveMessage(Message recieveMessage) {
 
-	public ArrayList<Contact> getconnectedUser()
-	{
-		return this.connectedUser;
+		ReceiveMessage = recieveMessage;
 	}
-
+	
 	public boolean isConnexion() {
 		return Connexion;
 	}
@@ -74,16 +82,6 @@ public class NetworkManager extends Thread {
 		Connexion = connexion;
 	}
 	
-	public void setReceiveMessage(Message recieveMessage) {
-		ReceiveMessage = recieveMessage;
-	}
-	
-	public Message getReceiveMessage ()
-	{
-		return ReceiveMessage;
-
-	}
-
 	public int getNumPortTcp() {
 		return numPortTcp;
 	}

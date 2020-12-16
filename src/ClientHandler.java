@@ -54,11 +54,11 @@ public class ClientHandler extends Thread {
 	public void envoie (Message message)
 	{
 		try{
-			String msg;
-			msg = message.getMessage();
 			try
 			{
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+				String msg;
+				msg = message.getMessage();
 				System.out.println("Envoie de : " + msg);
 				out.println(msg);
 				out.flush();

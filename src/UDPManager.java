@@ -38,8 +38,6 @@ public class UDPManager extends Thread{
 		this.manager=net;
 		portNumReception =  (int)(Math.random() * range) + min;
 		portNumEnvoie = (int)(Math.random() * range1) + min1;
-		System.out.println("Numero de port de reception : "+ portNumReception);
-		System.out.println("Numero de port d'envoie : "+ portNumEnvoie);
 	}
 	
 	/*Revoir avec nouvelle norme*/
@@ -254,7 +252,6 @@ public class UDPManager extends Thread{
 
 					}
 				}
-				System.out.println("Premiere connexion effectuee");
 				envoie.close();
 			}
 			catch(SocketException e)
