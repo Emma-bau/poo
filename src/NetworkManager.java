@@ -97,32 +97,17 @@ public class NetworkManager extends Thread {
 		this.connectedUser = new ArrayList<Contact>();
 		this.message_recu= new ArrayList<Message>();
 		numPortTcp = (int)(Math.random() * range) + min;
-		System.out.println(numPortTcp);
-		
-		try {
-			InetAddress adress = InetAddress.getLocalHost();
-			Contact c1 = new Contact(6,7,"courgette",adress);
-			Contact c2 = new Contact(6,7,"salut",adress);
-			Contact c3 = new Contact(6,7,"toto",adress);
 
-			try
-			{
-				udpserver = new UDPManager(this);
-			}
-			catch(SocketException e)
-			{
-				System.out.println("Erreur des le debut avec le lanceùent de udp");
-			}
-			
-			connectedUser.add(c1);
-			connectedUser.add(c2);
-			connectedUser.add(c3);
+		try
+		{
+			//Création de notre insatnce d'UDP
+			udpserver = new UDPManager(this);
 		}
-		catch(UnknownHostException e) {
-			
+		catch(SocketException e)
+		{
+			System.out.println("Erreur des le debut avec le lancement de udp");
 		}
-	
-
+			
 		//Creation de notre serveur tcp
 		ServerHandler server = new ServerHandler(this, numPortTcp);
 		server.start();	
@@ -130,15 +115,10 @@ public class NetworkManager extends Thread {
 	
 	public void connexion_tcp(Contact contact)
 	{
-		System.out.println("On initie la connexion");
 		connectedClient.add(numClient,new ClientHandler(this,contact));
 		connectedClient.get(numClient).start();
 		contact.setNumClient(numClient);
 		contact.setClient(true);
-		for (ClientHandler c : connectedClient)
-		{
-			c.afficher();
-		}
 		numClient ++;		
 	}
 
