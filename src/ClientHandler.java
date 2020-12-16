@@ -1,6 +1,6 @@
 import java.io.*;
 import java.net.*;
-import java.time.LocalDate;
+
 
 
 public class ClientHandler extends Thread {
@@ -13,8 +13,6 @@ public class ClientHandler extends Thread {
     {
 		this.manager = Manager;
 		this.user = contact;
-
-		System.out.println("connexion cote client");
 		try
 		{
 			clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
@@ -29,17 +27,22 @@ public class ClientHandler extends Thread {
 
 	public void run()
 	{
-		String recieveMessage;
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			recieveMessage = in.readLine();
-			while(recieveMessage!=null)
+			BufferedReader in= new BufferedReader (new InputStreamReader (clientSocket.getInputStream()));
+			String msg ;
+			msg = in.readLine();
+			//tant que le client est connecte
+			while(msg!=null)
 			{
-				recieveMessage = in.readLine();
-				Message m = new Message(recieveMessage,LocalDate.now(),user);
+				System.out.println("Message de "+user.getPseudo()+" : "+msg);
+				msg = in.readLine();
+				Message m = new Message(msg,java.time.LocalDate.now(),user);
 				manager.setReceiveMessage(m);
 			}
 			System.out.println("Serveur deconnecte");
+			//fermer le flux et la session socket
+			clientSocket.close();
+
 		} 
 		catch (IOException e) 
 		{
@@ -58,7 +61,7 @@ public class ClientHandler extends Thread {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 				System.out.println("Envoie de : " + msg);
 				out.println(msg);
-				out.close();
+				out.flush();
 			}
 			catch(SocketException e)
 			{
@@ -69,6 +72,7 @@ public class ClientHandler extends Thread {
 		{
 			System.out.println("Erreur ouverture buffer en out dans clienthandler");
 		}
+				
 				
 	}
 
