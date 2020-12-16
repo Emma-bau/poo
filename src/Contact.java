@@ -2,13 +2,13 @@ import java.net.InetAddress;
 
 public class Contact
 {
-    private int broadPort;
     
     private String pseudo;
     private InetAddress adresse;
     private int udp_serv_port;
     private int tcp_serv_port;
     private int numClient;
+    private boolean isClient; 
 
     public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse)
     {
@@ -16,14 +16,6 @@ public class Contact
         this.tcp_serv_port=tcp_port;
         this.pseudo=pseudo;
         this.adresse=adresse;
-    }
-
-    public int getBroadPort() {
-        return broadPort;
-    }
-
-    public void setBroadPort(int broadPort) {
-        this.broadPort = broadPort;
     }
 
     public int getServPort() {
@@ -69,6 +61,14 @@ public class Contact
 
     public void setNumClient(int numClient) {
         this.numClient = numClient;
+    }
+
+    public boolean isClient() {
+        return isClient;
+    }
+
+    public void setClient(boolean isClient) {
+        this.isClient = isClient;
     }
 
     

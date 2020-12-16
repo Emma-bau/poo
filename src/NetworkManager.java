@@ -7,8 +7,13 @@ public class NetworkManager extends Thread {
 
 	private Agent agent;
 
+	/*LIste de tous les contacts connectes*/
 	private ArrayList<Contact> connectedUser ;
+	/*C'est nous qui avons initier la connexion*/
 	private ArrayList<ClientHandler> connectedClient = new ArrayList<ClientHandler>();
+	/*C'est un usage qui l'a initier*/
+	private ArrayList<NetworkWaiter> connectedNetwork = new ArrayList<NetworkWaiter>();
+	/*Liste des messages recus*/
 	private ArrayList<Message> message_recu;
 
 	private Message ReceiveMessage;
@@ -16,6 +21,7 @@ public class NetworkManager extends Thread {
 	private int numPortTcp;  	//Serveur tcp
 	private boolean Connexion = true;
 	private int numClient = 0;
+	private int numWaiter = 0;
 	
 	//le server sera toujours sur ce numero de port
 	// define the range of the server
@@ -27,6 +33,15 @@ public class NetworkManager extends Thread {
 	
 	
 	//getter and setter// 
+
+	public ArrayList<NetworkWaiter> getConnectedNetwork() {
+		return connectedNetwork;
+	}
+
+	public void setConnectedNetwork(ArrayList<NetworkWaiter> connectedNetwork) {
+		this.connectedNetwork = connectedNetwork;
+	}
+
 
 	public UDPManager getUdpserver() {
 		return udpserver;
@@ -117,12 +132,16 @@ public class NetworkManager extends Thread {
 		connectedClient.add(numClient,new ClientHandler(this,contact));
 		connectedClient.get(numClient).start();
 		contact.setNumClient(numClient);
+		contact.setClient(true);
 		numClient ++;		
 	}
 
 	public void sendMessage(Message message)
 	{
-		connectedClient.get(message.getContact().getNumClient()).envoie(message);
+		if(message.getContact().isClient())
+		{
+			connectedClient.get(message.getContact().getNumClient()).envoie(message);
+		}
 	}
 
 	
@@ -142,6 +161,15 @@ public class NetworkManager extends Thread {
 		}
 	}
 
+	public int getNumWaiter() {
+		return numWaiter;
+	}
+
+	public void setNumWaiter(int numWaiter) {
+		this.numWaiter = numWaiter;
+	}
+
+	
 
 
 

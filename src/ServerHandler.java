@@ -4,11 +4,12 @@ import java.net.*;
 public class ServerHandler extends Thread{
 
 	private NetworkManager manager;
-	private int idClient = 1;
+	private int numPortserv; 
 
-    public ServerHandler (NetworkManager networkManager )
+    public ServerHandler (NetworkManager networkManager, int numPortserv )
     {
 		this.manager=networkManager;
+		this.numPortserv= numPortserv;
     }
 
 
@@ -19,7 +20,7 @@ public class ServerHandler extends Thread{
             System.out.println("Création sur serveur");
 			/*Creation de notre serveur locale d'ecoute*/
 			/*Pour tous nos serveurs, le num de port est 2000*/
-			ServerSocket server = new ServerSocket(2000);
+			ServerSocket server = new ServerSocket(numPortserv);
 			/*On se met en ecoute tant que la session est ouverte*/
 			while(manager.isConnexion())
 			{
@@ -27,9 +28,11 @@ public class ServerHandler extends Thread{
 				System.out.println("Awaiting connection");
 				Socket SocketTCP = server.accept();
 				System.out.println("Connexion du Client ");
-				NetworkWaiter N1 = new NetworkWaiter(SocketTCP, manager, SocketTCP.getInetAddress());
-				Thread t1 = new Thread(N1);
+				int num = manager.getNumWaiter();
+				manager.getConnectedNetwork().add(num,new NetworkWaiter(SocketTCP, manager, SocketTCP.getInetAddress()));
+				Thread t1 = new Thread(manager.getConnectedNetwork().get(num));
 				t1.start();
+				manager.setNumWaiter(num++);
 			}
 			server.close();
 		}
