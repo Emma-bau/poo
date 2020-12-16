@@ -8,8 +8,6 @@ public class ClientHandler extends Thread {
 	private final NetworkManager manager;
 	private final Contact user;
 	private Socket clientSocket;
-	private PrintWriter out;
-	private BufferedReader in;
 
     public ClientHandler(NetworkManager Manager, Contact contact)
     {
@@ -17,11 +15,10 @@ public class ClientHandler extends Thread {
 		this.user = contact;
 
 		System.out.println("connexion cote client");
-		try{
+		try
+		{
 			clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
-			/*Ouverture des buffers en ecriture et en lecture*/
-			out = new PrintWriter(clientSocket.getOutputStream());
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
 		}
 		catch(IOException e)
 		{
@@ -34,6 +31,7 @@ public class ClientHandler extends Thread {
 	{
 		String recieveMessage;
 		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			recieveMessage = in.readLine();
 			while(recieveMessage!=null)
 			{
@@ -42,7 +40,6 @@ public class ClientHandler extends Thread {
 				manager.setReceiveMessage(m);
 			}
 			System.out.println("Serveur deconnecte");
-			out.close();
 		} 
 		catch (IOException e) 
 		{
@@ -53,14 +50,31 @@ public class ClientHandler extends Thread {
 
 	public void envoie (Message message)
 	{
-		String msg;
-		msg = message.getMessage();
-		out.println(msg);
-		System.out.println("Envoie de : " + msg);
+		try{
+			String msg;
+			msg = message.getMessage();
+			try
+			{
+				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+				System.out.println("Envoie de : " + msg);
+				out.println(msg);
+				out.close();
+			}
+			catch(SocketException e)
+			{
+				System.out.println("Erreur ouverture buffer en out dans clienthandler");
+			}
+		}
+		catch(IOException e)
+		{
+			System.out.println("Erreur ouverture buffer en out dans clienthandler");
+		}
+				
 	}
 
 	public void afficher()
 	{
-		System.out.println ("Contact avec : "+user);
+		System.out.print ("Contact avec : ");
+		user.afficher();;
 	}
 }

@@ -8,7 +8,7 @@ public class NetworkWaiter implements Runnable {
 	private final Socket link;
 	private final NetworkManager networkManager;
 	private PrintWriter out;
-	private BufferedReader in;
+	
 	private Contact user;
 
 
@@ -17,7 +17,6 @@ public class NetworkWaiter implements Runnable {
 		this.networkManager = networkManager;
 		try{
 			out = new PrintWriter(link.getOutputStream(),true);
-			in = new BufferedReader (new InputStreamReader (link.getInputStream()));
 		}
 		catch(IOException e)
 		{
@@ -43,9 +42,11 @@ public class NetworkWaiter implements Runnable {
 		System.out.println("Thread du serveur lance");
 		try 
 		{
+			BufferedReader in= new BufferedReader (new InputStreamReader (link.getInputStream()));
 			String msg ;
 			try {
 				msg = in.readLine();
+				System.out.println("Message : "+msg);
 				//tant que le client est connecte
 				while(msg!=null)
 				{
