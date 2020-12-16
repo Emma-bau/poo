@@ -8,7 +8,7 @@ public class NetworkManager extends Thread {
 	private Agent agent;
 
 	private ArrayList<Contact> connectedUser ;
-	private ArrayList<ClientHandler> connectedClient;
+	private ArrayList<ClientHandler> connectedClient = new ArrayList<ClientHandler>();
 	private ArrayList<Message> message_recu;
 
 	private Message ReceiveMessage;
@@ -112,24 +112,20 @@ public class NetworkManager extends Thread {
 		server.start();	*/
 	}
 	
-	/*comment changer le nom de la variable ? */
 	public void connexion_tcp(Contact contact)
 	{
-		ClientHandler client = new ClientHandler(this,contact);
-		client.start();
+		connectedClient.add(numClient,new ClientHandler(this,contact));
+		connectedClient.get(numClient).start();
+		contact.setNumClient(numClient);
+		numClient ++;		
 	}
 
 	public void sendMessage(Message message)
 	{
-
+		connectedClient.get(message.getContact().getNumClient()).envoie(message);
 	}
 
 	
-
-
-
-
-
 	public void message_reception()
 	{
 		if(ReceiveMessage != null)

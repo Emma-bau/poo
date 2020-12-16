@@ -1,5 +1,4 @@
 import java.net.InetAddress;
-import java.util.ArrayList;
 
 public class Contact
 {
@@ -9,6 +8,7 @@ public class Contact
     private InetAddress adresse;
     private int udp_serv_port;
     private int tcp_serv_port;
+    private int numClient;
 
     public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse)
     {
@@ -61,6 +61,14 @@ public class Contact
 
     public void setTcp_serv_port(int tcp_serv_port) {
         this.tcp_serv_port = tcp_serv_port;
+    }
+
+    public int getNumClient() {
+        return numClient;
+    }
+
+    public void setNumClient(int numClient) {
+        this.numClient = numClient;
     }
 
     
