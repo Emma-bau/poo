@@ -1,6 +1,6 @@
 import java.io.*;
 import java.net.*;
-
+import java.time.LocalDate;
 
 
 public class ClientHandler extends Thread {
@@ -19,7 +19,7 @@ public class ClientHandler extends Thread {
 		System.out.println("connexion cote client");
 		try{
 			clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
-			/*Ouverture des buffers en écriture et en lecture*/
+			/*Ouverture des buffers en ecriture et en lecture*/
 			out = new PrintWriter(clientSocket.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 		}
@@ -38,15 +38,15 @@ public class ClientHandler extends Thread {
 			while(recieveMessage!=null)
 			{
 				recieveMessage = in.readLine();
-				Message m = new Message(recieveMessage,java.time.LocalDate.now(),user);
+				Message m = new Message(recieveMessage,LocalDate.now(),user);
 				manager.setReceiveMessage(m);
 			}
-			System.out.println("Serveur déconnecté");
+			System.out.println("Serveur deconnecte");
 			out.close();
 		} 
 		catch (IOException e) 
 		{
-			e.printStackTrace();
+			System.out.println("Connection reset (serveur deconnecte)");
 		}
 	}
 	
