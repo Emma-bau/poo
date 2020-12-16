@@ -8,21 +8,22 @@ public class NetworkManager extends Thread {
 	private Agent agent;
 
 	private ArrayList<Contact> connectedUser ;
+	private ArrayList<ClientHandler> connectedClient;
 	private ArrayList<Message> message_recu;
 
-	private Message SendMessage;
 	private Message ReceiveMessage;
 	private UDPManager udpserver;
+	private int numPortTcp;  	//Serveur tcp
+	private boolean Connexion = true;
+	private int numClient = 0;
 	
 	//le server sera toujours sur ce numero de port
-	// define the range 
+	// define the range of the server
     int max = 3000; 
     int min = 2000; 
 	int range = max - min + 1; 
 	
-	private int numPort;
-
-	private boolean Connexion = true;
+	
 	
 	
 	//getter and setter// 
@@ -54,26 +55,10 @@ public class NetworkManager extends Thread {
 		return Connexion;
 	}
 
-	public int getNumPort() {
-		return numPort;
-	}
-
-	public void setNumPort(int numPort) {
-		this.numPort = numPort;
-	}
-
 	public void setConnexion(boolean connexion) {
 		Connexion = connexion;
 	}
 	
-	public Message getSendMessage() {
-		return SendMessage;
-	}
-
-	public void setSendMessage(Message sendMessage) {
-		SendMessage = sendMessage;
-	}
-
 	public void setReceiveMessage(Message recieveMessage) {
 		ReceiveMessage = recieveMessage;
 	}
@@ -81,6 +66,11 @@ public class NetworkManager extends Thread {
 	public Message getReceiveMessage ()
 	{
 		return ReceiveMessage;
+
+	}
+
+	public int getNumPortTcp() {
+		return numPortTcp;
 	}
 	
 	
@@ -91,7 +81,7 @@ public class NetworkManager extends Thread {
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
 		this.message_recu= new ArrayList<Message>();
-		numPort = (int)(Math.random() * range) + min;
+		numPortTcp = (int)(Math.random() * range) + min;
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
@@ -118,15 +108,20 @@ public class NetworkManager extends Thread {
 	
 
 		//Creation de notre serveur tcp
-		/*ServerHandler server = new ServerHandler(this, numPort);
+		/*ServerHandler server = new ServerHandler(this, numPortTcp);
 		server.start();	*/
 	}
 	
-	public void connexion_tcp(Message message)
+	/*comment changer le nom de la variable ? */
+	public void connexion_tcp(Contact contact)
 	{
-		Contact user = message.getContact();
-		ClientHandler client = new ClientHandler(this,user,message.getMessage());
+		ClientHandler client = new ClientHandler(this,contact);
 		client.start();
+	}
+
+	public void sendMessage(Message message)
+	{
+
 	}
 
 	
@@ -150,6 +145,7 @@ public class NetworkManager extends Thread {
 			message_reception();
 		}
 	}
+
 
 
 

@@ -163,7 +163,7 @@ public class UDPManager extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPort()+"pseudo: "+pseudo;
+				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo;
 				byte [] buffer = message.getBytes();
 				try
 				{
@@ -248,7 +248,7 @@ public class UDPManager extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPort()+"pseudo: "+pseudo;
+				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo;
 				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)

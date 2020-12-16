@@ -6,14 +6,13 @@ import java.net.*;
 public class ClientHandler extends Thread {
 
 	private final NetworkManager manager;
-	private final int id_port;
-	private final InetAddress adresse;
+	private final Contact user;
 
-    public ClientHandler(NetworkManager Manager, Contact contact, String message)
+    public ClientHandler(NetworkManager Manager, Contact contact)
     {
 		this.manager = Manager;
-		this.id_port=idPort;
-		this.adresse = adresse;
+		this.user = contact;
+
     }
 
 	public void run()
@@ -21,15 +20,16 @@ public class ClientHandler extends Thread {
 		try 
 		{
 			System.out.println("connexion cote client");
-			Socket clientSocket = new Socket(adresse,id_port);
-			/*On enregistre dans un tableau l'adresse*/
+			Socket clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
+
+			/*Ouverture des buffers en écriture et en lecture*/
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 			BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
 			Thread envoyer = new Thread(new Runnable() {
 				String msg;
-				 @Override
-				 public void run() {
+
+				public void run() {
 				   while(manager.isConnexion()){
 					
 						//On envoie le message si l'adresse correspond à l'adresse de notre client
@@ -90,5 +90,5 @@ public class ClientHandler extends Thread {
 	}
 	
 
-    
+    public void envoie (Message )
 }
