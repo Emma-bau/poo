@@ -22,7 +22,7 @@ public class Agent {
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
-			Contact self = new Contact(6,6,null,adress);
+			Contact self = new Contact(3000,4000,null,adress);
 			this.self = self;
 		} catch (UnknownHostException e) {}
 		
@@ -54,14 +54,8 @@ public class Agent {
 	}
 
 	public boolean setPseudo(String pseudo) {
-		
-		if (pseudoManager.setPseudo(pseudo)) {
-			
-						
+		if (pseudoManager.setPseudo(pseudo)) {			
 			networkManager.getUdpserver().first_connexion(pseudo);
-			
-			
-
 			return true;
 		}
 		return false;
@@ -73,6 +67,10 @@ public class Agent {
 	
 	public void sendMessageTo(Message m) {
 		networkManager.sendMessage(m);
+	}
+	
+	public void newMessageReceived(Contact contact, String text) {
+		dataManager.updateMessagesHistory(contact, text);
 	}
 	
 	public static void main(String[] args) {

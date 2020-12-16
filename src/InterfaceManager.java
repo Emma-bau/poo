@@ -9,12 +9,12 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	final static String LOOKANDFEEL = "System";
 	private Agent agent;
 
-	JButton LOG_IN;
-	JButton pseudoChange;
-	JPanel panel;
-	JLabel labelId, labelPassword;
-	final JTextField  inputId, inputPassword;
-	MainInterface mInterface;
+	private JButton LOG_IN;
+	private JButton pseudoChange;
+	private JPanel panel;
+	private JLabel labelId, labelPassword;
+	private final JTextField  inputId, inputPassword;
+	private MainInterface mInterface;
 
 	public InterfaceManager(Agent agent) 
 	{
@@ -44,7 +44,10 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		setTitle("Log In Chat Session");
 	}
 
-
+	public JFrame getMainInterface() {
+		return this.mInterface;
+	}
+	
 	public void actionPerformed(ActionEvent ae){
 		//bouton log_in
 		if (ae.getSource() == LOG_IN) {

@@ -17,7 +17,13 @@ public class DataManager {
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
 		Message m = new Message(texte, LocalDate.now(),contact);
+		
+		// BDD
 		this.messagesHistory.add(m);
+		//
+		
+		agent.getInterfaceManager().getMainInterface();
+		
 	}
 	
 	

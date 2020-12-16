@@ -15,14 +15,16 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private JPanel panel1,panel2;
 	private BoutonSession bContact, bChangePseudo;
 	private ArrayList<BoutonSession> listBouton;
+	private ArrayList<PrivateChatSession> chatSessionList;
     
     public MainInterface(Agent agent, InterfaceManager interfaceM) {
 		this.agent = agent;
 		this.interfaceM = interfaceM;
+		this.chatSessionList = new ArrayList<PrivateChatSession>();
+		
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		this.frame = new JFrame("Chat Session");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
         this.panel1 = new JPanel();
         this.panel2 = new JPanel();
         
@@ -77,6 +79,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				if (ae.getSource() == b.getBouton()) {
 					agent.establishConnexion(b.getContact());
 					PrivateChatSession pcs = new PrivateChatSession(b.getContact(),agent);
+					chatSessionList.add(pcs);
 					pcs.setVisible(true);
 					pcs.setSize(400,200);
 				}
@@ -84,9 +87,16 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		}
 	}
 	
+	public void updateChatSessionMessages(Message m) {
+		for(PrivateChatSession pcs : chatSessionList) {
+			if (pcs.getContact() == m.getContact()) {
+				pcs.updateHistory(m);
+			}
+		}
+	}
+	
 	@Override
 	public void run() {
-		boolean j = true;
 		//liste des boutons qui lancent un contact
 		listBouton = new ArrayList<BoutonSession>();
 		while(true) {
