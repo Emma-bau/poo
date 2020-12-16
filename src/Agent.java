@@ -72,7 +72,7 @@ public class Agent {
 	}
 	
 	public void sendMessageTo(Message m) {
-		//networkManager.sendMessage(m);
+		networkManager.sendMessage(m);
 	}
 	
 	public static void main(String[] args) {
