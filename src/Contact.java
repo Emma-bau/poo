@@ -44,7 +44,7 @@ public class Contact
 
     public void afficher ()
     {
-        System.out.println(" Port : " + udp_serv_port + " Login : " + pseudo+ " adresse : " +  adresse + "tcp : "+ tcp_serv_port);
+        System.out.println("Port UDP: " + udp_serv_port + " / Port TCP: " +  tcp_serv_port + " / Login : " + pseudo + " / adresse : " +  adresse);
     }
 
     public int getTcp_serv_port() {
