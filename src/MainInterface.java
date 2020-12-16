@@ -68,7 +68,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
     
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
-			interfaceM.askPseudoInterface(false);
+			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
 		
 		//Fonctionnement boutons chavardage
@@ -116,18 +116,6 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				Thread.sleep(5000);
 			}
 			catch(InterruptedException e) {}
-			
-			//a supprimer
-			if (j){
-				try {
-					InetAddress adress = InetAddress.getLocalHost();
-					Contact c4 = new Contact(6,7,"courgette2",adress);
-					agent.getNetworkManager().getconnectedUser().add(c4);
-					j = false;
-				}
-				catch(UnknownHostException e) {}
-			}
-			//
 			
 		}
 	}

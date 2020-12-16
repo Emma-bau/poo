@@ -48,48 +48,50 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae){
 		//bouton log_in
 		if (ae.getSource() == LOG_IN) {
-
-			String strid = inputId.getText();
-			try {
-				int id = Integer.parseInt(strid);
-				String password = inputPassword.getText();
-
-				if (agent.getIdManager().verifyID(id,password) == 1) {
-					System.out.println("identifiants valides, connexion...");
-					labelId.setText("Chose a pseudo (username): ");
-					pseudoChange = new JButton("Enter");
-					panel.remove(labelPassword);
-					panel.remove(inputPassword);
-					panel.remove(LOG_IN);
-					inputId.setText("");
-					panel.add(pseudoChange);
-					pseudoChange.addActionListener(this);
-				}
-
-				else if (agent.getIdManager().verifyID(id,password) == 2) {
-					JOptionPane.showMessageDialog(this,"Incorrect password",
-							"Error",JOptionPane.ERROR_MESSAGE);
-				}
-
-				else {
-					JOptionPane.showMessageDialog(this,"Incorrect ID",
-							"Error",JOptionPane.ERROR_MESSAGE);
-				}
-			}
-			catch (NumberFormatException e){
-				JOptionPane.showMessageDialog(this,"ID is not a number",
-						"Error",JOptionPane.ERROR_MESSAGE);
-			}
+			askIdAction();
 		}
-
 		//bouton pseudoChange
 		else {
-			askPseudoInterface(true);
+			askPseudoAction();
 		}
 	}
 
+	public void askIdAction() {
+		String strid = inputId.getText();
+		try {
+			int id = Integer.parseInt(strid);
+			String password = inputPassword.getText();
 
-	public void askPseudoInterface(boolean first_time) {
+			if (agent.getIdManager().verifyID(id,password) == 1) {
+				System.out.println("identifiants valides, connexion...");
+				labelId.setText("Chose a pseudo (username): ");
+				pseudoChange = new JButton("Enter");
+				panel.remove(labelPassword);
+				panel.remove(inputPassword);
+				panel.remove(LOG_IN);
+				inputId.setText("");
+				panel.add(pseudoChange);
+				pseudoChange.addActionListener(this);
+			}
+
+			else if (agent.getIdManager().verifyID(id,password) == 2) {
+				JOptionPane.showMessageDialog(this,"Incorrect password",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
+
+			else {
+				JOptionPane.showMessageDialog(this,"Incorrect ID",
+						"Error",JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		catch (NumberFormatException e){
+			JOptionPane.showMessageDialog(this,"ID is not a number",
+					"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	
+	public void askPseudoAction() {
 		String pseudo = inputId.getText();
 		boolean result = agent.setPseudo(pseudo);
 		if (result) {
