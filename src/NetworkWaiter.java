@@ -40,8 +40,7 @@ public class NetworkWaiter implements Runnable {
 				{
 					System.out.println("Message : "+msg);
 					msg = in.readLine();
-					Message m = new Message(msg,java.time.LocalDate.now(),user);
-					networkManager.setReceiveMessage(m);
+					networkManager.getAgent().newMessageReceived(user, msg);
 				}
 				//sortir de la boucle si le client a deconecte
 				System.out.println("Client serveur deconnecte");
