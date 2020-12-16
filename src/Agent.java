@@ -67,8 +67,12 @@ public class Agent {
 		return false;
 	}
 	
+	public void establishConnexion(Contact c) {
+		networkManager.connexion_tcp(c);
+	}
+	
 	public void sendMessageTo(Message m) {
-		networkManager.connexion_tcp(m);
+		//networkManager.sendMessage(m);
 	}
 	
 	public static void main(String[] args) {

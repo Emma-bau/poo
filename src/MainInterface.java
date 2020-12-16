@@ -75,6 +75,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		else {
 			for(BoutonSession b:listBouton) {
 				if (ae.getSource() == b.getBouton()) {
+					agent.establishConnexion(b.getContact());
 					PrivateChatSession pcs = new PrivateChatSession(b.getContact(),agent);
 					pcs.setVisible(true);
 					pcs.setSize(400,200);
