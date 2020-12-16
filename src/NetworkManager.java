@@ -97,6 +97,7 @@ public class NetworkManager extends Thread {
 		this.connectedUser = new ArrayList<Contact>();
 		this.message_recu= new ArrayList<Message>();
 		numPortTcp = (int)(Math.random() * range) + min;
+		System.out.println(numPortTcp);
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
@@ -123,8 +124,8 @@ public class NetworkManager extends Thread {
 	
 
 		//Creation de notre serveur tcp
-		/*ServerHandler server = new ServerHandler(this, numPortTcp);
-		server.start();	*/
+		ServerHandler server = new ServerHandler(this, numPortTcp);
+		server.start();	
 	}
 	
 	public void connexion_tcp(Contact contact)

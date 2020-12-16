@@ -163,7 +163,7 @@ public class UDPManager extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo;
+				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
 				byte [] buffer = message.getBytes();
 				try
 				{
