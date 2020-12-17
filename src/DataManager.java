@@ -60,8 +60,9 @@ public class DataManager {
 	public void updateMessagesHistory(Contact contact, String texte) {
 		System.out.println("update du datamanager");
 		Message m = new Message(texte, LocalDate.now(),agent.getSelf(),contact);
+		System.out.println("update du datamanager 2");
 		this.messagesHistory.add(m);
-		//
+		System.out.println("update du datamanager 3");
 		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
 	}
