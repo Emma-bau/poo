@@ -58,20 +58,10 @@ public class DataManager {
 	}
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
+		System.out.println("update du datamanager");
 		Message m = new Message(texte, LocalDate.now(),agent.getSelf(),contact);
-		
-		// BDD
-		/*Rajouter hier soir à voir comment ça fonctionne */
-
-
-
-
-
-
-
 		this.messagesHistory.add(m);
 		//
-		
 		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
 	}
