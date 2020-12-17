@@ -38,7 +38,6 @@ public class NetworkWaiter implements Runnable {
 					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
-					System.out.println("x : "+x);
 
 					for (int i = 0; i<msg.length(); i++)
 					{
@@ -52,15 +51,18 @@ public class NetworkWaiter implements Runnable {
 						}
 					}
 					System.out.println("texte : "+ text);
-					System.out.println("pseudo : "+ pseudo);
-					for (Contact C : networkManager.getconnectedUser())
+					System.out.println("pseudo :"+ pseudo.length());
+					for (Contact c : networkManager.getconnectedUser())
 					{
-						if (C.getPseudo() == pseudo)
+						System.out.println("Contact trouvé:" + c.getPseudo().length());
+						System.out.println(pseudo.equals(c.getPseudo()));
+						if (c.getPseudo().equals(pseudo))
 						{
-							user = C;
+							System.out.println("c = pseudo");
+							networkManager.getAgent().newMessageReceived(c, text);
 						}
 					}
-					networkManager.getAgent().newMessageReceived(user, text);
+					
 					msg = in.readLine();
 				}
 				//sortir de la boucle si le client a deconecte

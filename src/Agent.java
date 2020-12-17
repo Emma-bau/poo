@@ -76,6 +76,7 @@ public class Agent {
 	}
 	
 	public void newMessageReceived(Contact contact, String text) {
+		System.out.println("newMessageReceived");
 		System.out.println("Agent newmessagereceived:" + contact.getPseudo());
 		dataManager.updateMessagesHistory(contact, text);
 	}

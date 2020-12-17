@@ -80,7 +80,9 @@ public class UDPManager extends Thread{
 					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
 					String servPortTCP =  regexSearch("(?<=tcp: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
-					
+					System.out.println(pseudo+"FIN");
+					pseudo.trim();
+					System.out.println(pseudo+"FIN");
 
 
 					int etat = Integer.parseInt(etat_String);
