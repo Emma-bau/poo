@@ -49,6 +49,7 @@ public class NetworkWaiter implements Runnable {
 				} 
 			catch (IOException e) 
 			{
+				e.printStackTrace();
 				System.out.println("probleme dans recevoir");
 			}
 			
@@ -57,6 +58,7 @@ public class NetworkWaiter implements Runnable {
 
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			System.out.println("Erreur au niveau du serveur niveau 2");
 		}
 

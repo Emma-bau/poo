@@ -34,11 +34,11 @@ public class User {
 			Connection con = null;
 			/*Je ne suis pas sure du nom*/
 			/*On load le driver*/
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+			Class.forName("org.sqlite.JBDC");
 			/*Mise en place de la connexion*/
 			try
 			{
-				con=DriverManager.getConnection("jdbc:odbc:MovieCatalog");
+				con=DriverManager.getConnection("jdbc:sqlite:MovieCatalog");
 				Statement statement=con.createStatement();
 
 				
