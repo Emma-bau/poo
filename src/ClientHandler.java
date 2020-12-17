@@ -57,7 +57,7 @@ public class ClientHandler extends Thread {
 			{
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 				String msg;
-				msg = message.getMessage()+"ZQZQZ "+manager.getAgent().getPseudoManager().getPseudo();
+				msg = message.getMessage()+"ZQZQZ"+manager.getAgent().getPseudoManager().getPseudo();
 				System.out.println("Envoie de : " + msg);
 				out.println(msg);
 				out.flush();

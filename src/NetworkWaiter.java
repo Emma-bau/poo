@@ -30,6 +30,7 @@ public class NetworkWaiter implements Runnable {
 			String msg ;
 			try {
 				msg = in.readLine();
+
 				//tant que le client est connecte
 				while(msg!=null)
 				{
@@ -37,6 +38,7 @@ public class NetworkWaiter implements Runnable {
 					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
+					System.out.println("x : "+x);
 
 					for (int i = 0; i<msg.length(); i++)
 					{
@@ -44,12 +46,13 @@ public class NetworkWaiter implements Runnable {
 						{
 							text+=msg.charAt(i);
 						}
-						else if(i>x+5)
+						else if(i>(x+4))
 						{
 							pseudo +=msg.charAt(i);
 						}
 					}
-					System.out.println(pseudo);
+					System.out.println("texte : "+ text);
+					System.out.println("pseudo : "+ pseudo);
 					for (Contact C : networkManager.getconnectedUser())
 					{
 						if (C.getPseudo() == pseudo)

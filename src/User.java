@@ -34,7 +34,7 @@ public class User {
 			String CREATE_TABLE_SQL="CREATE TABLE messages ("
                     + "AUTHOR VARCHAR(45) NOT NULL,"
                     + "CONTACT VARCHAR(45) NOT NULL,"
-                    + "MESSAGE DATE NOT NULL,"
+                    + "DATEMESSAGE DATE NOT NULL,"
                     + "EMAIL VARCHAR(45) NOT NULL,"
 					+ "PRIMARY KEY (UID))";
 			
