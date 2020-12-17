@@ -54,7 +54,6 @@ public class DataManager {
 		{
 			System.out.println("Erreur dans la creation de la BDD");
 		}
-
 	}
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
@@ -66,6 +65,4 @@ public class DataManager {
 		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
 	}
-	
-	
 }

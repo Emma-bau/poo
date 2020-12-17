@@ -99,7 +99,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		boolean result = agent.setPseudo(pseudo);
 		if (result) {
 			System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
-			new Thread(new MainInterface(this.agent,this)).start();
+			new Thread(this.mInterface = new MainInterface(this.agent,this)).start();
 			panel.setVisible(false);
 		}
 		else {
