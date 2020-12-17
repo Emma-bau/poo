@@ -35,26 +35,25 @@ public class User {
                     + "AUTHOR VARCHAR(45) NOT NULL,"
                     + "CONTACT VARCHAR(45) NOT NULL,"
                     + "DATEMESSAGE DATE NOT NULL,"
-                    + "EMAIL VARCHAR(45) NOT NULL,"
-					+ "PRIMARY KEY (UID))";
+					+ "MESSAGE VARCHAR(45) NOT NULL,";
+					
+			String username = "tp_servlet_014";
+			String password = "Died1zie";
 			
 			Connection con = null;
 			/*Je ne suis pas sure du nom*/
 			/*On load le driver*/
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("com.mysql.jdbc.Driver");
 			/*Mise en place de la connexion*/
 			try
 			{
-				con=DriverManager.getConnection("jdbc:sqlite:MovieCatalog");
+				con=DriverManager.getConnection("jdbc:sqlite:MovieCatalog",username,password);
 				Statement statement=con.createStatement();
-
-				
-				String query= "SELECT *" + " FROM table";
-				Statement stmt= con.createStatement();
-				ResultSet rs= stmt.executeQuery(query);
+				statement.executeUpdate(CREATE_TABLE_SQL);
+				System.out.println("Table created");
 				con.close();
 
-				}
+			}
 			catch(SQLException e)
 			{
 				System.err.println(e);
