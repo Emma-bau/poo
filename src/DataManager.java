@@ -23,9 +23,37 @@ public class DataManager {
 		return messagesHistory;
 	}
 
+
 	public void createBDD()
 	{
-		Connection con = null;
+		try
+		{
+			Connection con = null;
+			/*Je ne suis pas sure du nom*/
+			/*On load le driver*/
+			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+			/*Mise en place de la connexion*/
+			try
+			{
+				con=DriverManager.getConnection("jdbc:odbc:MovieCatalog");
+				Statement statement=con.createStatement();
+
+				
+				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
+				/*On ferme la BDD*/
+				con.close();
+
+			}
+			catch(SQLException e)
+			{
+				System.err.println(e);
+			}
+			
+		}
+		catch (ClassNotFoundException e)
+		{
+			System.out.println("Erreur dans la creation de la BDD");
+		}
 
 	}
 	
@@ -73,7 +101,7 @@ public class DataManager {
 		this.messagesHistory.add(m);
 		//
 		
-		agent.getInterfaceManager().getMainInterface();
+		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
 	}
 	
