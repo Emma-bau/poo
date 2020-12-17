@@ -7,8 +7,8 @@ public class Message {
 	private Contact contact;
 	private Contact author;
 	
-	public Message(String message, LocalDate timestamp,/* Contact author, */ Contact contact) {
-		//this.author = author;
+	public Message(String message, LocalDate timestamp, Contact author, Contact contact) {
+		this.author = author;
 		this.contact = contact;
 		this.message = message;
 		this.timestamp = timestamp;

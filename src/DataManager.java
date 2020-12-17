@@ -22,9 +22,15 @@ public class DataManager {
 	public ArrayList<Message> getMessagesHistory(){
 		return messagesHistory;
 	}
+
+	public void createBDD()
+	{
+		Connection con = null;
+
+	}
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
-		Message m = new Message(texte, LocalDate.now(),contact);
+		Message m = new Message(texte, LocalDate.now(),agent.getSelf(),contact);
 		
 		// BDD
 		/*Rajouter hier soir à voir comment ça fonctionne */

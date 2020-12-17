@@ -79,4 +79,12 @@ public class Agent {
 		Agent main = new Agent();
 
 	}
+
+	public Contact getSelf() {
+		return self;
+	}
+
+	public void setSelf(Contact self) {
+		this.self = self;
+	}
 }
