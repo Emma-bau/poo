@@ -34,9 +34,31 @@ public class ClientHandler extends Thread {
 			//tant que le client est connecte
 			while(msg!=null)
 			{
-				System.out.println("Message de "+user.getPseudo()+" : "+msg);
-				manager.getAgent().newMessageReceived(user, msg);
-				msg = in.readLine();
+				int x = msg.indexOf("ZQZQZ");
+					String pseudo="";
+					String text = "";
+
+					for (int i = 0; i<msg.length(); i++)
+					{
+						if(i<x)
+						{
+							text+=msg.charAt(i);
+						}
+						else if(i>(x+4))
+						{
+							pseudo +=msg.charAt(i);
+						}
+					}
+					for (Contact c : manager.getconnectedUser())
+					{
+						if (c.getPseudo().equals(pseudo))
+						{
+							System.out.println("Reception de :"+text+" envoye par "+c.getPseudo());
+							manager.getAgent().newMessageReceived(c, text);
+						}
+					}
+					
+					msg = in.readLine();
 			}
 			System.out.println("Serveur deconnecte");
 			//fermer le flux et la session socket

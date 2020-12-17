@@ -75,18 +75,12 @@ public class UDPManager extends Thread{
 					{
 						input += (char)buffer[i];
 					}
-
+					System.out.println(input);
 					String etat_String = regexSearch("(?<=etat: )\\d+", input);
 					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
 					String servPortTCP =  regexSearch("(?<=tcp: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
-					String fin =regexSearch("(?<=fin: )\\S+", input);
-					System.out.println(pseudo+"FIN");
-					pseudo.trim();
-					System.out.println(pseudo+"FIN");
-					System.out.println("Fin : "+fin);
-
-
+					
 					int etat = Integer.parseInt(etat_String);
 					int servPort= Integer.parseInt(servPort_String);
 					int tcpserv = Integer.parseInt(servPortTCP);
@@ -162,7 +156,7 @@ public class UDPManager extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo();
+				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo()+" final";
 				byte [] buffer = message.getBytes();
 				try
 				{
@@ -245,7 +239,7 @@ public class UDPManager extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo+"fin: fin";
+				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo+" final";
 				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)
@@ -274,7 +268,7 @@ public class UDPManager extends Thread{
 	public void deconnexion (String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-		String message = "etat: 3 servPort: "+portNumReception+"pseudo: "+pseudo;
+		String message = "etat: 3 servPort: "+portNumReception+"pseudo: "+pseudo+" final";
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)

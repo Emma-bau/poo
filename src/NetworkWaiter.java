@@ -34,7 +34,6 @@ public class NetworkWaiter implements Runnable {
 				//tant que le client est connecte
 				while(msg!=null)
 				{
-					System.out.println("Message : "+msg);
 					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
@@ -50,15 +49,11 @@ public class NetworkWaiter implements Runnable {
 							pseudo +=msg.charAt(i);
 						}
 					}
-					System.out.println("texte : "+ text);
-					System.out.println("pseudo :"+ pseudo.length());
 					for (Contact c : networkManager.getconnectedUser())
 					{
-						System.out.println("Contact trouve:" + c.getPseudo().length());
-						System.out.println(pseudo.equals(c.getPseudo()));
 						if (c.getPseudo().equals(pseudo))
 						{
-							System.out.println("c = pseudo");
+							System.out.println("Reception de :"+text+" envoye par"+c.getPseudo());
 							networkManager.getAgent().newMessageReceived(c, text);
 						}
 					}
