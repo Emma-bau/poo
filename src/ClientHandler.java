@@ -35,8 +35,8 @@ public class ClientHandler extends Thread {
 			while(msg!=null)
 			{
 				System.out.println("Message de "+user.getPseudo()+" : "+msg);
-				msg = in.readLine();
 				manager.getAgent().newMessageReceived(user, msg);
+				msg = in.readLine();
 			}
 			System.out.println("Serveur deconnecte");
 			//fermer le flux et la session socket
