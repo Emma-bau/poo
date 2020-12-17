@@ -52,8 +52,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		String txt1 = "salut ca va";
 		String txt2 = "REPONDS PTN";
 		LocalDate date = LocalDate.now();
-		Message m1 = new Message(txt1,date,contact);
-		Message m2 = new Message(txt2,date,contact);
+		Message m1 = new Message(txt1,date,agent.getSelf(),contact);
+		Message m2 = new Message(txt2,date,agent.getSelf(),contact);
 		messagesList.add(m1);
 		messagesList.add(m2);
 		//       //
@@ -79,7 +79,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		//ENVOIE LE MESSAGE AU CONTACT
 		//Mettre a jour l'historique a chaque envoi
 		LocalDate date = LocalDate.now();
-		Message newm = new Message(inputText.getText(),date,contact);
+		Message newm = new Message(inputText.getText(),date,agent.getSelf(),contact);
 		agent.sendMessageTo(newm);
 		
 		

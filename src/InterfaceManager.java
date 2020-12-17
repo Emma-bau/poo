@@ -44,7 +44,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		setTitle("Log In Chat Session");
 	}
 
-	public JFrame getMainInterface() {
+	public MainInterface getMainInterface() {
 		return this.mInterface;
 	}
 	
