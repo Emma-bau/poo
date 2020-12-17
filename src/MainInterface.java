@@ -63,8 +63,8 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
     
     public void toScreenSize() {
     	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    	int screenHeight = screenSize.height;
-    	int screenWidth = screenSize.width/*-(screenSize.width/4)*/;
+    	int screenHeight = screenSize.height-(screenSize.height/2);
+    	int screenWidth = screenSize.width-(screenSize.width/2);
     	frame.setSize(screenWidth, screenHeight);
     }
     
@@ -88,8 +88,10 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	}
 	
 	public void updateChatSessionMessages(Message m) {
+		System.out.println("update du main interface");
 		for(PrivateChatSession pcs : chatSessionList) {
 			if (pcs.getContact() == m.getContact()) {
+				System.out.println("update de private chat session");
 				pcs.updateHistory(m);
 			}
 		}

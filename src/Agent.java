@@ -52,6 +52,12 @@ public class Agent {
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
+	public Contact getSelf() {
+		return self;
+	}
+	public void setSelf(Contact self) {
+		this.self = self;
+	}
 
 	public boolean setPseudo(String pseudo) {
 		if (pseudoManager.setPseudo(pseudo)) {			
@@ -80,11 +86,5 @@ public class Agent {
 
 	}
 
-	public Contact getSelf() {
-		return self;
-	}
 
-	public void setSelf(Contact self) {
-		this.self = self;
-	}
 }
