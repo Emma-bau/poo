@@ -31,10 +31,17 @@ public class User {
 	{
 		try
 		{
+			String CREATE_TABLE_SQL="CREATE TABLE messages ("
+                    + "AUTHOR VARCHAR(45) NOT NULL,"
+                    + "CONTACT VARCHAR(45) NOT NULL,"
+                    + "MESSAGE DATE NOT NULL,"
+                    + "EMAIL VARCHAR(45) NOT NULL,"
+					+ "PRIMARY KEY (UID))";
+			
 			Connection con = null;
 			/*Je ne suis pas sure du nom*/
 			/*On load le driver*/
-			Class.forName("org.sqlite.JBDC");
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 			/*Mise en place de la connexion*/
 			try
 			{
@@ -42,11 +49,12 @@ public class User {
 				Statement statement=con.createStatement();
 
 				
-				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
-				/*On ferme la BDD*/
+				String query= "SELECT *" + " FROM table";
+				Statement stmt= con.createStatement();
+				ResultSet rs= stmt.executeQuery(query);
 				con.close();
 
-			}
+				}
 			catch(SQLException e)
 			{
 				System.err.println(e);
