@@ -80,9 +80,11 @@ public class UDPManager extends Thread{
 					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
 					String servPortTCP =  regexSearch("(?<=tcp: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
+					String fin =regexSearch("(?<=fin: )\\S+", input);
 					System.out.println(pseudo+"FIN");
 					pseudo.trim();
 					System.out.println(pseudo+"FIN");
+					System.out.println("Fin : "+fin);
 
 
 					int etat = Integer.parseInt(etat_String);
@@ -123,7 +125,7 @@ public class UDPManager extends Thread{
 		}
 		catch(SocketException e)
 		{
-			System.out.println("SocketException");
+			e.printStackTrace();
 		}
 
 	}
@@ -243,7 +245,7 @@ public class UDPManager extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo;
+				String message = "etat: 1 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo+"fin: fin";
 				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)

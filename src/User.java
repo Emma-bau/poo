@@ -35,7 +35,7 @@ public class User {
                     + "AUTHOR VARCHAR(45) NOT NULL,"
                     + "CONTACT VARCHAR(45) NOT NULL,"
                     + "DATEMESSAGE DATE NOT NULL,"
-					+ "MESSAGE VARCHAR(45) NOT NULL,";
+					+ "MESSAGE VARCHAR(45) NOT NULL)";
 					
 			String username = "tp_servlet_014";
 			String password = "Died1zie";
@@ -66,6 +66,8 @@ public class User {
 		}
 
 	}
+
+	
 	
 }
 

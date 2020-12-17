@@ -54,7 +54,7 @@ public class NetworkWaiter implements Runnable {
 					System.out.println("pseudo :"+ pseudo.length());
 					for (Contact c : networkManager.getconnectedUser())
 					{
-						System.out.println("Contact trouvé:" + c.getPseudo().length());
+						System.out.println("Contact trouve:" + c.getPseudo().length());
 						System.out.println(pseudo.equals(c.getPseudo()));
 						if (c.getPseudo().equals(pseudo))
 						{
