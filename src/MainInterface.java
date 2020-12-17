@@ -90,6 +90,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	public void updateChatSessionMessages(Message m) {
 		System.out.println("update du main interface");
 		for(PrivateChatSession pcs : chatSessionList) {
+			System.out.println(pcs + " / Contact du msg: " + m.getContact().getPseudo());
 			if (pcs.getContact() == m.getContact()) {
 				System.out.println("update de private chat session");
 				pcs.updateHistory(m);

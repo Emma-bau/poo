@@ -41,9 +41,17 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 
 	}
 
+	public String toString() {
+		return ("Chat session avec "+ this.contact.getPseudo());
+	}
 	public Contact getContact() {
 		return this.contact;
 	}
+	
+	public ArrayList<Message> getMessagesList() {
+		return this.messagesList;
+	}
+	
 	public void printHistory() {
 		// recuperer l'historique de conversation avec le contact
 
