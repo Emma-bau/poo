@@ -16,19 +16,22 @@ public class PseudoManager {
 		return pseudo;
 	}
 
-	public boolean setPseudo(String pseudo) { //doit a terme, verifier si le pseudo est valide
-		for (String p: usersPseudoList) {
-			if (p == pseudo) {
-				return false;
+	public int setPseudo(String pseudo) {
+		for (Contact c: agent.getNetworkManager().getconnectedUser()) {
+			if (c.getPseudo() == pseudo) {
+				return 1;
 			}
 		}
-		if (pseudo.length()>=20 || pseudo.contains(" ") || pseudo.contains("/")) {
-			return false;
+		if (pseudo.contains(" ") || pseudo.contains("\n") || pseudo.contains("DROP ")) {
+			return 2;
+		}
+		else if(pseudo.length()>=12 || pseudo.length() <= 2) {
+			return 3;
 		}
 		this.pseudo = pseudo;
+		agent.getSelf().setPseudo(pseudo);
 		this.usersPseudoList.add(pseudo);
-		//agent.getNetworkManager().notifyPseudoChange(pseudo); //envoie le nouveau pseudo sur le reseau
-		return true;
+		return 0;
 	}
 
 	public ArrayList<String> getUsersPseudoList() {

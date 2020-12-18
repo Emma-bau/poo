@@ -4,16 +4,17 @@ import java.awt.event.*;
 
 public class BoutonSession {
 	
-	private String text;
+	private String texte;
 	private int nb;
 	private JButton bouton;
 	private Contact contact;
 	
 	public BoutonSession(String text, int nb, Contact c) {
-		this.text = text;
+		this.texte = text;
 		this.nb = nb;
 		this.contact = c;
-		this.bouton = new JButton(text);
+		this.bouton = new JButton(texte);
+		bouton.setSize(300,100);
 	}
 
 	public String toString() {
@@ -27,10 +28,10 @@ public class BoutonSession {
 		this.contact = contact;
 	}
 	public String getText() {
-		return text;
+		return texte;
 	}
 	public void setText(String text) {
-		this.text = text;
+		this.texte = text;
 	}
 	public int getNb() {
 		return nb;
@@ -44,6 +45,4 @@ public class BoutonSession {
 	public void setBouton(JButton bouton) {
 		this.bouton = bouton;
 	}
-	
-	
 }

@@ -9,6 +9,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	final static String LOOKANDFEEL = "System";
 	private Agent agent;
 
+	private JFrame frame;
 	private JButton LOG_IN;
 	private JButton pseudoChange;
 	private JPanel panel;
@@ -16,12 +17,16 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	private final JTextField  inputId, inputPassword;
 	private MainInterface mInterface;
 
+	
 	public InterfaceManager(Agent agent) 
 	{
 		this.agent = agent;
+		this.frame = new JFrame();
+		
 		initLookAndFeel();
 		JFrame.setDefaultLookAndFeelDecorated(true);
-
+		frame.setTitle("Log In Chat Session");
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.mInterface = null;
 
 		labelId = new JLabel();
@@ -34,19 +39,27 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		LOG_IN = new JButton("Log In");
 
 		panel = new JPanel(new GridLayout(3,1));
+		frame.add(panel);
 		panel.add(labelId);
 		panel.add(inputId);
 		panel.add(labelPassword);
 		panel.add(inputPassword);
 		panel.add(LOG_IN);
-		add(panel,BorderLayout.CENTER);
 		LOG_IN.addActionListener(this);
-		setTitle("Log In Chat Session");
+		frame.getContentPane().add(panel);
+	    frame.setVisible(true);
 	}
 
+	
 	public MainInterface getMainInterface() {
 		return this.mInterface;
 	}
+	
+	
+	public JFrame getFrame() {
+		return this.frame;
+	}
+	
 	
 	public void actionPerformed(ActionEvent ae){
 		//bouton log_in
@@ -59,6 +72,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		}
 	}
 
+	
 	public void askIdAction() {
 		String strid = inputId.getText();
 		try {
@@ -96,41 +110,38 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	
 	public void askPseudoAction() {
 		String pseudo = inputId.getText();
-		boolean result = agent.setPseudo(pseudo);
-		if (result) {
+		int result = agent.setPseudo(pseudo);
+		if (result == 0) {
 			System.out.println("Pseudo:" + agent.getPseudoManager().getPseudo());
+			frame.dispose();
 			new Thread(this.mInterface = new MainInterface(this.agent,this)).start();
-			panel.setVisible(false);
 		}
-		else {
-			System.out.println("bad pseudo");
-			JOptionPane.showMessageDialog(this,"Bad pseudo, try again",
+		else if (result == 1){
+			JOptionPane.showMessageDialog(this,"Pseudo already in use",
+					"Error",JOptionPane.ERROR_MESSAGE);
+		}
+		else if (result == 2){
+			JOptionPane.showMessageDialog(this,"Bad pseudo: forbidden character(s) detected",
+					"Error",JOptionPane.ERROR_MESSAGE);
+		}
+		else if (result == 3){
+			JOptionPane.showMessageDialog(this,"Pseudo length must be >2 and <12",
 					"Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
-
-	//look and feel
+	
+	
 	private static void initLookAndFeel() { 
 		String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
 		try {
 			UIManager.setLookAndFeel(lookAndFeel);
 		} catch (ClassNotFoundException e) {
-			System.err.println("Couldn't find class for specified look and feel:"
-					+ lookAndFeel);
-			System.err.println("Did you include the L&F library in the class path?");
-			System.err.println("Using the default look and feel.");
+			System.err.println("Couldn't find class for specified look and feel:"+ lookAndFeel);
 		} catch (UnsupportedLookAndFeelException e) {
-			System.err.println("Can't use the specified look and feel ("
-					+ lookAndFeel
-					+ ") on this platform.");
-			System.err.println("Using the default look and feel.");
+			System.err.println("Can't use the specified look and feel ("+ lookAndFeel+ ") on this platform.");
 		} catch (Exception e) {
-			System.err.println("Couldn't get specified look and feel ("
-					+ lookAndFeel
-					+ "), for some reason.");
-			System.err.println("Using the default look and feel.");
-			e.printStackTrace();
+			System.err.println("Couldn't get specified look and feel ("+ lookAndFeel+ "), for some reason.");
 		}
 	}
 }

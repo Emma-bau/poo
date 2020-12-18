@@ -122,9 +122,9 @@ public class NetworkManager extends Thread {
 
 	public void sendMessage(Message message)
 	{
-		if(message.getContact().isClient())
+		if(message.getReceiver().isClient())
 		{
-			connectedClient.get(message.getContact().getNumClient()).envoie(message);
+			connectedClient.get(message.getReceiver().getNumClient()).envoie(message);
 		}
 		/*else
 		{

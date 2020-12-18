@@ -37,8 +37,6 @@ public class DataManager {
 			{
 				con=DriverManager.getConnection("jdbc:odbc:MovieCatalog");
 				Statement statement=con.createStatement();
-
-				
 				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
 				/*On ferme la BDD*/
 				con.close();
@@ -58,10 +56,8 @@ public class DataManager {
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
 		System.out.println("update du datamanager");
-		Message m = new Message(texte, LocalDate.now(),agent.getSelf(),contact);
-		System.out.println("update du datamanager 2");
+		Message m = new Message(texte, LocalDate.now(),contact,agent.getSelf());
 		this.messagesHistory.add(m);
-		System.out.println("update du datamanager 3");
 		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
 	}

@@ -8,15 +8,17 @@ import java.util.ArrayList;
 public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private static final long serialVersionUID = 1L;
 	final static String LOOKANDFEEL = "System";
-	final static float TitleFontSize = 25;
-	private Agent agent;
-	private InterfaceManager interfaceM;
+	final static float TitleFontSize = 12;
+	
 	private JFrame frame;
 	private JPanel panel1,panel2;
+	private Agent agent;
+	private InterfaceManager interfaceM;
 	private BoutonSession bContact, bChangePseudo;
 	private ArrayList<BoutonSession> listBouton;
 	private ArrayList<PrivateChatSession> chatSessionList;
     
+	
     public MainInterface(Agent agent, InterfaceManager interfaceM) {
 		this.agent = agent;
 		this.interfaceM = interfaceM;
@@ -24,7 +26,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		this.frame = new JFrame("Chat Session");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
+        
         this.panel1 = new JPanel();
         this.panel2 = new JPanel();
         
@@ -32,10 +36,16 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         toScreenSize();
 	}
     
+    
+    public InterfaceManager getInterfaceM() {
+    	return this.interfaceM;
+    }
+    
+    
     public void layout() {
         JLabel welcomeText = new JLabel();
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
-        welcomeText.setFont(welcomeText.getFont().deriveFont(TitleFontSize));
+        welcomeText.setFont(welcomeText.getFont().deriveFont(TitleFontSize+3));
         
         JLabel connectedListLb = new JLabel();
         connectedListLb.setText("Chose a connected user to talk to:");
@@ -51,8 +61,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         panel2.add(connectedListLb);
         panel1.setLayout(layout1);
         panel2.setLayout(layout2);
-        
-        // Add the three panels into the frame
+
         frame.setLayout(new GridLayout());
         frame.add(panel1);
         frame.add(panel2);
@@ -61,18 +70,24 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
         frame.setVisible(true);
     }
     
+    
     public void toScreenSize() {
     	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     	int screenHeight = screenSize.height-(screenSize.height/2);
     	int screenWidth = screenSize.width-(screenSize.width/2);
     	frame.setSize(screenWidth, screenHeight);
+    	GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        Point centerPoint = ge.getCenterPoint();
+    	int dx = centerPoint.x - screenWidth / 2;
+        int dy = centerPoint.y - screenHeight / 2;    
+        frame.setLocation(dx, dy);
     }
+    
     
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
-		
 		//Fonctionnement boutons chavardage
 		else {
 			for(BoutonSession b:listBouton) {
@@ -80,23 +95,24 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 					agent.establishConnexion(b.getContact());
 					PrivateChatSession pcs = new PrivateChatSession(b.getContact(),agent);
 					chatSessionList.add(pcs);
-					pcs.setVisible(true);
-					pcs.setSize(400,200);
+					pcs.getFrame().setVisible(true);
+					pcs.getFrame().setSize(400,200);
 				}
 			}
 		}
 	}
 	
+	
 	public void updateChatSessionMessages(Message m) {
-		System.out.println("update du main interface");
+		System.out.println("update main interface, message: " + m);
 		for(PrivateChatSession pcs : chatSessionList) {
-			System.out.println(pcs + " / Contact du msg: " + m.getContact().getPseudo());
-			if (pcs.getContact() == m.getContact()) {
-				System.out.println("update de private chat session");
+			if (pcs.getContact() == m.getAuthor()) {
+				System.out.println("pcs trouvé");
 				pcs.updateHistory(m);
 			}
 		}
 	}
+	
 	
 	@Override
 	public void run() {
@@ -115,7 +131,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 			//cree un bouton par contact connecte et l'ajoute a la liste
 			for (Contact c: agent.getNetworkManager().getconnectedUser()) {
 				i++;
-				bContact = new BoutonSession(i + " : " + c.getPseudo(),i,c);
+				bContact = new BoutonSession(c.getPseudo(),i,c);
 				listBouton.add(bContact);
 				bContact.getBouton().setSize(100,30);
 				panel2.add(bContact.getBouton());
@@ -129,8 +145,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				Thread.sleep(5000);
 			}
 			catch(InterruptedException e) {}
-			
 		}
 	}
+	
+	
 
 }

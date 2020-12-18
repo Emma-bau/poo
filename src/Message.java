@@ -4,16 +4,19 @@ public class Message {
 
 	private String message;
 	private LocalDate timestamp;
-	private Contact contact;
+	private Contact receiver;
 	private Contact author;
 	
-	public Message(String message, LocalDate timestamp, Contact author, Contact contact) {
+	public Message(String message, LocalDate timestamp, Contact author, Contact receiver) {
 		this.author = author;
-		this.contact = contact;
+		this.receiver = receiver;
 		this.message = message;
 		this.timestamp = timestamp;
 	}
 
+	public String toString() {
+		return ("From: "+author.getPseudo()+" to: "+receiver.getPseudo()+" / message is: "+message);
+	}
 	
 	public String getMessage() {
 		return message;
@@ -23,15 +26,24 @@ public class Message {
 		return timestamp;
 	}
 
-	public Contact getContact() {
-		return contact;
+	public Contact getReceiver() {
+		return receiver;
 	}
 
 	public Contact getSelf() {
 		return author;
 	}
-	public void setContact(Contact contact) {
-		this.contact = contact;
+	
+	public void setReceiver(Contact contact) {
+		this.receiver = contact;
+	}
+
+	public Contact getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Contact author) {
+		this.author = author;
 	}
 	
 	
