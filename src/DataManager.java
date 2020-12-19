@@ -13,6 +13,10 @@ public class DataManager {
 
 	private Agent agent;
 	private ArrayList<Message> messagesHistory;
+
+	public DataManager() {
+
+	}
 	
 	public DataManager(Agent agent) {
 		this.agent = agent;
