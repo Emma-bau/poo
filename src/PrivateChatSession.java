@@ -61,7 +61,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	
 	public void createChatHistory() {
 		
-		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise à jour ici
+		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
 		// this.messagesList = (bdd);
 		
 		int size = messagesList.size();

@@ -107,7 +107,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		System.out.println("update main interface, message: " + m);
 		for(PrivateChatSession pcs : chatSessionList) {
 			if (pcs.getContact() == m.getAuthor()) {
-				System.out.println("pcs trouvé");
+				System.out.println("pcs trouve");
 				pcs.updateHistory(m);
 			}
 		}
