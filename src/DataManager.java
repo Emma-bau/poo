@@ -27,6 +27,11 @@ public class DataManager {
 		return messagesHistory;
 	}
 
+	private String username = "tp_servlet_014";
+    private String password = "Died1zie";
+    private String url = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_014";
+    //private String url = "jcbd:mysql://tp_servlet_014:Died1zie@srv-bdens.insa-toulouse.fr:3306/tp_servlet_0014.db";
+
 
 	public void createBDD()
 	{
@@ -35,11 +40,11 @@ public class DataManager {
 			Connection con = null;
 			/*Je ne suis pas sure du nom*/
 			/*On load le driver*/
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+			Class.forName("com.mysql.jdbc.Driver");
 			/*Mise en place de la connexion*/
 			try
 			{
-				con=DriverManager.getConnection("jdbc:odbc:MovieCatalog");
+				con=DriverManager.getConnection(url,username,password);
 				Statement statement=con.createStatement();
 				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
 				/*On ferme la BDD*/
