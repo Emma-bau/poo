@@ -43,6 +43,7 @@ public class DataManager {
 				Statement statement=con.createStatement();
 				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
 				/*On ferme la BDD*/
+				System.out.println("courgette");
 				con.close();
 
 			}
