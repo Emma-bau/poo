@@ -10,10 +10,26 @@ import java.sql.Statement;
 
 
 public class DataManager {
-
+	/*Need to be connected to INSA VPN*/
 	private Agent agent;
 	private ArrayList<Message> messagesHistory;
-
+	
+	/*Information of connection*/
+	private String username = "tp_servlet_014";
+    private String password = "Died1zie";
+    private String url = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_014?useSSL=false";
+   
+    /*Table*/
+    /*Revoir la taille des messages*/
+    private final String message_table=
+    "CREATE TABLE messages ("
+            + "AUTHOR VARCHAR(45) NOT NULL,"
+            + "CONTACT VARCHAR(45) NOT NULL,"
+            + "DATEMESSAGE DATE NOT NULL,"
+            + "MESSAGE VARCHAR(200) NOT NULL)";
+    
+    
+    /*to delete after test*/
 	public DataManager() {
 
 	}
@@ -21,6 +37,7 @@ public class DataManager {
 	public DataManager(Agent agent) {
 		this.agent = agent;
 		this.messagesHistory = new ArrayList<Message>();
+		createBDD();
 	}
 	
 	public ArrayList<Message> getMessagesHistory(){
@@ -28,6 +45,7 @@ public class DataManager {
 	}
 
 
+	
 	public void createBDD()
 	{
 		try
@@ -35,21 +53,26 @@ public class DataManager {
 			Connection con = null;
 			/*Je ne suis pas sure du nom*/
 			/*On load le driver*/
-			Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+			Class.forName("com.mysql.jdbc.Driver");
 			/*Mise en place de la connexion*/
 			try
 			{
-				con=DriverManager.getConnection("jdbc:odbc:MovieCatalog");
+				con=DriverManager.getConnection(url,username,password);
+				System.out.println("Connected database successfully");
 				Statement statement=con.createStatement();
-				//ResultSet rs=statement.executeQuery("SELECT*"+FROMtable);
+				/*On creer la table qui contient l'historique des messages*/
+				statement.executeUpdate(message_table);
+				System.out.println("Table created");
 				/*On ferme la BDD*/
-				System.out.println("courgette");
+				statement.close();
 				con.close();
 
 			}
 			catch(SQLException e)
 			{
 				System.err.println(e);
+				e.printStackTrace();
++
 			}
 			
 		}
