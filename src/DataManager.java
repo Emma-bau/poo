@@ -4,6 +4,7 @@ import com.mysql.jdbc.DatabaseMetaData;
 import com.mysql.jdbc.ResultSetMetaData;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.IOError;
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 
 public class DataManager {
@@ -115,18 +118,9 @@ public class DataManager {
 	{
 		try 
 		{
-
-			int statut = statement.executeUpdate("INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES (m.getAuthor().getId(), m.getReceiver().getId(),m.getTimestamp(),m.getMessage())");
-			ResultSet RS = statement.executeQuery("SELECT AUTHOR,CONTACT,DATEMESSAGE,MESSAGE FROM messages");
-	        while(RS.next()) {
-	        	  System.out.println("BDD contenu : ");
-	              System.out.println(RS.getString("AUTHOR"));
-	              System.out.println(RS.getString("CONTACT"));
-	              System.out.println(RS.getString("DATEMESSAGE"));
-	              System.out.println(RS.getString("MESSAGE"));
-	              System.out.println("END");
-	        }
-	        RS.close(); 
+			String sql = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"','"+m.getMessage()+"')";
+			int statut = statement.executeUpdate(sql);
+			
 		}
 		catch(SQLException e)
 		{
@@ -144,6 +138,12 @@ public class DataManager {
 		
 	}
 
+	public ArrayList<Message> loadHistory(int id)
+	{
+		ArrayList<Message> message = new ArrayList<Message>();
+		return message;
+	}
+	
 	
 	public void delete_table()
 	{

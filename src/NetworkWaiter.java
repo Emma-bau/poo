@@ -66,8 +66,8 @@ public class NetworkWaiter implements Runnable {
 				} 
 			catch (IOException e) 
 			{
+				System.err.println(e);
 				e.printStackTrace();
-				System.out.println("probleme dans recevoir");
 			}
 			
 
@@ -75,8 +75,8 @@ public class NetworkWaiter implements Runnable {
 
 		catch(Exception e)
 		{
+			System.err.println(e);
 			e.printStackTrace();
-			System.out.println("Erreur au niveau du serveur niveau 2");
 		}
 
 	
@@ -97,12 +97,12 @@ public class NetworkWaiter implements Runnable {
 			}
 			catch(SocketException e)
 			{
-				System.out.println("Erreur ouverture buffer en out dans clienthandler");
+				System.err.println(e);
 			}
 		}
 		catch(IOException e)
 		{
-			System.out.println("Erreur ouverture buffer en out dans clienthandler");
+			System.err.println(e);
 		}
 	}
 
