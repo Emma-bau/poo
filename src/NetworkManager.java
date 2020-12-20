@@ -18,7 +18,7 @@ public class NetworkManager extends Thread {
 
 	private Message ReceiveMessage;
 	private UDPManager udpserver;
-	private int numPortTcp;  	//Serveur tcp
+	private int numPortTcp; 
 	private boolean Connexion = true;
 	private int numClient = 0;
 	private int numWaiter = 0;
@@ -98,7 +98,7 @@ public class NetworkManager extends Thread {
 
 		try
 		{
-			//Création de notre insatnce d'UDP
+			//Creation de notre insatnce d'UDP
 			udpserver = new UDPManager(this);
 		}
 		catch(SocketException e)

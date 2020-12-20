@@ -12,6 +12,7 @@ public class Agent {
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
 	private Contact self;
+	//private User user; 
 
 	public Agent() {
 
@@ -22,7 +23,7 @@ public class Agent {
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
-			Contact self = new Contact(9999,9999,"blank",adress);
+			Contact self = new Contact(9999,9999,"blank",adress,101);
 			this.self = self;
 		} catch (UnknownHostException e) {}
 		
@@ -81,6 +82,7 @@ public class Agent {
 	public static void main(String[] args) {
 		
 		Agent main = new Agent();
+		
 
 	}
 

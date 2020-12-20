@@ -40,7 +40,7 @@ public class DataManager {
 		this.messagesHistory = new ArrayList<Message>();
 		/*Connexion to BDD, check contain of table*/
 		connexion();
-		createBDD();
+		/*createBDD();*/
 		/*delete_table();*/
 	}
 	
@@ -113,19 +113,18 @@ public class DataManager {
 	
 	public void add (Message m)
 	{
-		/*try 
+		try 
 		{
-			String author =m.getAuthor().getPseudo();
-			String dest= m.getReceiver().getPseudo();
-			LocalDate time = m.getTimestamp();
-			String message = m.getMessage();
 
-			
-			int statut = statement.executeUpdate("INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ('author', 'dest','time','message')");
-			ResultSet RS = statement.executeQuery("SELECT AUTHOR,CONTACT FROM messages");
+			int statut = statement.executeUpdate("INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES (m.getAuthor().getId(), m.getReceiver().getId(),m.getTimestamp(),m.getMessage())");
+			ResultSet RS = statement.executeQuery("SELECT AUTHOR,CONTACT,DATEMESSAGE,MESSAGE FROM messages");
 	        while(RS.next()) {
+	        	  System.out.println("BDD contenu : ");
 	              System.out.println(RS.getString("AUTHOR"));
 	              System.out.println(RS.getString("CONTACT"));
+	              System.out.println(RS.getString("DATEMESSAGE"));
+	              System.out.println(RS.getString("MESSAGE"));
+	              System.out.println("END");
 	        }
 	        RS.close(); 
 		}
@@ -133,7 +132,7 @@ public class DataManager {
 		{
 			System.err.println(e);
 			e.printStackTrace();
-		}*/
+		}
 		
 	}
 	

@@ -77,13 +77,15 @@ public class UDPManager extends Thread{
 					}
 					System.out.println(input);
 					String etat_String = regexSearch("(?<=etat: )\\d+", input);
-					String servPort_String = regexSearch("(?<=servPort: )\\d+", input);
-					String servPortTCP =  regexSearch("(?<=tcp: )\\d+", input);
+					String servPortUDP_String = regexSearch("(?<=servPort: )\\d+", input);
+					String servPortTCP_String =  regexSearch("(?<=tcp: )\\d+", input);
+					String id_String =  regexSearch("(?<=id: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
 					
 					int etat = Integer.parseInt(etat_String);
-					int servPort= Integer.parseInt(servPort_String);
-					int tcpserv = Integer.parseInt(servPortTCP);
+					int udpserv= Integer.parseInt(servPortUDP_String);
+					int tcpserv = Integer.parseInt(servPortTCP_String);
+					int id = Integer.parseInt(id_String);
 
 					//Changement de login//
 					if(etat==CHANGE_LOGIN)
@@ -94,7 +96,7 @@ public class UDPManager extends Thread{
 					//Nouvelle Connexion
 					else if(etat==CONNEXION || etat==ANSWER_CONNEXION )
 					{
-						create_contact(clientAddress,pseudo,servPort,etat,tcpserv);
+						create_contact(clientAddress,pseudo,udpserv,etat,tcpserv,id);
 
 					}
 					else if(etat==DECONNEXION)
@@ -103,7 +105,7 @@ public class UDPManager extends Thread{
 					}
 					else       
 					{
-						System.out.println("Problème avec le broadcast, non lecture du buffer");
+						System.out.println("Probleme avec le broadcast, non lecture du buffer");
 					}
 					
 				}
@@ -136,14 +138,14 @@ public class UDPManager extends Thread{
 		}
 	}
 
-	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat, int tcp)
+	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat, int tcp, int id)
 	{
 
 		try{
 			//Mise a jour de nos contacts//
 			ArrayList<Contact> connectedUser = manager.getconnectedUser();
 
-			Contact C = new Contact(ServPort,tcp,pseudo,clientAddress);
+			Contact C = new Contact(ServPort,tcp,pseudo,clientAddress,id);
 			connectedUser.add(C);
 			manager.setconnectedUser(connectedUser);
 
@@ -156,7 +158,7 @@ public class UDPManager extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
-				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo()+" final";
+				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo()+" final";
 				byte [] buffer = message.getBytes();
 				try
 				{
@@ -239,14 +241,13 @@ public class UDPManager extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"pseudo: "+pseudo+" final";
+				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 				for (int i=65534; i>65233;i--)
 				{
 					if(i != portNumReception)
 					{
 					
 						broadcast(message,adress,i,envoie);
-						//System.out.println("Envoie au port : "+i);
 
 					}
 				}
@@ -268,7 +269,7 @@ public class UDPManager extends Thread{
 	public void deconnexion (String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-		String message = "etat: 3 servPort: "+portNumReception+"pseudo: "+pseudo+" final";
+		String message = "etat: 3 servPort: "+portNumReception+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)

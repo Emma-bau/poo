@@ -53,7 +53,6 @@ public class NetworkWaiter implements Runnable {
 					{
 						if (c.getPseudo().equals(pseudo))
 						{
-							System.out.println("Reception de :"+text+" envoye par"+c.getPseudo());
 							networkManager.getAgent().newMessageReceived(c, text);
 						}
 					}
@@ -93,7 +92,6 @@ public class NetworkWaiter implements Runnable {
 				PrintWriter out = new PrintWriter(link.getOutputStream());
 				String msg;
 				msg = message.getMessage();
-				System.out.println("Envoie de : " + msg);
 				out.println(msg);
 				out.flush();
 			}

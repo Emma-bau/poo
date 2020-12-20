@@ -5,18 +5,32 @@ public class Contact
     
     private String pseudo;
     private InetAddress adresse;
+    private int id;
+    
     private int udp_serv_port;
     private int tcp_serv_port;
+    
+    /*Identification pour le client handle*/
     private int numClient;
     private boolean isClient; 
-
-    public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse)
+    
+	public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse, int id)
     {
         this.udp_serv_port=udp_port;
         this.tcp_serv_port=tcp_port;
         this.pseudo=pseudo;
         this.adresse=adresse;
+        this.id=id;
     }
+	
+	public int getId() {
+			return id;
+		}
+
+	public void setId(int id) {
+			this.id = id;
+		}
+
 
     public int getServPort() {
         return udp_serv_port;
