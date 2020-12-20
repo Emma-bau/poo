@@ -1,0 +1,8 @@
+
+Rajouter dans udp un champs id, pour la bdd. ajouter ce champs au contact, pour la mise à jour et la recherche
+Rajouter une fonction delete de ce qui existe déjà dans la BDD ( notamment pour les tests)
+Ecrire la fonction qui fait la recherche dans la BDD
+Décommenter la fonction add après le test d'id
+--------------------------------------------------------------------------------------------
+
+Commencer à regarder comment marche le servlets

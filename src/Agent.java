@@ -79,13 +79,8 @@ public class Agent {
 	}
 	
 	public static void main(String[] args) {
-
-		//NetworkManager networkManager = new NetworkManager(numportServer);
-		//Agent main = new Agent();
-		DataManager data = new DataManager();
-		data.createBDD();
-
-
+		
+		Agent main = new Agent();
 
 	}
 

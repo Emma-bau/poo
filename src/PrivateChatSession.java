@@ -96,7 +96,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		System.out.println("updateHistory de private chat session");
 		
 		// /!\ DOIT MODIFIER LA BDD ICI, PAS LA MESSAGE LIST DIRECTEMENT
-		// (bdd).add(m);
+		agent.getDataManager().add(m);
+		System.out.println("updateBDD de private chat session");
 		
 		messagesList.add(m); //a supp une fois la bdd fonctionnelle 
 		createChatHistory();
