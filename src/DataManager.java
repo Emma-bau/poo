@@ -1,19 +1,15 @@
 import java.util.ArrayList;
+import java.util.Date;
 
-import com.mysql.jdbc.DatabaseMetaData;
 import com.mysql.jdbc.ResultSetMetaData;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.io.IOError;
-import java.io.IOException;
+import java.time.ZoneId;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 
 public class DataManager {
@@ -43,6 +39,7 @@ public class DataManager {
 		this.messagesHistory = new ArrayList<Message>();
 		/*Connexion to BDD, check contain of table*/
 		connexion();
+		loadHistory(101);
 		/*createBDD();*/
 		/*delete_table();*/
 	}
@@ -120,6 +117,10 @@ public class DataManager {
 		{
 			String sql = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"','"+m.getMessage()+"')";
 			int statut = statement.executeUpdate(sql);
+			if (statut==0)
+			{
+				System.out.println("Aucune entree ajouter à la table");
+			}
 			
 		}
 		catch(SQLException e)
@@ -141,6 +142,51 @@ public class DataManager {
 	public ArrayList<Message> loadHistory(int id)
 	{
 		ArrayList<Message> message = new ArrayList<Message>();
+		/*a voir l'ordre*/
+		try {
+			String sql = "SELECT * from messages WHERE AUTHOR = '"+String.valueOf(id) +"' OR CONTACT = '"+String.valueOf(id)+"' ";
+			ResultSet rs =statement.executeQuery(sql);
+			while (rs.next())
+		     {
+				
+		        int author = rs.getInt("AUTHOR");
+		        String messages = rs.getString("MESSAGE");
+		        int contact = rs.getInt("CONTACT");
+		        Date dateFirst = rs.getDate("DATEMESSAGE");
+		        LocalDate date = dateFirst.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		        Contact destinataire=null;
+		        Contact auteur=null;
+		        /*recherche de l'auteur et du destinateur afin de creer les contacts*/
+		        for(Contact C : agent.getNetworkManager().getconnectedUser())
+		        {
+		        	if(author==C.getId())
+		        	{
+		        		auteur=C;
+		        	}
+		        	if(contact==C.getId())
+		        	{
+		        		destinataire=C;
+		        	}
+		        }
+		        if(auteur==null || destinataire==null)
+		        {
+		        	System.out.println("Erreur dans la recherche de contact associe a la BDD");
+		        }
+		        else 	
+		        {
+		        	 Message m = new Message(messages, date, auteur, destinataire);
+		        	 message.add(m);
+		        }
+		       
+
+		     }
+		}
+		catch(SQLException e) 
+		{
+			System.err.println(e);
+			e.printStackTrace();
+		}
 		return message;
 	}
 	
