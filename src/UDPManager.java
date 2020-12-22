@@ -234,7 +234,6 @@ public class UDPManager extends Thread{
 			manager.getAgent().getSelf().setPseudo(pseudo);
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
-			manager.getAgent().getSelf().afficher();
 			
 		}
 		catch(UnknownHostException e)
