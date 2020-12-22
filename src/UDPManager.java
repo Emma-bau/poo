@@ -162,7 +162,6 @@ public class UDPManager extends Thread{
 				byte [] buffer = message.getBytes();
 				try
 				{
-					//Envoie de nos informations
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
 					envoie.send(packet);
@@ -232,6 +231,11 @@ public class UDPManager extends Thread{
 		{
 			start();
 			adress = InetAddress.getByName("localhost");
+			manager.getAgent().getSelf().setPseudo(pseudo);
+			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
+			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
+			manager.getAgent().getSelf().afficher();
+			
 		}
 		catch(UnknownHostException e)
 		{

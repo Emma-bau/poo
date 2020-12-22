@@ -77,6 +77,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		String strid = inputId.getText();
 		try {
 			int id = Integer.parseInt(strid);
+			agent.getSelf().setId(id);
 			String password = inputPassword.getText();
 
 			if (agent.getIdManager().verifyID(id,password) == 1) {

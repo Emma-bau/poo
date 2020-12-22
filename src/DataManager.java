@@ -159,6 +159,7 @@ public class DataManager {
 		try {
 			String sql = "SELECT * from messages WHERE AUTHOR = '"+String.valueOf(id) +"' OR CONTACT = '"+String.valueOf(id)+"' ";
 			ResultSet rs =statement.executeQuery(sql);
+			System.out.println("On a réussi à load ici");
 			while (rs.next())
 		     {
 				
