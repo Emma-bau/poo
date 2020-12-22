@@ -1,8 +1,14 @@
+package view;
 import javax.swing.*;
+
+import controller.InterfaceManager;
+import main.Agent;
+import model.BoutonSession;
+import model.Contact;
+import model.Message;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 public class MainInterface extends JFrame implements ActionListener, Runnable {
@@ -86,6 +92,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
     
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
+			@SuppressWarnings("unused")
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
 		//Fonctionnement boutons chavardage

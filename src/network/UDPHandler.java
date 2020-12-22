@@ -1,13 +1,17 @@
+package network;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controller.NetworkManager;
+import model.Contact;
 
 
 
-public class UDPManager extends Thread{
+
+public class UDPHandler extends Thread{
 	// define the range 
     int max = 65500; 
     int min = 65300; 
@@ -31,7 +35,7 @@ public class UDPManager extends Thread{
 
 
 
-	public UDPManager(NetworkManager net ) throws SocketException
+	public UDPHandler(NetworkManager net ) throws SocketException
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir

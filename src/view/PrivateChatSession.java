@@ -1,4 +1,10 @@
+package view;
 import javax.swing.*;
+
+import main.Agent;
+import model.Contact;
+import model.Message;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;

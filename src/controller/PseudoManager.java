@@ -1,4 +1,8 @@
+package controller;
 import java.util.ArrayList;
+
+import main.Agent;
+import model.Contact;
 
 public class PseudoManager {
 	/*pseudo de l'hote*/

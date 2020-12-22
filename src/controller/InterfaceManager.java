@@ -1,4 +1,9 @@
+package controller;
 import javax.swing.*;
+
+import main.Agent;
+import view.MainInterface;
+
 import java.awt.*;
 import java.awt.event.*;
 

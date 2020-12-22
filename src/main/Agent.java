@@ -1,7 +1,14 @@
-import java.util.ArrayList;
+package main;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+
+import controller.DataManager;
+import controller.IDManager;
+import controller.InterfaceManager;
+import controller.NetworkManager;
+import controller.PseudoManager;
+import model.Contact;
+import model.Message;
+
 import java.net.*;
 
 public class Agent {
@@ -81,6 +88,7 @@ public class Agent {
 	
 	public static void main(String[] args) {
 		
+		@SuppressWarnings("unused")
 		Agent main = new Agent();
 		
 

@@ -1,15 +1,20 @@
+package network;
 import java.io.*;
 import java.net.*;
 
+import controller.NetworkManager;
+import model.Contact;
+import model.Message;
 
 
-public class ClientHandler extends Thread {
+
+public class ClientTCPHandler extends Thread {
 
 	private final NetworkManager manager;
 	private final Contact user;
 	private Socket clientSocket;
 
-    public ClientHandler(NetworkManager Manager, Contact contact)
+    public ClientTCPHandler(NetworkManager Manager, Contact contact)
     {
 		this.manager = Manager;
 		this.user = contact;

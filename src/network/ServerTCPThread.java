@@ -1,19 +1,24 @@
+package network;
 import java.net.*;
 import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controller.NetworkManager;
+import model.Contact;
+import model.Message;
+
 /*Serveur en attente d'une connexion de quelqu'un a notre client */
 
-public class NetworkWaiter implements Runnable {
+public class ServerTCPThread implements Runnable {
 
 	private final Socket link;
 	private final NetworkManager networkManager;
-	private Contact user;
+
 	
 
 
-	public NetworkWaiter(Socket link, NetworkManager networkManager, InetAddress adresse) {
+	public ServerTCPThread(Socket link, NetworkManager networkManager, InetAddress adresse) {
 		this.link = link;
 		this.networkManager = networkManager;
 

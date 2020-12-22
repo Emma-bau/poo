@@ -1,3 +1,4 @@
+package view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -5,6 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import main.Agent;
 
 public class ChangePseudoInterface extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;

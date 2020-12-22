@@ -1,4 +1,14 @@
+package controller;
 import java.util.*;
+
+import main.Agent;
+import model.Contact;
+import model.Message;
+import network.ClientTCPHandler;
+import network.ServerTCPThread;
+import network.ServerTCPHandler;
+import network.UDPHandler;
+
 import java.net.*;
 
 
@@ -10,14 +20,14 @@ public class NetworkManager extends Thread {
 	/*LIste de tous les contacts connectes*/
 	private ArrayList<Contact> connectedUser ;
 	/*C'est nous qui avons initier la connexion*/
-	private ArrayList<ClientHandler> connectedClient = new ArrayList<ClientHandler>();
+	private ArrayList<ClientTCPHandler> connectedClient = new ArrayList<ClientTCPHandler>();
 	/*C'est un usage qui l'a initier*/
-	private ArrayList<NetworkWaiter> connectedNetwork = new ArrayList<NetworkWaiter>();
+	private ArrayList<ServerTCPThread> connectedNetwork = new ArrayList<ServerTCPThread>();
 	/*Liste des messages recus*/
 	private ArrayList<Message> message_recu;
 
 	private Message ReceiveMessage;
-	private UDPManager udpserver;
+	private UDPHandler udpserver;
 	private int numPortTcp; 
 	private boolean Connexion = true;
 	private int numClient = 0;
@@ -39,11 +49,11 @@ public class NetworkManager extends Thread {
 	}
 
 
-	public ArrayList<NetworkWaiter> getConnectedNetwork() {
+	public ArrayList<ServerTCPThread> getConnectedNetwork() {
 		return connectedNetwork;
 	}
 
-	public void setConnectedNetwork(ArrayList<NetworkWaiter> connectedNetwork) {
+	public void setConnectedNetwork(ArrayList<ServerTCPThread> connectedNetwork) {
 		this.connectedNetwork = connectedNetwork;
 	}
 
@@ -59,11 +69,11 @@ public class NetworkManager extends Thread {
 	}
 
 
-	public UDPManager getUdpserver() {
+	public UDPHandler getUdpserver() {
 		return udpserver;
 	}
 
-	public void setUdpserver(UDPManager udpserver) {
+	public void setUdpserver(UDPHandler udpserver) {
 		this.udpserver = udpserver;
 	}
 	
@@ -99,7 +109,7 @@ public class NetworkManager extends Thread {
 		try
 		{
 			//Creation de notre insatnce d'UDP
-			udpserver = new UDPManager(this);
+			udpserver = new UDPHandler(this);
 		}
 		catch(SocketException e)
 		{
@@ -107,13 +117,13 @@ public class NetworkManager extends Thread {
 		}
 			
 		//Creation de notre serveur tcp
-		ServerHandler server = new ServerHandler(this, numPortTcp);
+		ServerTCPHandler server = new ServerTCPHandler(this, numPortTcp);
 		server.start();	
 	}
 	
 	public void connexion_tcp(Contact contact)
 	{
-		connectedClient.add(numClient,new ClientHandler(this,contact));
+		connectedClient.add(numClient,new ClientTCPHandler(this,contact));
 		connectedClient.get(numClient).start();
 		contact.setNumClient(numClient);
 		contact.setClient(true);
