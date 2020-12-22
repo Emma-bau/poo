@@ -39,8 +39,9 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		
 		frame.setTitle("Chat session with " + this.contact.getPseudo());
 		
-		System.out.println("Chargement de l'historique a l'ouverture de la session avec : "+contact.getPseudo());
-		createChatHistory(agent.getSelf().getId(),contact.getId());
+		//messagesList = SAUVEGARDE DE LA BDD a partir d'ici /!\
+		
+		createChatHistory();
 		createSendCheck();
 	}
 
@@ -58,10 +59,10 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		return this.messagesList;
 	}
 	
-	public void createChatHistory(int auteur, int dest) {
+	public void createChatHistory() {
 		
 		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
-		this.messagesList = agent.getDataManager().loadHistory(auteur,dest);
+		// this.messagesList = (bdd);
 		
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
@@ -92,8 +93,13 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 
 	// receive message
 	public void updateHistory(Message m) {
-		System.out.println("Recieve message");
-		createChatHistory(m.getAuthor().getId(), m.getReceiver().getId());
+		System.out.println("updateHistory de private chat session");
+		
+		// /!\ DOIT MODIFIER LA BDD ICI, PAS LA MESSAGE LIST DIRECTEMENT
+		// (bdd).add(m);
+		
+		messagesList.add(m); //a supp une fois la bdd fonctionnelle 
+		createChatHistory();
 	}
 
 	@Override
@@ -105,7 +111,11 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		}
 		Message newMessage = new Message(inputText.getText(),date,agent.getSelf(),contact);
 		agent.sendMessageTo(newMessage);
-		agent.getDataManager().add(newMessage);
-		createChatHistory(newMessage.getAuthor().getId(),newMessage.getReceiver().getId());
+		
+		// /!\ DOIT MODIFIER LA BDD EGALEMENT
+		// (bdd).add(newMessage);
+		
+		messagesList.add(newMessage); //a supp une fois la bdd fonctionnelle
+		createChatHistory();
 	}
 }
