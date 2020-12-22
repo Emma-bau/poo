@@ -1,8 +1,14 @@
 
-Rajouter une fonction delete de ce qui existe déjà dans la BDD ( notamment pour les tests)
-Ecrire la fonction qui fait la recherche dans la BDD, SELECT
-gérer l'id de connexion
-updateHistory sert à quoi ? 
+- chatHistory gérer les ids à rajouter pour la recherche je pense, ou regarder plus le code si ce n'est pas déjà pris en compte
+- dans loadHistory dans le select faire des test pour voir si on peut rajouter un XOR ? (pour que ça marche dans les deux sens)
+- check de l'ordre de récupération des messages 
+Courgette si ça fonctionne la bdd est fini
+- Erreur socket au moment de la déco à checker ( je ne sais pas pourquoi elle apparait maintenant)
+
+Demander à Matthieu : 
+
+- Déconnexion gérer l'envoie de la déco (il faudra checker si ma procédure peut fonctionner
 --------------------------------------------------------------------------------------------
 
+Faire un code plus joli, checker les noms de variables, les commentaires, les system.out.println
 Commencer à regarder comment marche le servlets

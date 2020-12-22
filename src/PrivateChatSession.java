@@ -62,7 +62,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	public void createChatHistory() {
 		
 		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
-		// this.messagesList = (bdd);
+		/*Incorrect id sélectionner je ne sais pas comment tu le recupere*/
+		this.messagesList = agent.getDataManager().loadHistory(agent.getSelf().getId());
 		
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
@@ -96,7 +97,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		System.out.println("updateHistory de private chat session");
 		agent.getDataManager().add(m);
 		System.out.println("updateBDD de private chat session");
-
 		createChatHistory();
 	}
 
