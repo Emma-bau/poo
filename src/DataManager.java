@@ -38,8 +38,10 @@ public class DataManager {
 		this.agent = agent;
 		this.messagesHistory = new ArrayList<Message>();
 		/*Connexion to BDD, check contain of table*/
+		
 		connexion();
-		loadHistory(101);
+		delete_contain();
+		/*loadHistory(101);*/
 		/*createBDD();*/
 		/*delete_table();*/
 	}
@@ -117,6 +119,17 @@ public class DataManager {
 		{
 			String sql = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"','"+m.getMessage()+"')";
 			int statut = statement.executeUpdate(sql);
+			
+			System.out.println("Table entree ajoutee");
+			/*Affichage de la table*/
+			ResultSet RS = statement.executeQuery("SELECT AUTHOR, CONTACT, DATEMESSAGE, MESSAGE FROM messages");
+			while(RS.next()) {
+              System.out.println(RS.getInt("AUTHOR"));
+              System.out.println(RS.getInt("CONTACT"));
+              System.out.println(RS.getDate("DATEMESSAGE"));
+              System.out.println(RS.getString("MESSAGE"));
+			}
+			RS.close(); 
 			if (statut==0)
 			{
 				System.out.println("Aucune entree ajouter à la table");
@@ -204,5 +217,31 @@ public class DataManager {
 			System.err.println(e);
 			e.printStackTrace();
 		}
+	}
+	
+	public void delete_contain()
+	{
+		try 
+		{
+			String sql = "DELETE from messages ";
+			statement.executeUpdate(sql);
+			
+			System.out.println("Table erased");
+			/*Affichage de la table*/
+			ResultSet RS = statement.executeQuery("SELECT AUTHOR, CONTACT, DATEMESSAGE, MESSAGE FROM messages");
+			while(RS.next()) {
+              System.out.println(RS.getInt("AUTHOR"));
+              System.out.println(RS.getInt("CONTACT"));
+              System.out.println(RS.getDate("DATEMESSAGE"));
+              System.out.println(RS.getString("MESSAGE"));
+			}
+			RS.close(); 
+		}
+		catch(SQLException e)
+		{
+			System.err.println(e);
+			e.printStackTrace();
+		}
+		
 	}
 }
