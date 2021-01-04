@@ -54,7 +54,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 		frame.getContentPane().add(panel);
 	    frame.setVisible(true);
 	}
-
+	
 	
 	public MainInterface getMainInterface() {
 		return this.mInterface;
@@ -76,7 +76,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 			askPseudoAction();
 		}
 	}
-
+	
 	
 	public void askIdAction() {
 		String strid = inputId.getText();
@@ -135,7 +135,6 @@ public class InterfaceManager extends JFrame implements ActionListener {
 					"Error",JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
 	
 	
 	private static void initLookAndFeel() { 

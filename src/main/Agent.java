@@ -19,6 +19,7 @@ public class Agent {
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
 	private Contact self;
+	private boolean first_time_pseudo;
 	//private User user; 
 
 	public Agent() {
@@ -27,6 +28,7 @@ public class Agent {
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
+		this.first_time_pseudo = true;
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
@@ -68,8 +70,16 @@ public class Agent {
 
 	public int setPseudo(String pseudo) {
 		int pseudoTest = pseudoManager.setPseudo(pseudo);
-		if (pseudoTest == 0) {			
-			networkManager.getUdpserver().first_connexion(pseudo);
+		if (pseudoTest == 0) {		
+			if (this.first_time_pseudo == true) {
+				networkManager.getUdpserver().first_connexion(pseudo);
+				this.first_time_pseudo = false;
+			}
+			else {
+				System.out.println("udpserver.change_pseudo: " + pseudo);
+				interfaceManager.getMainInterface().updatePseudo();
+				networkManager.getUdpserver().change_pseudo(pseudo);
+			}
 		}
 		return pseudoTest;
 	}

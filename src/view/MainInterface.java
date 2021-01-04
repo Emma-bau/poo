@@ -20,9 +20,11 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private JPanel panel1,panel2;
 	private Agent agent;
 	private InterfaceManager interfaceM;
-	private BoutonSession bContact, bChangePseudo;
+	private BoutonSession bContact;
 	private ArrayList<BoutonSession> listBouton;
 	private ArrayList<PrivateChatSession> chatSessionList;
+	private JButton bChangePseudo;
+	private JLabel welcomeText;
 
 
 	public MainInterface(Agent agent, InterfaceManager interfaceM) {
@@ -34,6 +36,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		this.frame = new JFrame("Chat Session");
 		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
+		//gere la deconnexion
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				onExit();
@@ -42,6 +45,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 		frame.setResizable(false);
 
+		welcomeText = new JLabel();
+		this.bChangePseudo = new JButton("Change Pseudo");
+		bChangePseudo.addActionListener(this);
 		this.panel1 = new JPanel();
 		this.panel2 = new JPanel();
 
@@ -49,6 +55,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		toScreenSize();
 	}
 
+	//action a la deconnexion
 	public void onExit() {
 		agent.deconnexion();
 		System.exit(0);
@@ -60,15 +67,13 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 
 	public void layout() {
-		JLabel welcomeText = new JLabel();
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
 		welcomeText.setFont(welcomeText.getFont().deriveFont(TitleFontSize+3));
 
 		JLabel connectedListLb = new JLabel();
 		connectedListLb.setText("Chose a connected user to talk to:");
 		connectedListLb.setFont(connectedListLb.getFont().deriveFont(TitleFontSize));
-
-		JButton bChangePseudo = new JButton("Change Pseudo");
+		
 		panel1.setBorder(BorderFactory.createTitledBorder("Infos"));
 		panel2.setBorder(BorderFactory.createTitledBorder("Connected Users List"));
 
@@ -103,7 +108,6 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
-			@SuppressWarnings("unused")
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
 		//Fonctionnement boutons chavardage
@@ -165,6 +169,8 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		}
 	}
 
-
+	public void updatePseudo() {
+		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
+	}
 
 }
