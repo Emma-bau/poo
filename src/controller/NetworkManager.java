@@ -166,6 +166,7 @@ public class NetworkManager extends Thread {
 	public void setNumWaiter(int numWaiter) {
 		this.numWaiter = numWaiter;
 	}
+	
 
 	
 

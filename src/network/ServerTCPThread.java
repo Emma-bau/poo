@@ -29,47 +29,53 @@ public class ServerTCPThread implements Runnable {
 			BufferedReader in= new BufferedReader (new InputStreamReader (link.getInputStream()));
 			String msg ;
 			try {
-				msg = in.readLine();
-
-				//tant que le client est connecte
-				while(msg!=null)
-				{
-					int x = msg.indexOf("ZQZQZ");
-					String pseudo="";
-					String text = "";
-
-					for (int i = 0; i<msg.length(); i++)
+				try{//tant que le client est connecte
+					while((msg = in.readLine())!=null)
 					{
-						if(i<x)
+						System.out.println(msg);
+
+						int x = msg.indexOf("ZQZQZ");
+						String pseudo="";
+						String text = "";
+
+						for (int i = 0; i<msg.length(); i++)
 						{
-							text+=msg.charAt(i);
+							if(i<x)
+							{
+								text+=msg.charAt(i);
+							}
+							else if(i>(x+4))
+							{
+								pseudo +=msg.charAt(i);
+							}
 						}
-						else if(i>(x+4))
+						for (Contact c : manager.getconnectedUser())
 						{
-							pseudo +=msg.charAt(i);
+							if (c.getPseudo().equals(pseudo))
+							{
+								manager.getAgent().newMessageReceived(c, text);
+							}
 						}
 					}
-					for (Contact c : manager.getconnectedUser())
-					{
-						if (c.getPseudo().equals(pseudo))
-						{
-							manager.getAgent().newMessageReceived(c, text);
-						}
-					}
-					
-					msg = in.readLine();
+
 				}
-				//sortir de la boucle si le client a deconecte
-				System.out.println("Client serveur deconnecte");
-				//fermer le flux et la session socket
-				link.close();
-				} 
+				catch(SocketException e)
+				{
+					//sortir de la boucle si le client a deconecte
+					System.out.println("Client serveur deconnecte");
+					in.close();
+					//fermer le flux et la session socket
+					link.close();
+				}
+
+			} 
 			catch (IOException e) 
 			{
 				System.err.println(e);
 				e.printStackTrace();
+				System.out.println("Toujours là le probleme");
 			}
-			
+
 
 		}
 
@@ -79,7 +85,7 @@ public class ServerTCPThread implements Runnable {
 			e.printStackTrace();
 		}
 
-	
+
 
 
 	}
@@ -106,11 +112,6 @@ public class ServerTCPThread implements Runnable {
 		}
 	}
 
-	public static String regexSearch(String regex, String input) {
-        Matcher m = Pattern.compile(regex).matcher(input);
-        if (m.find()) return m.group();
-        return null;
-	}
 
 
 }

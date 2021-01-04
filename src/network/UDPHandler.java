@@ -79,7 +79,7 @@ public class UDPHandler extends Thread{
 					{
 						input += (char)buffer[i];
 					}
-					System.out.println(input);
+
 					String etat_String = regexSearch("(?<=etat: )\\d+", input);
 					String servPortUDP_String = regexSearch("(?<=servPort: )\\d+", input);
 					String servPortTCP_String =  regexSearch("(?<=tcp: )\\d+", input);
@@ -105,7 +105,14 @@ public class UDPHandler extends Thread{
 					}
 					else if(etat==DECONNEXION)
 					{
+						System.out.println("deconnexionn recue");
+						for(Contact C : manager.getconnectedUser())
+						{
+							C.afficher();
+						}
 						remove_contact(clientAddress,pseudo);
+						/*fermeture des connexions ouvertes*/
+						
 					}
 					else       
 					{
@@ -276,7 +283,8 @@ public class UDPHandler extends Thread{
 	public void deconnexion (String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-		String message = "etat: 2 servPort: "+portNumReception+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
+		String message =  "etat: 2 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
+		System.out.println("deconnexion en cours de "+pseudo);
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)

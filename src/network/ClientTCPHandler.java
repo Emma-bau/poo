@@ -35,10 +35,10 @@ public class ClientTCPHandler extends Thread {
 		try {
 			BufferedReader in= new BufferedReader (new InputStreamReader (clientSocket.getInputStream()));
 			String msg ;
-			msg = in.readLine();
 			//tant que le client est connecte
-			while(msg!=null)
+			while((msg = in.readLine())!=null)
 			{
+				System.out.println(msg);
 				int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
@@ -72,6 +72,7 @@ public class ClientTCPHandler extends Thread {
 		catch (IOException e) 
 		{
 			System.out.println("Connection reset (serveur deconnecte)");
+			System.out.println("courgette3");
 		}
 	}
 	
