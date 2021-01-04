@@ -28,7 +28,7 @@ public class ServerTCPHandler extends Thread{
 				/*Attente de connexion*/
 				Socket SocketTCP = server.accept();
 				int num = manager.getNumWaiter();
-				manager.getConnectedNetwork().add(num,new ServerTCPThread(SocketTCP, manager, SocketTCP.getInetAddress()));
+				manager.getConnectedNetwork().add(num,new ServerTCPThread(SocketTCP, manager));
 				Thread t1 = new Thread(manager.getConnectedNetwork().get(num));
 				t1.start();
 				manager.setNumWaiter(num++);

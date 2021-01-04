@@ -15,7 +15,7 @@ public class ServerTCPThread implements Runnable {
 	private final Socket link;
 	private final NetworkManager manager;
 
-	public ServerTCPThread(Socket link, NetworkManager networkManager, InetAddress adresse) {
+	public ServerTCPThread(Socket link, NetworkManager networkManager) {
 		this.link = link;
 		this.manager = networkManager;
 
