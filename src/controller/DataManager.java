@@ -2,6 +2,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import main.Agent;
 import model.Message;
 import model.Contact;
@@ -21,6 +23,7 @@ public class DataManager {
 	
 	Connection con = null;
 	Statement statement;
+    PreparedStatement prSt = null;
 	
 	/*Information of connection*/
 	private String username = "tp_servlet_014";
@@ -28,7 +31,7 @@ public class DataManager {
     private String url = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_014?useSSL=false";
    
     /*Table*/
-    /*Revoir la taille des messages*/
+    /*Revoir la taille des messages, pour l'instant à 48 je crois*/
     private final String message_table=
     "CREATE TABLE messages ("
             + "AUTHOR INTEGER NOT NULL,"
@@ -55,26 +58,19 @@ public class DataManager {
 			try
 			{
 				con=DriverManager.getConnection(url,username,password);
-				System.out.println("Connected database successfully");
-				statement=con.createStatement();
-				
+				statement=con.createStatement();	
 			}
 			catch(SQLException e)
 			{
 				System.err.println(e);
 				e.printStackTrace();
-
-			}
-			
+			}	
 		}
 		catch (ClassNotFoundException e)
 		{
 			System.out.println("Erreur dans la creation de la BDD");
 		}
 	}
-	
-	
-	
 	
 	/*use one time*/
 	public void createBDD()
@@ -94,8 +90,12 @@ public class DataManager {
 	public void add (Message m)
 	{
 		try 
-		{	String sql = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"','"+m.getMessage()+"')";
-			int statut = statement.executeUpdate(sql);
+		{	
+		String query = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"',?)";
+		prSt = (PreparedStatement) con.prepareStatement(query);
+		prSt.setString(1,m.getMessage());
+		
+			int statut =prSt.executeUpdate();
 			if(statut == 0)
 			{
 				System.out.println("Aucune opération réalisé avec la BDD");
@@ -201,6 +201,6 @@ public class DataManager {
 			System.err.println(e);
 			e.printStackTrace();
 		}
-		
 	}
+
 }

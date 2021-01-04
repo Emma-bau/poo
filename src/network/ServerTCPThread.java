@@ -13,18 +13,13 @@ import model.Message;
 public class ServerTCPThread implements Runnable {
 
 	private final Socket link;
-	private final NetworkManager networkManager;
-
-	
-
+	private final NetworkManager manager;
 
 	public ServerTCPThread(Socket link, NetworkManager networkManager, InetAddress adresse) {
 		this.link = link;
-		this.networkManager = networkManager;
+		this.manager = networkManager;
 
 	}
-
-
 
 	@Override
 	public void run()
@@ -54,11 +49,11 @@ public class ServerTCPThread implements Runnable {
 							pseudo +=msg.charAt(i);
 						}
 					}
-					for (Contact c : networkManager.getconnectedUser())
+					for (Contact c : manager.getconnectedUser())
 					{
 						if (c.getPseudo().equals(pseudo))
 						{
-							networkManager.getAgent().newMessageReceived(c, text);
+							manager.getAgent().newMessageReceived(c, text);
 						}
 					}
 					
