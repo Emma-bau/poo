@@ -43,5 +43,6 @@ public class ChangePseudoInterface extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		String strpseudo = inputText.getText();
 		agent.setPseudo(strpseudo);
+		frame.dispose();
 	}
 }
