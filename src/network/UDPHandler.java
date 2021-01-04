@@ -276,7 +276,7 @@ public class UDPHandler extends Thread{
 	public void deconnexion (String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-		String message = "etat: 3 servPort: "+portNumReception+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
+		String message = "etat: 2 servPort: "+portNumReception+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65335; i>65233;i--)
