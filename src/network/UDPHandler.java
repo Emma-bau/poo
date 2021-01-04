@@ -1,13 +1,17 @@
+package network;
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import controller.NetworkManager;
+import model.Contact;
 
 
 
-public class UDPManager extends Thread{
+
+public class UDPHandler extends Thread{
 	// define the range 
     int max = 65500; 
     int min = 65300; 
@@ -31,7 +35,7 @@ public class UDPManager extends Thread{
 
 
 
-	public UDPManager(NetworkManager net ) throws SocketException
+	public UDPHandler(NetworkManager net ) throws SocketException
 	{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
@@ -162,7 +166,6 @@ public class UDPManager extends Thread{
 				byte [] buffer = message.getBytes();
 				try
 				{
-					//Envoie de nos informations
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
 					envoie.send(packet);
@@ -232,6 +235,10 @@ public class UDPManager extends Thread{
 		{
 			start();
 			adress = InetAddress.getByName("localhost");
+			manager.getAgent().getSelf().setPseudo(pseudo);
+			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
+			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
+			
 		}
 		catch(UnknownHostException e)
 		{

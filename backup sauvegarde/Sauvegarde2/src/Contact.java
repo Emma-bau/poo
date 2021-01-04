@@ -23,6 +23,14 @@ public class Contact
         this.id=id;
     }
 	
+	public int getUdp_serv_port() {
+		return udp_serv_port;
+	}
+
+	public void setUdp_serv_port(int udp_serv_port) {
+		this.udp_serv_port = udp_serv_port;
+	}
+
 	public int getId() {
 			return id;
 		}
@@ -30,15 +38,6 @@ public class Contact
 	public void setId(int id) {
 			this.id = id;
 		}
-
-
-    public int getServPort() {
-        return udp_serv_port;
-    }
-
-    public void setServPort(int servPort) {
-        this.udp_serv_port = servPort;
-    }
 
     public String getPseudo() {
         return pseudo;
@@ -58,7 +57,7 @@ public class Contact
 
     public void afficher ()
     {
-        System.out.println("Port UDP: " + udp_serv_port + " / Port TCP: " +  tcp_serv_port + " / Login : " + pseudo + " / adresse : " +  adresse);
+        System.out.println("CONTACT : Port UDP: " + udp_serv_port + " / Port TCP: " +  tcp_serv_port + " / Login : " + pseudo + " / adresse : " +  adresse+ " /ID :"+id);
     }
 
     public int getTcp_serv_port() {
