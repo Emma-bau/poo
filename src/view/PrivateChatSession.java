@@ -30,24 +30,25 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		this.frame = new JFrame();
 		this.messagesList = new ArrayList<Message>();
 		this.inputText = new JTextField(15);
-		this.chatHistoryPanel = new JPanel(new GridLayout(5,1));
+		this.chatHistoryPanel = new JPanel();
 		this.sendCheckPanel = new JPanel(new GridLayout(2,1));
 		
 		JLabel labelH = new JLabel();
 		labelH.setText("Last messages: ");
-		frame.add(labelH);
 		
+		frame.setTitle("Chat session with " + this.contact.getPseudo());
+		
+		System.out.println("Chargement de l'historique a l'ouverture de la session avec : "+contact.getPseudo());
+		createSendCheck();
+		createChatHistory(agent.getSelf().getId(),contact.getId());
+		
+		frame.add(labelH);
 		frame.add(chatHistoryPanel);
 		frame.add(sendCheckPanel);
 		frame.getContentPane().add(BorderLayout.NORTH,labelH);
 		frame.getContentPane().add(BorderLayout.CENTER,chatHistoryPanel);
 		frame.getContentPane().add(BorderLayout.SOUTH,sendCheckPanel);
-		
-		frame.setTitle("Chat session with " + this.contact.getPseudo());
-		
-		System.out.println("Chargement de l'historique a l'ouverture de la session avec : "+contact.getPseudo());
-		createChatHistory(agent.getSelf().getId(),contact.getId());
-		createSendCheck();
+		frame.repaint();
 	}
 
 	public String toString() {
@@ -72,7 +73,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
 		this.chatHistoryPanel = new JPanel(new GridLayout(size,2));
-
+		
 		for (Message message: messagesList) {
 			JLabel msg = new JLabel();
 			JLabel date = new JLabel();
@@ -81,8 +82,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 			chatHistoryPanel.add(msg);
 			chatHistoryPanel.add(date);
 		}
-		
-		frame.add(chatHistoryPanel);
 		frame.setSize(400,100+size*10);
 		frame.revalidate();
 		frame.repaint();
@@ -99,6 +98,10 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	// receive message
 	public void updateHistory(Message m) {
 		System.out.println("Recieve message");
+		try {
+			Thread.sleep(100);
+		}catch(InterruptedException e) {}
+		
 		createChatHistory(m.getAuthor().getId(), m.getReceiver().getId());
 	}
 

@@ -86,6 +86,10 @@ public class Agent {
 		dataManager.updateMessagesHistory(contact, text);
 	}
 	
+	public void deconnexion() {
+		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
+	}
+	
 	public static void main(String[] args) {
 		
 		@SuppressWarnings("unused")
