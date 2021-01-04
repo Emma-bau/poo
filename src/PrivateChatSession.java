@@ -91,9 +91,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		sendCheckPanel.add(send);
 	}
 
-	// receive message
+	// on receive message
 	public void updateHistory(Message m) {
-		System.out.println("updateHistory de private chat session");
 		agent.getDataManager().add(m);
 		System.out.println("updateBDD de private chat session");
 
@@ -101,7 +100,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	}
 
 	@Override
-	// send message
+	// on send message
 	public void actionPerformed(ActionEvent arg0) { 
 		LocalDate date = LocalDate.now();
 		if (inputText.getText().length() > 30) {
@@ -109,7 +108,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		}
 		Message newMessage = new Message(inputText.getText(),date,agent.getSelf(),contact);
 		agent.sendMessageTo(newMessage);
-		agent.getDataManager().add(newMessage);
-		createChatHistory();
+		updateHistory(newMessage);
 	}
 }
