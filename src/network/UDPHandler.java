@@ -140,7 +140,9 @@ public class UDPHandler extends Thread{
 			{
 				c.setPseudo(pseudo);
 			}
+			c.afficher();
 		}
+		
 	}
 
 	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat, int tcp, int id)
@@ -211,16 +213,16 @@ public class UDPHandler extends Thread{
 	public void change_pseudo(String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
-		String message = "etat: 0 servPort: "+portNumReception+"pseudo: "+pseudo;
+		String message = "etat: 0 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
+
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-			for (int i=65335; i>65233;i--)
+			for (int i=65534; i>65233;i--)
 			{
 				if(i != portNumReception)
 				{
-			
+				
 					broadcast(message,adress,i,envoie);
-					
 
 				}
 			}
@@ -228,7 +230,7 @@ public class UDPHandler extends Thread{
 		}
 		catch (IOException e)
 		{
-			System.out.println("Probleme a lenvoi du nouveau login");
+			System.out.println("Probleme a l'envoi du nouveau pseudo");
 		}
 	}
 
@@ -292,6 +294,7 @@ public class UDPHandler extends Thread{
 
 				}
 			}
+			envoie.close();
 		}
 		catch (IOException e)
 		{
