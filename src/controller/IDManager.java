@@ -28,13 +28,17 @@ public class IDManager {
 		return 3; // 3 = wrong ID
 	}
 	
-	//Liste provisoire des comptes valides
+	//Liste des comptes valides
 	private void createUsersTable() {
-		User user1 = new User(100,"toto");
-		User user2 = new User(101,"toto");
+		User user1 = new User(1,"toto");
+		User user2 = new User(2,"toto");
+		User user3 = new User(3,"toto");
+		User user4 = new User(4,"toto");
 		User admin = new User(999,"admin");
 		usersTable.add(user1);
 		usersTable.add(user2);
+		usersTable.add(user3);
+		usersTable.add(user4);
 		usersTable.add(admin);
 	}
 }
