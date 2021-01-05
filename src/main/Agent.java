@@ -110,7 +110,7 @@ public class Agent {
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
-			
+			connection.setRequestProperty("cmd", "connected");
 			
 		}
 		catch(Exception e)

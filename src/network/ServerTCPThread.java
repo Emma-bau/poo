@@ -32,8 +32,6 @@ public class ServerTCPThread implements Runnable {
 				try{//tant que le client est connecte
 					while((msg = in.readLine())!=null)
 					{
-						System.out.println(msg);
-
 						int x = msg.indexOf("ZQZQZ");
 						String pseudo="";
 						String text = "";

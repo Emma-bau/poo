@@ -14,8 +14,8 @@ public class ClientTCPHandler extends Thread {
 	private final Contact user;
 	private Socket clientSocket;
 
-    public ClientTCPHandler(NetworkManager Manager, Contact contact)
-    {
+	public ClientTCPHandler(NetworkManager Manager, Contact contact)
+	{
 		this.manager = Manager;
 		this.user = contact;
 		try
@@ -28,18 +28,17 @@ public class ClientTCPHandler extends Thread {
 			System.out.println("Erreur dans l'ouverture du socket client");
 		}
 
-    }
+	}
 
 	public void run()
 	{
 		try {
 			BufferedReader in= new BufferedReader (new InputStreamReader (clientSocket.getInputStream()));
 			String msg ;
-			//tant que le client est connecte
-			while((msg = in.readLine())!=null)
-			{
-				System.out.println(msg);
-				int x = msg.indexOf("ZQZQZ");
+			try{//tant que le client est connecte
+				while((msg = in.readLine())!=null)
+				{
+					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
 
@@ -61,21 +60,24 @@ public class ClientTCPHandler extends Thread {
 							manager.getAgent().newMessageReceived(c, text);
 						}
 					}
-					
-					msg = in.readLine();
+				}
 			}
-			System.out.println("Serveur deconnecte");
-			//fermer le flux et la session socket
-			clientSocket.close();
+			catch(SocketException e)
+			{
+				//sortir de la boucle si le client a deconecte
+				System.out.println("Client serveur deconnecte");
+				in.close();
+				//fermer le flux et la session socket
+				clientSocket.close();
+			}
 
 		} 
 		catch (IOException e) 
 		{
 			System.out.println("Connection reset (serveur deconnecte)");
-			System.out.println("courgette3");
 		}
 	}
-	
+
 
 	public void envoie (Message message)
 	{
@@ -97,8 +99,8 @@ public class ClientTCPHandler extends Thread {
 		{
 			System.out.println("Erreur ouverture buffer en out dans clienthandler");
 		}
-				
-				
+
+
 	}
 
 	public void afficher()
