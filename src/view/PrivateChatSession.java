@@ -22,6 +22,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	private JPanel chatHistoryPanel, sendCheckPanel;
 	private ArrayList<Message> messagesList;
 	private JTextField inputText;
+	private JLabel labelH;
 
 	public PrivateChatSession(Contact contact, Agent agent) {   
 
@@ -33,21 +34,22 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		this.chatHistoryPanel = new JPanel();
 		this.sendCheckPanel = new JPanel(new GridLayout(2,1));
 		
-		JLabel labelH = new JLabel();
+		this.labelH = new JLabel();
 		labelH.setText("Last messages: ");
 		
 		frame.setTitle("Chat session with " + this.contact.getPseudo());
 		
-		System.out.println("Chargement de l'historique a l'ouverture de la session avec : "+contact.getPseudo());
+		System.out.println("Chargement de l'historique a l'ouverture de la session avec : " + contact.getPseudo());
+		
 		createSendCheck();
 		createChatHistory(agent.getSelf().getId(),contact.getId());
-		
 		frame.add(labelH);
 		frame.add(chatHistoryPanel);
 		frame.add(sendCheckPanel);
 		frame.getContentPane().add(BorderLayout.NORTH,labelH);
 		frame.getContentPane().add(BorderLayout.CENTER,chatHistoryPanel);
 		frame.getContentPane().add(BorderLayout.SOUTH,sendCheckPanel);
+
 		frame.repaint();
 	}
 
@@ -69,7 +71,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		
 		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
 		this.messagesList = agent.getDataManager().loadHistory(auteur,dest);
-		
+		System.out.println("messages: " + this.messagesList);
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
 		this.chatHistoryPanel = new JPanel(new GridLayout(size,2));
@@ -82,7 +84,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 			chatHistoryPanel.add(msg);
 			chatHistoryPanel.add(date);
 		}
-		frame.setSize(400,100+size*10);
+
+		frame.add(chatHistoryPanel);
 		frame.revalidate();
 		frame.repaint();
 	}
