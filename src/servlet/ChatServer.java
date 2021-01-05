@@ -27,10 +27,16 @@ public class ChatServer extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		
-		response.setContentType("text/plain");
+		//response.setContentType("text/plain");
 		
 		/*envoie de la réponse a notre client*/
+		
 		PrintWriter out = response.getWriter();
+		out.println("<html><body> <h1> courgette </h1> </body></html>");
+	}
+	
+	public void doPost()
+	{
 		
 	}
 

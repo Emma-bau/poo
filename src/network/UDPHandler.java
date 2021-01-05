@@ -241,7 +241,7 @@ public class UDPHandler extends Thread{
 		try
 		{
 			start();
-			adress =  InetAddress.getByName("255.255.255.255");
+			this.adress =  InetAddress.getByName("255.255.255.255");
 			manager.getAgent().getSelf().setPseudo(pseudo);
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);

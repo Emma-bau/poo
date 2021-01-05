@@ -111,6 +111,9 @@ public class Agent {
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
 			connection.setRequestProperty("cmd", "connected");
+			connection.setRequestProperty("ID", Integer.toString(this.getSelf().getId()));
+			connection.setRequestProperty("pseudo",this.getSelf().getPseudo());
+
 			
 		}
 		catch(Exception e)
