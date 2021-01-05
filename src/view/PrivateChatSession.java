@@ -79,8 +79,17 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		for (Message message: messagesList) {
 			JLabel msg = new JLabel();
 			JLabel date = new JLabel();
+			
+			String minute;
+			if (message.getMinute() == 0) {
+				minute = "00";
+			}
+			else {
+				minute = Integer.toString(message.getMinute());
+			}
 			msg.setText(message.getAuthor().getPseudo() + ":  " + message.getMessage());
-			date.setText(message.getHour() + ":" + message.getMinute() + "  ("+message.getDate()+")");
+			date.setText(message.getHour() + ":" + minute + "  ("+message.getDate()+")");
+			
 			chatHistoryPanel.add(msg);
 			chatHistoryPanel.add(date);
 		}

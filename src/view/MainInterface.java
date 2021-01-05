@@ -57,6 +57,9 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	//action a la deconnexion
 	public void onExit() {
+		for(PrivateChatSession pcs : chatSessionList) {
+			pcs.dispose();
+		}
 		agent.deconnexion();
 		System.exit(0);
 	}
@@ -125,10 +128,8 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 
 	public void updateChatSessionMessages(Message m) {
-		//System.out.println("update main interface, message: " + m);
 		for(PrivateChatSession pcs : chatSessionList) {
 			if (pcs.getContact() == m.getAuthor()) {
-				//System.out.println("pcs trouve");
 				pcs.updateHistory(m);
 			}
 		}
