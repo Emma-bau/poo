@@ -142,8 +142,7 @@ public class UDPHandler extends Thread{
 			}
 			c.afficher();
 		}
-		manager.setconnectedUser(connectedUser);
-		
+		manager.setconnectedUser(connectedUser);	
 	}
 
 	public void create_contact(InetAddress clientAddress, String pseudo, int ServPort, int etat, int tcp, int id)
