@@ -48,7 +48,6 @@ public class DataManager {
 		this.messagesHistory = new ArrayList<Message>();
 		/*Connexion to BDD*/
 		connexion();
-		createBDD();
 	}
 	
 	public ArrayList<Message> getMessagesHistory(){
