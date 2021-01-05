@@ -111,7 +111,7 @@ public class DataManager {
 	{
 		try 
 		{	
-			String query = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"',?)";
+			String query = "INSERT INTO messages (AUTHOR, CONTACT, HOUR, MINUTE, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getHour()+",'"+m.getMinute()+",'"+m.getDate()+"',?)";
 			prSt = (PreparedStatement) con.prepareStatement(query);
 			prSt.setString(1,m.getMessage());
 
@@ -149,6 +149,8 @@ public class DataManager {
 		        int author = rs.getInt("AUTHOR");
 		        String messages = rs.getString("MESSAGE");
 		        int contact = rs.getInt("CONTACT");
+		        int hour = rs.getInt("HOUR");
+		        int minute = rs.getInt("MINUTE");
 		        Date dateFirst = rs.getDate("DATEMESSAGE");
 		        LocalDate date = new java.sql.Date(dateFirst.getTime()).toLocalDate();
 		        
@@ -169,12 +171,12 @@ public class DataManager {
 		        /*the one which is null is us, we can add the message to the list*/
 		        if(auteure==null)
 		        {
-		        	Message m = new Message(messages, date, agent.getSelf(), destinataire);
+		        	Message m = new Message(messages, date, hour, minute, agent.getSelf(), destinataire);
 		        	message.add(m);
 		        }
 		        else if (destinataire==null)
 		        {
-		        	Message m = new Message(messages, date, auteure, agent.getSelf());
+		        	Message m = new Message(messages, date, hour, minute, auteure, agent.getSelf());
 		        	message.add(m);
 		        }
 		        else
