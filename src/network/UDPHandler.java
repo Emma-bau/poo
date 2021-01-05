@@ -142,6 +142,7 @@ public class UDPHandler extends Thread{
 			}
 			c.afficher();
 		}
+		manager.setconnectedUser(connectedUser);
 		
 	}
 
