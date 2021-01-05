@@ -111,7 +111,7 @@ public class DataManager {
 	{
 		try 
 		{	
-			String query = "INSERT INTO messages (AUTHOR, CONTACT, HOUR, MINUTE, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getHour()+",'"+m.getMinute()+",'"+m.getDate()+"',?)";
+			String query = "INSERT INTO messages (AUTHOR, CONTACT, HOUR, MINUTE, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getHour()+"','"+m.getMinute()+"','"+m.getDate()+"',?)";
 			prSt = (PreparedStatement) con.prepareStatement(query);
 			prSt.setString(1,m.getMessage());
 

@@ -73,7 +73,6 @@ public class ServerTCPThread implements Runnable {
 			{
 				System.err.println(e);
 				e.printStackTrace();
-				System.out.println("Toujours là le probleme");
 			}
 
 

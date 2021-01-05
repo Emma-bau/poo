@@ -38,7 +38,6 @@ public class ServerTCPHandler extends Thread{
 		
 		catch (Exception e) {
 			System.err.println(e);
-			System.out.println("courgette4");
 			e.printStackTrace();
 		}
 		
