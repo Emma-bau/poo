@@ -121,6 +121,7 @@ public class UDPHandler extends Thread{
 			}
 			catch(IOException e )
 			{
+				e.printStackTrace();
 				System.out.println("Thread UDP socket");
 			}
 		}
@@ -183,6 +184,7 @@ public class UDPHandler extends Thread{
 		}
 		catch(IOException e)
 		{
+			e.printStackTrace();
 			System.out.println("Erreur message dans la reponse a une connexion");
 		}
 
@@ -220,16 +222,15 @@ public class UDPHandler extends Thread{
 			for (int i=65534; i>65233;i--)
 			{
 				if(i != portNumReception)
-				{
-				
+				{	
 					broadcast(message,adress,i,envoie);
-
 				}
 			}
 			envoie.close();
 		}
 		catch (IOException e)
 		{
+			e.printStackTrace();
 			System.out.println("Probleme a l'envoi du nouveau pseudo");
 		}
 	}

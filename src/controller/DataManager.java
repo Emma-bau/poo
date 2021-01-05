@@ -2,6 +2,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.mysql.jdbc.DatabaseMetaData;
 import com.mysql.jdbc.PreparedStatement;
 
 import main.Agent;
@@ -32,10 +33,12 @@ public class DataManager {
    
     /*Table*/
     /*Revoir la taille des messages, pour l'instant à 48 je crois*/
-    private final String message_table=
+    private final String messages=
     "CREATE TABLE messages ("
             + "AUTHOR INTEGER NOT NULL,"
             + "CONTACT INTEGER NOT NULL,"
+            + "HOUR INTEGER NOT NULL,"
+            + "MINUTE INTEGER NOT NULL,"
             + "DATEMESSAGE DATE NOT NULL,"
             + "MESSAGE VARCHAR(200) NOT NULL)";
     
@@ -44,6 +47,7 @@ public class DataManager {
 		this.messagesHistory = new ArrayList<Message>();
 		/*Connexion to BDD*/
 		connexion();
+		createBDD();
 	}
 	
 	public ArrayList<Message> getMessagesHistory(){
@@ -75,9 +79,25 @@ public class DataManager {
 	/*use one time*/
 	public void createBDD()
 	{
+		ArrayList<String>listeTable=new ArrayList();
 		try
 		{
-			statement.executeUpdate(message_table);	
+			statement.executeUpdate(messages);	
+			System.out.println("Table created");
+			// Créer un objet MetaData de Base de données
+			DatabaseMetaData mtData=(DatabaseMetaData) con.getMetaData();
+			String[] types = {"TABLE"};
+			// Accéder à la liste des tables
+			ResultSet res = mtData.getTables(null, null, "%", types);
+			while(res.next())
+			{
+				String nomTable=res.getString(3);
+				// Ajouter le nom de la table dans le ArrayList
+				listeTable.add(nomTable);
+
+			}
+			// Afficher les nom des tables sur le console
+			System.out.println(listeTable);
 		}
 		catch(SQLException e)
 		{
@@ -85,16 +105,16 @@ public class DataManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/*voir comment rajouter une barre oblique pour chaque apostrophe*/
 	public void add (Message m)
 	{
 		try 
 		{	
-		String query = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"',?)";
-		prSt = (PreparedStatement) con.prepareStatement(query);
-		prSt.setString(1,m.getMessage());
-		
+			String query = "INSERT INTO messages (AUTHOR, CONTACT, DATEMESSAGE, MESSAGE) VALUES ("+String.valueOf(m.getAuthor().getId())+","+String.valueOf(m.getReceiver().getId())+",'"+m.getTimestamp()+"',?)";
+			prSt = (PreparedStatement) con.prepareStatement(query);
+			prSt.setString(1,m.getMessage());
+
 			int statut =prSt.executeUpdate();
 			if(statut == 0)
 			{

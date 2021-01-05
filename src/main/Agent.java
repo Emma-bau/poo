@@ -100,6 +100,24 @@ public class Agent {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
 	
+	public void notifyServer()
+	{
+		//Changer l'url//
+		String url = "http://example.com";
+		String charset = "UTF-8"; 
+		try
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+			connection.setUseCaches(false);	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		@SuppressWarnings("unused")
