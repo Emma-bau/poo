@@ -1,18 +1,22 @@
 package model;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Message {
 
 	private String message;
-	private LocalDate timestamp;
-	private Contact receiver;
-	private Contact author;
-	
-	public Message(String message, LocalDate timestamp, Contact author, Contact receiver) {
+	private LocalDate date;
+	private int hour, minute;
+	private Contact receiver, author;
+
+
+	public Message(String message, LocalDate date, int hour, int minute, Contact author, Contact receiver) {
 		this.author = author;
 		this.receiver = receiver;
 		this.message = message;
-		this.timestamp = timestamp;
+		this.date = date;
+		this.hour = hour;
+		this.minute = minute;
 	}
 
 	public String toString() {
@@ -23,8 +27,16 @@ public class Message {
 		return message;
 	}
 
-	public LocalDate getTimestamp() {
-		return timestamp;
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public int getHour() {
+		return hour;
+	}
+
+	public int getMinute() {
+		return minute;
 	}
 
 	public Contact getReceiver() {

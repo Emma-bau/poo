@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class PrivateChatSession extends JFrame implements ActionListener{
@@ -80,7 +81,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 			JLabel msg = new JLabel();
 			JLabel date = new JLabel();
 			msg.setText(message.getAuthor().getPseudo() + ":  " + message.getMessage());
-			date.setText("("+message.getTimestamp()+")");
+			date.setText(message.getHour() + ":" + message.getMinute() + "  ("+message.getDate()+")");
 			chatHistoryPanel.add(msg);
 			chatHistoryPanel.add(date);
 		}
@@ -112,10 +113,12 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	// send message
 	public void actionPerformed(ActionEvent arg0) { 
 		LocalDate date = LocalDate.now();
+		int hour = LocalDateTime.now().getHour();
+		int minute = LocalDateTime.now().getMinute();
 		if (inputText.getText().length() > 30) {
 			
 		}
-		Message newMessage = new Message(inputText.getText(),date,agent.getSelf(),contact);
+		Message newMessage = new Message(inputText.getText(),date,hour,minute,agent.getSelf(),contact);
 		agent.sendMessageTo(newMessage);
 		agent.getDataManager().add(newMessage);
 		createChatHistory(newMessage.getAuthor().getId(),newMessage.getReceiver().getId());
