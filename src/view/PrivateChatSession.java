@@ -87,6 +87,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		}
 
 		frame.add(chatHistoryPanel);
+		frame.setSize(400,100+size*10);
 		frame.revalidate();
 		frame.repaint();
 	}
