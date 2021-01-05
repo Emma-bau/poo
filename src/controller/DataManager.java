@@ -10,6 +10,7 @@ import model.Message;
 import model.Contact;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -130,7 +131,9 @@ public class DataManager {
 	}
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
-		Message m = new Message(texte, LocalDate.now(),contact,agent.getSelf());
+		int hour = LocalDateTime.now().getHour();
+		int minute = LocalDateTime.now().getMinute();
+		Message m = new Message(texte, LocalDate.now(),hour,minute,contact,agent.getSelf());
 		this.messagesHistory.add(m);
 		agent.getInterfaceManager().getMainInterface().updateChatSessionMessages(m);
 		
