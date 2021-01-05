@@ -101,7 +101,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 
 	// receive message
 	public void updateHistory(Message m) {
-		System.out.println("Message received: " + m.getMessage() + " from " + m.getAuthor());
+		System.out.println("Message received: " + m.getMessage() + " from " + m.getAuthor().getPseudo() + "  (ID: " + m.getAuthor().getId() + " )");
 		try {
 			Thread.sleep(100); //permet d'attendre la mise à jour de la bdd
 		}catch(InterruptedException e) {}
