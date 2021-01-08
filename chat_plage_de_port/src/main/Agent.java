@@ -27,11 +27,11 @@ public class Agent {
 
 	public Agent() {
 
-		/*this.idManager = new IDManager();
+		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
-		this.first_time_pseudo = true;*/
+		this.first_time_pseudo = true;
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
@@ -47,8 +47,6 @@ public class Agent {
 		catch(Exception e){
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
-		System.out.println("On arrive au serveur");
-		notifyServer();
 	}
 
 	public InterfaceManager getInterfaceManager() {
@@ -160,15 +158,15 @@ public class Agent {
 	
 	public static void main(String[] args) {
 		
-		//Agent main = new Agent();
-		notifyServer();
+		Agent main = new Agent();
+		/*notifyServer();
 		try {
 			Thread.sleep(5);
 			loadServer();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 	}
 
