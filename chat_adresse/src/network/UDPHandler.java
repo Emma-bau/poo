@@ -60,7 +60,9 @@ public class UDPHandler extends Thread{
 				{
 					dgramSocketReception.receive(inPacket);
 					//Reception de l'adresse et du port associe//
+					System.out.println("packet reçu");
 					InetAddress clientAddress = inPacket.getAddress();
+					System.out.println(clientAddress);
 
 					//Recuperation des informations du message						
 					String input="";
@@ -248,9 +250,10 @@ public class UDPHandler extends Thread{
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 				for (int i=0;  i <adresse_broadcast_list.size();i++)
 				{
-					broadcast(message,adresse_broadcast_list.get(i),65535,envoie);
+					broadcast(message,adresse_broadcast_list.get(i),portNumReception,envoie);
 				}
 				envoie.close();
+				System.out.println("connexion faites");
 			}
 			catch(SocketException e)
 			{

@@ -18,7 +18,7 @@ public class Agent {
 
 	private InterfaceManager interfaceManager;
 	private IDManager idManager;
-	private DataManager dataManager; 
+	//private DataManager dataManager; 
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
 	private Contact self;
@@ -28,7 +28,7 @@ public class Agent {
 	public Agent() {
 
 		this.idManager = new IDManager();
-		this.dataManager = new DataManager(this);
+		//this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
 		this.first_time_pseudo = true;
@@ -55,9 +55,9 @@ public class Agent {
 	public IDManager getIdManager() {
 		return idManager;
 	}
-	public DataManager getDataManager() {
+	/*public DataManager getDataManager() {
 		return dataManager;
-	}
+	}*/
 	public PseudoManager getPseudoManager() {
 		return pseudoManager;
 	}
@@ -95,9 +95,9 @@ public class Agent {
 		networkManager.sendMessage(m);
 	}
 	
-	public void newMessageReceived(Contact contact, String text) {
+	/*public void newMessageReceived(Contact contact, String text) {
 		dataManager.updateMessagesHistory(contact, text);
-	}
+	}*/
 	
 	public void deconnexion() {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
