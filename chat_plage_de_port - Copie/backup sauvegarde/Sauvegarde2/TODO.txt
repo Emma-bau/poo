@@ -1,0 +1,17 @@
+-Gérer le problème des apostrophes chiants
+Courgette si ça fonctionne la bdd est fini
+- Erreur socket au moment de la déco à checker ( je ne sais pas pourquoi elle apparait maintenant)
+
+Demander à Matthieu : 
+
+- Déconnexion gérer l'envoie de la déco (il faudra checker si ma procédure peut fonctionner
+--------------------------------------------------------------------------------------------
+
+Faire un code plus joli, checker les noms de variables, les commentaires, les system.out.println
+Commencer à regarder comment marche le servlets
+
+--------------------------------------------------------------------------------------------
+Changement fait : 
+
+- Mise à jour du contact self en récupérant l'id rentré, et dans le network manager avant la first connexion, dans la fonction
+- Rajout de loadHistory dans chatHistory
