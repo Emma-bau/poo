@@ -19,6 +19,7 @@ public class UDPHandler extends Thread{
 	private InetAddress adress;
 	private NetworkManager manager;
 	private List<InetAddress> adresse_broadcast_list;
+	private DatagramSocket socket;
 
 	private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
@@ -42,6 +43,16 @@ public class UDPHandler extends Thread{
 
 	}
 
+	public void broadcast2(String broadcastMessage, InetAddress address) throws IOException {
+		socket = new DatagramSocket();
+		socket.setBroadcast(true);
+
+		byte[]buffer = broadcastMessage.getBytes();
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 65534);
+		socket.send(packet);
+		socket.close();
+	}
+
 	public void run()
 	{
 		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion
@@ -51,7 +62,6 @@ public class UDPHandler extends Thread{
 		{
 			//Creation du port de reception
 			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
-			dgramSocketReception.setBroadcast(true);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
 			try{
@@ -240,7 +250,7 @@ public class UDPHandler extends Thread{
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
 
 		}
-		
+
 		catch(UnknownHostException e)
 		{
 			System.out.println("Erreur dans le broadcast, hote inconnu");
@@ -252,7 +262,7 @@ public class UDPHandler extends Thread{
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 				for (int i=0;  i <adresse_broadcast_list.size();i++)
 				{
-					broadcast(message,adresse_broadcast_list.get(i),portNumReception,envoie);
+					broadcast2(message,adresse_broadcast_list.get(i));
 				}
 				envoie.close();
 				System.out.println("connexion faites");
