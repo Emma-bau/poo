@@ -58,7 +58,7 @@ public class ClientTCPHandler extends Thread {
 					{
 						if (c.getPseudo().equals(pseudo))
 						{
-							manager.getAgent().newMessageReceived(c, text);
+							//manager.getAgent().newMessageReceived(c, text);
 						}
 					}
 				}

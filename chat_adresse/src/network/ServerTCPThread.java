@@ -51,7 +51,7 @@ public class ServerTCPThread implements Runnable {
 						{
 							if (c.getPseudo().equals(pseudo))
 							{
-								manager.getAgent().newMessageReceived(c, text);
+								//manager.getAgent().newMessageReceived(c, text);
 							}
 						}
 					}
