@@ -51,6 +51,7 @@ public class UDPHandler extends Thread{
 		{
 			//Creation du port de reception
 			DatagramSocket dgramSocketReception = new DatagramSocket(portNumReception);
+			dgramSocketReception.setBroadcast(true);
 			byte[] buffer = new byte[256];
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
 			try{
@@ -168,12 +169,13 @@ public class UDPHandler extends Thread{
 				}
 				catch(SocketException e)
 				{
+					e.printStackTrace();
 					System.out.println("Erreur message dans la reponse a une connexion");
 				}
 			}
 
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 			System.out.println("Erreur message dans la reponse a une connexion");
