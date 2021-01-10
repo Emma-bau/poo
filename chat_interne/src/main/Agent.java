@@ -66,6 +66,9 @@ public class Agent {
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
+	public ServerHandler getServerHandler() {
+		return serverHandler;
+	}
 	public Contact getSelf() {
 		return self;
 	}
