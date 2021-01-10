@@ -6,6 +6,7 @@ import controller.IDManager;
 import controller.InterfaceManager;
 import controller.NetworkManager;
 import controller.PseudoManager;
+import servlet.ServerHandler;
 import model.Contact;
 import model.Message;
 
@@ -20,6 +21,7 @@ public class Agent {
 	private DataManager dataManager; 
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
+	private ServerHandler serverHandler;
 	private Contact self;
 	private boolean first_time_pseudo, interne;
 
@@ -29,6 +31,7 @@ public class Agent {
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
+		this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
 		this.interne = true;
 		
@@ -68,6 +71,9 @@ public class Agent {
 	}
 	public void setSelf(Contact self) {
 		this.self = self;
+	}
+	public boolean isInterne() {
+		return interne;
 	}
 
 	public int setPseudo(String pseudo) {
