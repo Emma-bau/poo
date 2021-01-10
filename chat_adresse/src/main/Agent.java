@@ -163,7 +163,6 @@ public class Agent {
 			Thread.sleep(5);
 			loadServer();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
