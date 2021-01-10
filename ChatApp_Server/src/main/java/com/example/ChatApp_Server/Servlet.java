@@ -41,9 +41,6 @@ public class Servlet extends HttpServlet {
 	private String essaie;
 
 
-
-
-
 	public Servlet() {
 		this.connectedUsers = new ArrayList<>();
 		User u1 = new User("101","emma");

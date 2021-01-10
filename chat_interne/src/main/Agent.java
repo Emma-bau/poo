@@ -157,6 +157,7 @@ public class Agent {
 	public static void main(String[] args) {
 		
 		Agent main = new Agent();
+		notifyServer();
 		try {
 			Thread.sleep(5);
 			loadServer();
