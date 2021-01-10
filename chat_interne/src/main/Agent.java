@@ -101,68 +101,12 @@ public class Agent {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
 	
-	public void notifyServer()
-	{
-		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
-		try
-		{
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setUseCaches(false);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("cmd", "connected");
-			connection.setRequestProperty("ID", "405");
-			connection.setRequestProperty("pseudo","courgette");
-			System.out.println(connection.getResponseCode());
-			System.out.println("En vrai, arriver ici");
-			connection.disconnect();
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 	
-	/*A modifier mais fonctionne pour l'instant très bien, à voir comment rajouter les nouveaux utilisateurs*/
-	public static void loadServer()
-	{
-		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
-		String msg ;
-		try
-		{
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setUseCaches(false);
-			connection.setRequestMethod("GET");
-			if(connection.getResponseCode()==200)
-			{
-				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-				while((msg=in.readLine())!=null)
-				{
-					System.out.println(msg);
-				}
-			}
-			connection.disconnect();
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 	public static void main(String[] args) {
 		
 		Agent main = new Agent();
-		try {
-			Thread.sleep(5);
-			loadServer();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
 	}
 
