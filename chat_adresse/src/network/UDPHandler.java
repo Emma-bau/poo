@@ -14,12 +14,11 @@ import model.Contact;
 public class UDPHandler extends Thread{
 
 
-	private int portNumReception  = 65335;
-	private int portNumEnvoie = 65334; 
+	private int portNumReception  = 65535;
+	private int portNumEnvoie = 65534; 
 	private InetAddress adress;
 	private NetworkManager manager;
 	private List<InetAddress> adresse_broadcast_list;
-	private DatagramSocket socket;
 
 	private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
@@ -37,20 +36,11 @@ public class UDPHandler extends Thread{
 	/*Revoir avec nouvelle norme*/
 	public void broadcast(String message, InetAddress address, int portNum, DatagramSocket envoie) throws IOException
 	{
+		System.out.println(portNum);
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
 		envoie.send(packet);
 
-	}
-
-	public void broadcast2(String broadcastMessage, InetAddress address) throws IOException {
-		socket = new DatagramSocket();
-		socket.setBroadcast(true);
-
-		byte[]buffer = broadcastMessage.getBytes();
-		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, 65534);
-		socket.send(packet);
-		socket.close();
 	}
 
 	public void run()
@@ -241,28 +231,20 @@ public class UDPHandler extends Thread{
 	public void first_connexion (String pseudo)
 	{
 		//Envoie de la premiere connexion//
-		try
-		{
-			start();
-			this.adress =  InetAddress.getByName("255.255.255.255");
-			manager.getAgent().getSelf().setPseudo(pseudo);
-			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
-			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
-
-		}
-
-		catch(UnknownHostException e)
-		{
-			System.out.println("Erreur dans le broadcast, hote inconnu");
-		}
+		start();
+		manager.getAgent().getSelf().setPseudo(pseudo);
+		manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
+		manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
 		try{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+				//envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 				for (int i=0;  i <adresse_broadcast_list.size();i++)
 				{
-					broadcast2(message,adresse_broadcast_list.get(i));
+					broadcast(message,adresse_broadcast_list.get(i),portNumReception,envoie);
+					
 				}
 				envoie.close();
 				System.out.println("connexion faites");
