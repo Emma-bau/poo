@@ -23,10 +23,12 @@ public class Agent {
 	private NetworkManager networkManager;
 	private Contact self;
 	private boolean first_time_pseudo;
+	private boolean interne;
 	//private User user; 
 
 	public Agent() {
 
+		this.interne = true;
 		this.idManager = new IDManager();
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
@@ -127,34 +129,7 @@ public class Agent {
 		}
 	}
 	
-	/*A modifier mais fonctionne pour l'instant très bien, à voir comment rajouter les nouveaux utilisateurs*/
-	public static void loadServer()
-	{
-		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
-		String msg ;
-		try
-		{
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setUseCaches(false);
-			connection.setRequestMethod("GET");
-			if(connection.getResponseCode()==200)
-			{
-				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-				while((msg=in.readLine())!=null)
-				{
-					System.out.println(msg);
-				}
-			}
-			connection.disconnect();
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 	public static void main(String[] args) {
 		
