@@ -11,11 +11,20 @@ class User{
 	private String pseudo;
 	private String ID;
 	private InetAddress IPAddress;
-	private boolean status;
+	private boolean interne;
 
-	public User (String pseudo, String ID){
+	public boolean isInterne() {
+		return interne;
+	}
+
+	public void setInterne(boolean interne) {
+		this.interne = interne;
+	}
+
+	public User (String pseudo, String ID, Boolean interne){
 		this.pseudo=pseudo;
 		this.ID=ID;
+		this.interne=interne;
 	}
 
 	public String getID() {
@@ -43,8 +52,8 @@ public class Servlet extends HttpServlet {
 
 	public Servlet() {
 		this.connectedUsers = new ArrayList<>();
-		User u1 = new User("101","emma");
-		User u2 = new User("102","matthieu");
+		User u1 = new User("101","emma",true);
+		User u2 = new User("102","matthieu",false);
 		this.connectedUsers.add(u1);
 		this.connectedUsers.add(u2);
 	}
@@ -60,7 +69,7 @@ public class Servlet extends HttpServlet {
 		pw.println("Entrer dans la methode GET");
 		for (int i = 0; i<connectedUsers.size();i++) {
 			User user = connectedUsers.get(i);
-			pw.println(user.getID()+":"+user.getPseudo()+": connected");
+			pw.println(user.getID()+":"+user.getPseudo()+" statut : "+user.isInterne()+": connected");
 		}
 		pw.close();
 	}
@@ -69,7 +78,16 @@ public class Servlet extends HttpServlet {
 		String connected = request.getHeader("cmd");
 		String ID = request.getHeader("ID");
 		String pseudo = request.getHeader("pseudo");
-		connectedUsers.add(new User(pseudo,ID));
+		String interne = request.getHeader("status");
+		if(interne=="true")
+		{
+			connectedUsers.add(new User(pseudo,ID,true));
+		}
+		else
+		{
+			connectedUsers.add(new User(pseudo,ID,false));
+		}
+		
 	}
 
 

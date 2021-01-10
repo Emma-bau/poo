@@ -28,7 +28,7 @@ public class ServerHandler extends Thread{
 				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
 				while((msg=in.readLine())!=null)
 				{
-					System.out.println(msg);
+					
 				}
 			}
 			connection.disconnect();
