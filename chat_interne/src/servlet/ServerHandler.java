@@ -74,7 +74,7 @@ public class ServerHandler extends Thread{
 		while(true) {
 			loadServer();	
 			try {
-				Thread.sleep(300);
+				Thread.sleep(20000);
 			}
 			catch(InterruptedException e) {}
 		}
