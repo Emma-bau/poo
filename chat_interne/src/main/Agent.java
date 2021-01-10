@@ -21,7 +21,7 @@ public class Agent {
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
 	private Contact self;
-	private boolean first_time_pseudo;
+	private boolean first_time_pseudo, interne;
 
 	public Agent() {
 
@@ -30,6 +30,7 @@ public class Agent {
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
 		this.first_time_pseudo = true;
+		this.interne = true;
 		
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
