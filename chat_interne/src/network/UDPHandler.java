@@ -267,7 +267,7 @@ public class UDPHandler extends Thread{
 				}
 				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
-				manager.getAgent().notifyServer();
+				manager.getAgent().getServerHandler().notifyServer();
 				
 			}
 			catch(SocketException e)

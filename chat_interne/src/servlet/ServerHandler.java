@@ -27,9 +27,9 @@ public class ServerHandler extends Thread{
 			connection.setUseCaches(false);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("cmd", "connected");
-			connection.setRequestProperty("ID", );
-			connection.setRequestProperty("pseudo","courgette");
-			connection.setRequestProperty("status","true");
+			connection.setRequestProperty("ID",Integer.toString(agent.getSelf().getId()));
+			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo());
+			connection.setRequestProperty("status",Boolean.toString(agent.isInterne()));
 			System.out.println(connection.getResponseCode());
 			System.out.println("En vrai, arriver ici");
 			connection.disconnect();
