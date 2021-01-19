@@ -7,9 +7,7 @@ import model.Message;
 import network.ClientTCPHandler;
 import network.ServerTCPThread;
 import network.ServerTCPHandler;
-import network.UDPHandler;
 
-import java.net.*;
 
 
 
@@ -23,11 +21,7 @@ public class NetworkManager extends Thread {
 	private ArrayList<ClientTCPHandler> connectedClient = new ArrayList<ClientTCPHandler>();
 	/*C'est un usage qui l'a initier*/
 	private ArrayList<ServerTCPThread> connectedNetwork = new ArrayList<ServerTCPThread>();
-	/*Liste des messages recus*/
-	private ArrayList<Message> message_recu;
 
-	private Message ReceiveMessage;
-	private UDPHandler udpserver;
 	private int numPortTcp; 
 	private boolean Connexion = true;
 	private int numClient = 0;
@@ -67,22 +61,6 @@ public class NetworkManager extends Thread {
 	{
 		this.connectedUser=connectedUser;
 	}
-
-
-	public UDPHandler getUdpserver() {
-		return udpserver;
-	}
-
-	public void setUdpserver(UDPHandler udpserver) {
-		this.udpserver = udpserver;
-	}
-	
-	
-
-	public void setReceiveMessage(Message recieveMessage) {
-
-		ReceiveMessage = recieveMessage;
-	}
 	
 	public boolean isConnexion() {
 		return Connexion;
@@ -103,20 +81,8 @@ public class NetworkManager extends Thread {
 	{
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
-		this.message_recu= new ArrayList<Message>();
-		numPortTcp = (int)(Math.random() * range) + min;
-
-		try
-		{
-			//Creation de notre insatnce d'UDP
-			udpserver = new UDPHandler(this);
-		}
-		catch(SocketException e)
-		{
-			System.out.println("Erreur des le debut avec le lancement de udp");
-		}
-			
 		//Creation de notre serveur tcp
+		numPortTcp = (int)(Math.random() * range) + min;
 		ServerTCPHandler server = new ServerTCPHandler(this, numPortTcp);
 		server.start();	
 	}
@@ -140,23 +106,6 @@ public class NetworkManager extends Thread {
 		{
 			connectedNetwork.get((message.getContact().getNumClient())//.envoie(message);
 		}*/
-	}
-
-	
-	public void message_reception()
-	{
-		if(ReceiveMessage != null)
-		{
-			message_recu.add(ReceiveMessage);
-		}
-	}
-
-	public void run()
-	{
-		while (Connexion)
-		{
-			message_reception();
-		}
 	}
 
 	public int getNumWaiter() {

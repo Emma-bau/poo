@@ -1,21 +1,13 @@
+check changement de pseudo et d�connexion avec 2 pc ( impossible sur un seul)
+r�soudre le probl�me des adresses priv�es/publiques pour la r�cup�ration et la mise ne place de la co TCP
+r�essayer de faire du broadcast, fonctionne sur une seule machine Peut etre la box qui bloquait 
 
-- Erreur socket au moment de la déco à checker ( je ne sais pas pourquoi elle apparait maintenant)
-- Est ce qu'il faut faire une interface admin ? pour l'installation
 
-Demander à Matthieu : 
-
-- Déconnexion gérer l'envoie de la déco (il faudra checker si ma procédure peut fonctionner) -> peut etre ça regle le probleme de déconnexion des sockets
-- change pseudo à gérer aussi ( voir quelles fonctions appellées)
-- voir si ça focntionne quand même chez Matthieu ? Installation du vpn ? 
 --------------------------------------------------------------------------------------------
 
 Faire un code plus joli, checker les noms de variables, les commentaires, les system.out.println
-Commencer à regarder comment marche le servlets
+
 
 --------------------------------------------------------------------------------------------
 Changement fait : 
-
-- Mise à jour du contact self en récupérant l'id rentré, et dans le network manager avant la first connexion, dans la fonction
-- Rajout de loadHistory dans chatHistory
-- BDD fonctionne même avec les apostrophes
-- Mise en place de package c'est plus jolie
+- Ajout de la gestion du changement de pseudo et de la d�connexion pour le serveur 

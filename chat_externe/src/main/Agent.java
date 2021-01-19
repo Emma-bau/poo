@@ -6,11 +6,10 @@ import controller.IDManager;
 import controller.InterfaceManager;
 import controller.NetworkManager;
 import controller.PseudoManager;
+import servlet.ServerHandler;
 import model.Contact;
 import model.Message;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.*;
 
 public class Agent {
@@ -20,8 +19,9 @@ public class Agent {
 	private DataManager dataManager; 
 	private PseudoManager pseudoManager;
 	private NetworkManager networkManager;
+	private ServerHandler serverHandler;
 	private Contact self;
-	private boolean first_time_pseudo;
+	private boolean first_time_pseudo, interne;
 
 	public Agent() {
 
@@ -29,15 +29,17 @@ public class Agent {
 		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
+		this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
-		
+		this.interne = false;
+
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact self = new Contact(9999,9999,"blank",adress,101);
 			this.self = self;
 		} catch (UnknownHostException e) {}
-		
-		
+
+
 		try {
 			this.interfaceManager = new InterfaceManager(this);
 			interfaceManager.getFrame().setSize(400,150);
@@ -62,108 +64,61 @@ public class Agent {
 	public NetworkManager getNetworkManager() {
 		return networkManager;
 	}
+	public ServerHandler getServerHandler() {
+		return serverHandler;
+	}
 	public Contact getSelf() {
 		return self;
 	}
 	public void setSelf(Contact self) {
 		this.self = self;
 	}
+	public boolean isInterne() {
+		return interne;
+	}
 
 	public int setPseudo(String pseudo) {
 		int pseudoTest = pseudoManager.setPseudo(pseudo);
 		if (pseudoTest == 0) {		
 			if (this.first_time_pseudo == true) {
-				networkManager.getUdpserver().first_connexion(pseudo);
+				try {
+					serverHandler.first_connexion(pseudo);
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
 				this.first_time_pseudo = false;
 			}
 			else {
 				System.out.println("udpserver.change_pseudo: " + pseudo);
 				interfaceManager.getMainInterface().updatePseudo();
-				networkManager.getUdpserver().change_pseudo(pseudo);
+				serverHandler.change_pseudo(pseudo);
 			}
 		}
 		return pseudoTest;
 	}
-	
+
 	public void establishConnexion(Contact c) {
 		networkManager.connexion_tcp(c);
 	}
-	
+
 	public void sendMessageTo(Message m) {
 		networkManager.sendMessage(m);
 	}
-	
+
 	public void newMessageReceived(Contact contact, String text) {
 		dataManager.updateMessagesHistory(contact, text);
 	}
-	
-	public void deconnexion() {
-		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
-	}
-	
-	public void notifyServer()
-	{
-		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
-		try
-		{
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setUseCaches(false);
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("cmd", "connected");
-			connection.setRequestProperty("ID", "405");
-			connection.setRequestProperty("pseudo","courgette");
-			System.out.println(connection.getResponseCode());
-			System.out.println("En vrai, arriver ici");
-			connection.disconnect();
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	/*A modifier mais fonctionne pour l'instant très bien, à voir comment rajouter les nouveaux utilisateurs*/
-	public static void loadServer()
-	{
-		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
-		String msg ;
-		try
-		{
-			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-			
-			connection.setDoOutput(true);
-			connection.setUseCaches(false);
-			connection.setRequestMethod("GET");
-			if(connection.getResponseCode()==200)
-			{
-				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-				while((msg=in.readLine())!=null)
-				{
-					System.out.println(msg);
-				}
-			}
-			connection.disconnect();
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	public static void main(String[] args) {
-		
-		Agent main = new Agent();
-		try {
-			Thread.sleep(5);
-			loadServer();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 
+	public void deconnexion() {
+		serverHandler.deconnexion(pseudoManager.getPseudo());
+	}
+
+
+
+
+	public static void main(String[] args) {
+
+		Agent main = new Agent();
 	}
 
 
