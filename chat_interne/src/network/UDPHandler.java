@@ -49,15 +49,12 @@ public class UDPHandler extends Thread{
 	{
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
-		envoie.send(packet);
-		
+		envoie.send(packet);	
 	}
 
 	public void run()
 	{
-		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion
-
-			
+		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion	
 		try
 		{
 			//Creation du port de reception
@@ -227,6 +224,7 @@ public class UDPHandler extends Thread{
 				}
 			}
 			envoie.close();
+			manager.getAgent().getServerHandler().notifyServer(2);
 		}
 		catch (IOException e)
 		{
@@ -241,10 +239,12 @@ public class UDPHandler extends Thread{
 		try
 		{
 			start();
+			/*Création du contact nous-même*/
 			this.adress =  InetAddress.getByName("255.255.255.255");
 			manager.getAgent().getSelf().setPseudo(pseudo);
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
+			manager.getAgent().getSelf().setAdresse(InetAddress.getLocalHost());
 			
 		}
 		catch(UnknownHostException e)
@@ -267,7 +267,7 @@ public class UDPHandler extends Thread{
 				}
 				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
-				manager.getAgent().getServerHandler().notifyServer();
+				manager.getAgent().getServerHandler().notifyServer(1);
 				
 			}
 			catch(SocketException e)
@@ -299,10 +299,13 @@ public class UDPHandler extends Thread{
 				}
 			}
 			envoie.close();
+			//Rajouter la deconnexion au servuer ici et tester les valeurs et le retrait de la liste//
+			manager.getAgent().getServerHandler().notifyServer(0);
+			
 		}
 		catch (IOException e)
 		{
-			System.out.println("Probleme a lenvoi du nouveau login");
+			System.out.println("Probleme a l'envoi du nouveau login");
 		}
 			
 	}
