@@ -67,6 +67,7 @@ public class UDPHandler extends Thread{
 				while(manager.isConnexion())
 				{
 					dgramSocketReception.receive(inPacket);
+					System.out.println("reception d'un paquet");
 					//Reception de l'adresse et du port associe//
 					InetAddress clientAddress = inPacket.getAddress();
 					
@@ -245,6 +246,7 @@ public class UDPHandler extends Thread{
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
 			manager.getAgent().getSelf().setAdresse(InetAddress.getLocalHost());
+			System.out.println("UDP port  :"+ manager.getAgent().getSelf().getTcp_serv_port()+"adresse  : "+manager.getAgent().getSelf().getAdresse());
 			
 		}
 		catch(UnknownHostException e)
@@ -265,6 +267,7 @@ public class UDPHandler extends Thread{
 
 					}
 				}
+				System.out.println("connexion envoye");
 				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
 				//manager.getAgent().getServerHandler().notifyServer(1);
