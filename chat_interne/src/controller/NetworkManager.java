@@ -115,6 +115,7 @@ public class NetworkManager extends Thread {
 		{
 			System.out.println("Erreur des le debut avec le lancement de udp");
 		}
+		
 			
 		//Creation de notre serveur tcp
 		ServerTCPHandler server = new ServerTCPHandler(this, numPortTcp);

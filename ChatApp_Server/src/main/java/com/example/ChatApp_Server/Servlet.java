@@ -16,19 +16,22 @@ class User{
 	private String tcp;
 	private String adresse;
 	private String interne;
+	private String etat;
 
-
-
-
-	public User (String pseudo, String ID, String interne, String tcp, String adresse ){
+	public User (String pseudo, String ID, String interne, String tcp, String adresse, String etat ){
 		this.pseudo=pseudo;
 		this.ID=ID;
 		this.interne=interne;
 		this.tcp=tcp;
 		this.adresse=adresse;
-
+		this.etat=etat;
 	}
 
+	public String getEtat() {
+		return etat;
+	}
+	
+	
 	public String getAdresse() {
 		return adresse;
 	}
@@ -67,8 +70,6 @@ public class Servlet extends HttpServlet {
 
 	public Servlet() {
 		this.connectedUsers = new ArrayList<>();
-		connectedUsers.add(new User("pseudo", "ID","interne","etat","statut"));
-		connectedUsers.add(new User("courgette", "3600","oui","1","connected"));
 	}
 
 	public void init() {
@@ -79,11 +80,15 @@ public class Servlet extends HttpServlet {
 	{
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
-		pw.println("Entrer dans la methode GET");
-		pw.println(connectedUsers.size());
-		for (int i = 0; i<connectedUsers.size();i++) {
-			User user = connectedUsers.get(i);
-			pw.println("id: "+user.getID()+":"+"pseudo: "+user.getPseudo()+" :"+"adresse: "+user.getAdresse()+" :"+"tcp: "+user.getTcp()+":"+" statut: "+user.getInterne()+": connected");
+		for (Iterator<User> it =  connectedUsers.iterator();it.hasNext();) 
+		{
+			User user = (User)it.next();
+			pw.println("id: "+user.getID()+":"+"pseudo: "+user.getPseudo()+" :"+"adresse: "+user.getAdresse()+" :"+"tcp: "+user.getTcp()+":"+" statut: "+user.getInterne()+":"+" etat: "+user.getEtat()+": connected");
+			if(user.getEtat().equals("0"))
+			{
+				
+				it.remove();
+			}
 		}
 		pw.close();
 	}
@@ -99,7 +104,7 @@ public class Servlet extends HttpServlet {
 	
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
-		User C = new User(pseudo,ID,interne,tcp,adresse);
+		User C = new User(pseudo,ID,interne,tcp,adresse,etat);
 		
 		/*connexion*/
 		if(etat.equals("1"))
@@ -107,7 +112,7 @@ public class Servlet extends HttpServlet {
 			connectedUsers.add(C);
 		}
 		/*change pseudo*/
-		else if (etat.equals("2"))
+		else
 		{
 			/*On verifie qu'il n'est pas deja dans la liste*/
 			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
@@ -120,17 +125,6 @@ public class Servlet extends HttpServlet {
 			}
 			connectedUsers.add(C);
 			
-		}
-		else
-		{
-			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
-			{
-				User u = (User)it.next();
-				if(u.getID() == C.getID())
-				{
-					it.remove();
-				}
-			}
 		}
 
 

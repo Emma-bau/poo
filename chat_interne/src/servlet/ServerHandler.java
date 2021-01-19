@@ -57,10 +57,6 @@ public class ServerHandler extends Thread{
 				System.out.println("Probleme dans le choix de l'état pour le serveur");
 			
 			BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-			/*System.out.println(in.readLine());
-			System.out.println(in.readLine());
-			System.out.println(in.readLine());
-			System.out.println(in.readLine());*/
 			
 			connection.disconnect();
 
@@ -86,21 +82,17 @@ public class ServerHandler extends Thread{
 			if(connection.getResponseCode()==200)
 			{
 				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-				msg = in.readLine();
-				msg = in.readLine();
-				msg = in.readLine();
-				msg = in.readLine();
 				
 				/*Récupération des informations par le buffer*/
 				while((msg=in.readLine())!=null)
 				{
-					System.out.println("Message serveur " + msg);
 					String id_String =  regexSearch("(?<=id: )\\d+", msg);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", msg);
 					String adresse_string = regexSearch("(?<=adresse: )\\S+", msg);
 					String servPortTCP_String =  regexSearch("(?<=tcp: )\\d+", msg);
 					String statut_String = regexSearch("(?<=statut: )\\d+", msg);
-
+					String etat_String = regexSearch("(?<=etat: )\\d+", msg);
+					
 					int tcpserv = Integer.parseInt(servPortTCP_String);
 					int id = Integer.parseInt(id_String);
 					boolean statut=Boolean.parseBoolean(statut_String);
@@ -121,7 +113,7 @@ public class ServerHandler extends Thread{
 						}	
 
 						/*On verifie que ce n'est pas nous meme*/
-						if (id!=agent.getSelf().getId())
+						if (id!=agent.getSelf().getId()&&!(etat_String.equals("0")))
 						{
 							agent.getNetworkManager().getconnectedUser().add(new Contact(tcpserv,pseudo,id,adresse));
 						}
@@ -143,7 +135,7 @@ public class ServerHandler extends Thread{
 			loadServer();	
 			try {
 				/*modifier le temps*/
-				Thread.sleep(20000);
+				Thread.sleep(2000);
 			}
 			catch(InterruptedException e) {}
 		}
