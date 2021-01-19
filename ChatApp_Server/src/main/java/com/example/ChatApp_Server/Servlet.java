@@ -1,9 +1,12 @@
 package com.example.ChatApp_Server;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.servlet.http.*;
+
+
 import javax.servlet.annotation.*;
 
 
@@ -97,35 +100,38 @@ public class Servlet extends HttpServlet {
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
 		User C = new User(pseudo,ID,interne,tcp,adresse);
-		//pw.println(C.afficher());
-		connectedUsers.add(C);
-
-		/*if(etat=="1")
+		
+		/*connexion*/
+		if(etat.equals("1"))
 		{
-
+			connectedUsers.add(C);
 		}
-		else if (etat=="2")
+		/*change pseudo*/
+		else if (etat.equals("2"))
 		{
-			for(User U : connectedUsers)
+			/*On verifie qu'il n'est pas deja dans la liste*/
+			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
 			{
-				if(U.getID()==ID)
+				User u = (User)it.next();
+				if(u.getID() == C.getID())
 				{
-					connectedUsers.remove(U);
-					connectedUsers.add(new User(pseudo,ID,interne,tcp,adresse));
-
+					it.remove();
 				}
 			}
+			connectedUsers.add(C);
+			
 		}
 		else
 		{
-			for(User U : connectedUsers)
+			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
 			{
-				if(U.getID()==ID)
+				User u = (User)it.next();
+				if(u.getID() == C.getID())
 				{
-					connectedUsers.remove(U);
+					it.remove();
 				}
 			}
-		}*/
+		}
 
 
 	}

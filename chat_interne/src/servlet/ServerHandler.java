@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +34,7 @@ public class ServerHandler extends Thread{
 			connection.setUseCaches(false);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("ID",Integer.toString(agent.getSelf().getId()));
-			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo());
+			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo()+"serveur");
 			connection.setRequestProperty("adresse",agent.getSelf().getAdresse().getHostAddress());
 			connection.setRequestProperty("tcp",Integer.toString(agent.getSelf().getTcp_serv_port()));
 			if (agent.isInterne())
@@ -44,9 +46,6 @@ public class ServerHandler extends Thread{
 				connection.setRequestProperty("status","0");
 
 			}
-			
-			connection.setRequestProperty("etat", "1");
-
 
 			if (etat == 0) /*deconnexion*/
 				connection.setRequestProperty("etat", "0");
@@ -56,7 +55,12 @@ public class ServerHandler extends Thread{
 				connection.setRequestProperty("etat", "2");
 			else
 				System.out.println("Probleme dans le choix de l'état pour le serveur");
+			
 			BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
+			/*System.out.println(in.readLine());
+			System.out.println(in.readLine());
+			System.out.println(in.readLine());
+			System.out.println(in.readLine());*/
 			
 			connection.disconnect();
 
@@ -83,13 +87,10 @@ public class ServerHandler extends Thread{
 			{
 				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
 				msg = in.readLine();
-				System.out.println(msg);
 				msg = in.readLine();
-				System.out.println(msg);
 				msg = in.readLine();
-				System.out.println(msg);
 				msg = in.readLine();
-				System.out.println(msg);
+				
 				/*Récupération des informations par le buffer*/
 				while((msg=in.readLine())!=null)
 				{
@@ -103,27 +104,28 @@ public class ServerHandler extends Thread{
 					int tcpserv = Integer.parseInt(servPortTCP_String);
 					int id = Integer.parseInt(id_String);
 					boolean statut=Boolean.parseBoolean(statut_String);
-					System.out.println("Pseudo " +pseudo+" ID "+id+" TCP "+tcpserv+" Adresse "+adresse_string+ " Statut "+statut_String);
 					InetAddress adresse =  InetAddress.getByName(adresse_string);
-					
 
-					/*On ne traite le contact que si c'est un utilisateur externe*/
-					/*if (!statut)
+					/*On ne traite le contact que si c'est un utilisateur externe sinon l'ajout passe par l'udp*/
+					if (!statut)
 					{
-						boolean trouve = false;
-						System.out.println("arrivez dans le if");
-						for(Contact C : agent.getNetworkManager().getconnectedUser())
+
+						/*On verifie qu'il n'est pas deja dans la liste*/
+						for(Iterator<Contact> it =  agent.getNetworkManager().getconnectedUser().iterator();it.hasNext();)
 						{
-							if ( C.getId() == id || C.getId()==agent.getSelf().getId())
+							Contact c = (Contact)it.next();
+							if(c.getId() == id)
 							{
-								trouve = true;
+								it.remove();
 							}
-						}
-						if (!trouve)
+						}	
+
+						/*On verifie que ce n'est pas nous meme*/
+						if (id!=agent.getSelf().getId())
 						{
 							agent.getNetworkManager().getconnectedUser().add(new Contact(tcpserv,pseudo,id,adresse));
 						}
-					}*/
+					}
 				}
 				connection.disconnect();
 
@@ -140,6 +142,7 @@ public class ServerHandler extends Thread{
 		while(true) {
 			loadServer();	
 			try {
+				/*modifier le temps*/
 				Thread.sleep(20000);
 			}
 			catch(InterruptedException e) {}
