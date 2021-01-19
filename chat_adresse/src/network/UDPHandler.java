@@ -164,6 +164,7 @@ public class UDPHandler extends Thread{
 			//Si c'est une premiere connexion alors on repond, sinon c'est une reponse a notre premier envoie	
 			if (etat == 1)
 			{
+				System.out.println("prepartion envoie reponse");
 				String message="etat: 3 servPort: "+portNumReception+"tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+manager.getAgent().getPseudoManager().getPseudo()+" final";
 				byte [] buffer = message.getBytes();
 				try
@@ -246,7 +247,7 @@ public class UDPHandler extends Thread{
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
 			manager.getAgent().getSelf().setAdresse(InetAddress.getLocalHost());
-			System.out.println("UDP port  :"+ manager.getAgent().getSelf().getTcp_serv_port()+"adresse  : "+manager.getAgent().getSelf().getAdresse());
+			System.out.println("UDP port  :"+ portNumReception+" adresse  : "+manager.getAgent().getSelf().getAdresse());
 			
 		}
 		catch(UnknownHostException e)
