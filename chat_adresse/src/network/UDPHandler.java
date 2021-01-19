@@ -12,13 +12,21 @@ import model.Contact;
 
 
 public class UDPHandler extends Thread{
-
-
-	private int portNumReception  = 65535;
-	private int portNumEnvoie = 65534; 
+	// define the range 
+    int max = 65500; 
+    int min = 65300; 
+	int range = max - min + 1; 
+	
+	// define the range 
+    int max1 = 65300; 
+    int min1 = 65000; 
+	int range1 = max1 - min1 + 1; 
+	
+	
+	private int portNumReception ;
+	private int portNumEnvoie; 
 	private InetAddress adress;
 	private NetworkManager manager;
-	private List<InetAddress> adresse_broadcast_list;
 
 	private static final int CHANGE_LOGIN = 0;
 	private static final int CONNEXION = 1;
@@ -29,25 +37,24 @@ public class UDPHandler extends Thread{
 
 	public UDPHandler(NetworkManager net ) throws SocketException
 	{
+		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
+		//65534 pour recevoir
 		this.manager=net;
-		this.adresse_broadcast_list = manager.listAllBroadcastAddresses();
+		portNumReception =  (int)(Math.random() * range) + min;
+		portNumEnvoie = (int)(Math.random() * range1) + min1;
 	}
-
+	
 	/*Revoir avec nouvelle norme*/
 	public void broadcast(String message, InetAddress address, int portNum, DatagramSocket envoie) throws IOException
 	{
-		System.out.println(portNum);
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
-		envoie.send(packet);
-
+		envoie.send(packet);	
 	}
 
 	public void run()
 	{
-		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion
-
-
+		//Creation de notre serveur UDP en ecoute et envoie de notre premiere connexion	
 		try
 		{
 			//Creation du port de reception
@@ -56,15 +63,13 @@ public class UDPHandler extends Thread{
 			DatagramPacket inPacket = new DatagramPacket(buffer,buffer.length);
 			try{
 				System.out.println("Serveur UDP creer");
-
+			
 				while(manager.isConnexion())
 				{
 					dgramSocketReception.receive(inPacket);
 					//Reception de l'adresse et du port associe//
-					System.out.println("packet reçu");
 					InetAddress clientAddress = inPacket.getAddress();
-					System.out.println(clientAddress);
-
+					
 					//Recuperation des informations du message						
 					String input="";
 					for(int i=0; i<buffer.length; i++)
@@ -78,7 +83,7 @@ public class UDPHandler extends Thread{
 					String servPortTCP_String =  regexSearch("(?<=tcp: )\\d+", input);
 					String id_String =  regexSearch("(?<=id: )\\d+", input);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", input);
-
+					
 					int etat = Integer.parseInt(etat_String);
 					int udpserv= Integer.parseInt(servPortUDP_String);
 					int tcpserv = Integer.parseInt(servPortTCP_String);
@@ -104,12 +109,12 @@ public class UDPHandler extends Thread{
 					{
 						System.out.println("Probleme avec le broadcast, non lecture du buffer");
 					}
-
+					
 				}
 				dgramSocketReception.close();
 
 
-
+				
 			}
 			catch(IOException e )
 			{
@@ -169,19 +174,18 @@ public class UDPHandler extends Thread{
 				}
 				catch(SocketException e)
 				{
-					e.printStackTrace();
 					System.out.println("Erreur message dans la reponse a une connexion");
 				}
 			}
 
 		}
-		catch(Exception e)
+		catch(IOException e)
 		{
 			e.printStackTrace();
 			System.out.println("Erreur message dans la reponse a une connexion");
 		}
 
-
+		
 	}
 
 	public void remove_contact(InetAddress clientAddress, String pseudo)
@@ -200,11 +204,11 @@ public class UDPHandler extends Thread{
 	}
 
 	public static String regexSearch(String regex, String input) {
-		Matcher m = Pattern.compile(regex).matcher(input);
-		if (m.find()) return m.group();
-		return null;
+        Matcher m = Pattern.compile(regex).matcher(input);
+        if (m.find()) return m.group();
+        return null;
 	}
-
+	
 	public void change_pseudo(String pseudo)
 	{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
@@ -220,6 +224,7 @@ public class UDPHandler extends Thread{
 				}
 			}
 			envoie.close();
+			//manager.getAgent().getServerHandler().notifyServer(2);
 		}
 		catch (IOException e)
 		{
@@ -231,35 +236,52 @@ public class UDPHandler extends Thread{
 	public void first_connexion (String pseudo)
 	{
 		//Envoie de la premiere connexion//
-		start();
-		manager.getAgent().getSelf().setPseudo(pseudo);
-		manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
-		manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
+		try
+		{
+			start();
+			/*Création du contact nous-même*/
+			this.adress =  InetAddress.getByName("255.255.255.255");
+			manager.getAgent().getSelf().setPseudo(pseudo);
+			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
+			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
+			manager.getAgent().getSelf().setAdresse(InetAddress.getLocalHost());
+			
+		}
+		catch(UnknownHostException e)
+		{
+			System.out.println("Erreur dans le broadcast, hote inconnu");
+		}
 		try{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				//envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
-				for (int i=0;  i <adresse_broadcast_list.size();i++)
+				for (int i=65534; i>65233;i--)
 				{
-					broadcast(message,adresse_broadcast_list.get(i),portNumReception,envoie);
+					if(i != portNumReception)
+					{
 					
+						broadcast(message,adress,i,envoie);
+
+					}
 				}
-				
 				envoie.close();
-				System.out.println("connexion faites");
+				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
+				//manager.getAgent().getServerHandler().notifyServer(1);
+				
 			}
 			catch(SocketException e)
 			{
 				System.out.println("Probleme socket udp premier envoie");
+				e.printStackTrace();
 			}
-
-
+			
+			
 		}
 		catch (IOException e)
 		{
-			System.out.println("PremiÃ¨re connexion erreur udp io");
+			System.out.println("erreur premiere connexion udp");
+			e.printStackTrace();
 		}
 	}
 
@@ -273,18 +295,21 @@ public class UDPHandler extends Thread{
 			{
 				if(i != portNumReception)
 				{
-
+				
 					broadcast(message,adress,i,envoie);
 
 				}
 			}
 			envoie.close();
+			//Rajouter la deconnexion au servuer ici et tester les valeurs et le retrait de la liste//
+			//manager.getAgent().getServerHandler().notifyServer(0);
+			
 		}
 		catch (IOException e)
 		{
-			System.out.println("Probleme a lenvoi du nouveau login");
+			System.out.println("Probleme a l'envoi du nouveau login");
 		}
-
+			
 	}
 
 
