@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -21,6 +22,30 @@ public class ServerHandler extends Thread{
 		this.agent = agent;
 		start();
 	}
+	
+	/*notifiaction d'une premiere connexion*/
+	public void first_connexion (String pseudo) throws UnknownHostException
+	{
+			/*Création du contact nous-même*/
+			agent.getSelf().setPseudo(pseudo);
+			agent.getSelf().setTcp_serv_port(agent.getNetworkManager().getNumPortTcp());
+			agent.getSelf().setAdresse(InetAddress.getLocalHost());
+			/*envoie de nos informations au serveur*/
+			notifyServer(1);			
+	}
+
+	/*changement de pseudo*/
+	public void change_pseudo (String pseudo)
+	{
+			notifyServer(2);	
+	}
+	
+	/*deconnexion*/
+	public void deconnexion (String pseudo)
+	{
+			notifyServer(0);	
+	}
+
 
 	/*Notification au serveur de notre connexion*/
 	public void notifyServer(int etat)

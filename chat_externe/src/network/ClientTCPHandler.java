@@ -18,6 +18,7 @@ public class ClientTCPHandler extends Thread {
 	{
 		this.manager = Manager;
 		this.user = contact;
+		System.out.println("adresse : "+user.getAdresse()+" tcp "+user.getTcp_serv_port());
 		try
 		{
 			clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
@@ -39,6 +40,7 @@ public class ClientTCPHandler extends Thread {
 				//tant que le client est connecte
 				while((msg = in.readLine())!=null)
 				{
+					System.out.println("message reçu");
 					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";

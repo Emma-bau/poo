@@ -1,28 +1,46 @@
 package com.example.ChatApp_Server;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import javax.servlet.http.*;
+
+
 import javax.servlet.annotation.*;
 
 
 class User{
 	private String pseudo;
 	private String ID;
-	private InetAddress IPAddress;
+	private String tcp;
+	private String adresse;
 	private String interne;
+	private String etat;
 
-
-	public String getInterne() {
-		return interne;
-	}
-
-	public User (String pseudo, String ID, String interne){
+	public User (String pseudo, String ID, String interne, String tcp, String adresse, String etat ){
 		this.pseudo=pseudo;
 		this.ID=ID;
 		this.interne=interne;
+		this.tcp=tcp;
+		this.adresse=adresse;
+		this.etat=etat;
 	}
+
+	public String getEtat() {
+		return etat;
+	}
+	
+	
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public String getTcp() {
+		return tcp;
+	}
+
+
 
 	public String getID() {
 		return ID;
@@ -32,20 +50,26 @@ class User{
 	public String getPseudo() {
 		return pseudo;
 	}
+
+	public String getInterne() {
+		return interne;
+	}
+
+	public String afficher()
+	{
+		return ("USER : "+pseudo+" "+ID);
+	}
+
 }
 
 @WebServlet(name = "Servlet", value = "/servlet")
 public class Servlet extends HttpServlet {
-	private ArrayList<User> connectedUsers;
-	private String essaie;
 
+	private static final long serialVersionUID = 1L;
+	private ArrayList<User> connectedUsers;
 
 	public Servlet() {
 		this.connectedUsers = new ArrayList<>();
-		User u1 = new User("101","emma","true");
-		User u2 = new User("102","matthieu","false");
-		this.connectedUsers.add(u1);
-		this.connectedUsers.add(u2);
 	}
 
 	public void init() {
@@ -56,21 +80,54 @@ public class Servlet extends HttpServlet {
 	{
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
-		pw.println("Entrer dans la methode GET");
-		for (int i = 0; i<connectedUsers.size();i++) {
-			User user = connectedUsers.get(i);
-			pw.println(user.getID()+":"+user.getPseudo()+" statut : "+user.getInterne()+": connected");
+		for (Iterator<User> it =  connectedUsers.iterator();it.hasNext();) 
+		{
+			User user = (User)it.next();
+			pw.println("id: "+user.getID()+":"+"pseudo: "+user.getPseudo()+" :"+"adresse: "+user.getAdresse()+" :"+"tcp: "+user.getTcp()+":"+" statut: "+user.getInterne()+":"+" etat: "+user.getEtat()+": connected");
+			if(user.getEtat().equals("0"))
+			{
+				
+				it.remove();
+			}
 		}
 		pw.close();
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String connected = request.getHeader("cmd");
+
 		String ID = request.getHeader("ID");
 		String pseudo = request.getHeader("pseudo");
+		String adresse = request.getHeader("adresse");
+		String tcp = request.getHeader("tcp");
 		String interne = request.getHeader("status");
-		connectedUsers.add(new User(pseudo,ID,interne));
+		String etat = request.getHeader("etat");
+	
+		response.setContentType("text/plain");
+		PrintWriter pw =response.getWriter();
+		User C = new User(pseudo,ID,interne,tcp,adresse,etat);
 		
+		/*connexion*/
+		if(etat.equals("1"))
+		{
+			connectedUsers.add(C);
+		}
+		/*change pseudo*/
+		else
+		{
+			/*On verifie qu'il n'est pas deja dans la liste*/
+			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
+			{
+				User u = (User)it.next();
+				if(u.getID() == C.getID())
+				{
+					it.remove();
+				}
+			}
+			connectedUsers.add(C);
+			
+		}
+
+
 	}
 
 
@@ -78,18 +135,5 @@ public class Servlet extends HttpServlet {
 	public void destroy() {
 	}
 
-	private User getUser(String i) {
-		int j;
-		for (j = 0; j < connectedUsers.size(); j++) {
-			essaie=connectedUsers.get(j).getID()+" "+i;
-			if (connectedUsers.get(j).getID().equals(i)) {
-				essaie="ok";
-				return connectedUsers.get(j);
-			} else {
-				continue;
-			}
-		}
-		return null;
-	}
 
 }

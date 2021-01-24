@@ -1,0 +1,5 @@
+Chat interne fait, reste un problème d'actualisation des messages pour chats internes et externes
+
+
+checker le probleme des adresses avec des pcs a distances
+vérifier pour les plages de port le nombre de machines max qu'il faut pouvoir connecter

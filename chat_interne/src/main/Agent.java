@@ -33,16 +33,16 @@ public class Agent {
 		this.networkManager = new NetworkManager(this);
 		this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
-		this.interne = true;
-		
+		this.interne = false;
+
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact self = new Contact(9999,9999,"blank",adress,101);
 			this.self = self;
 			System.out.println("adresse: "+ self.getAdresse());
 		} catch (UnknownHostException e) {}
-		
-		
+
+
 		try {
 			this.interfaceManager = new InterfaceManager(this);
 			interfaceManager.getFrame().setSize(400,150);
@@ -95,26 +95,37 @@ public class Agent {
 		}
 		return pseudoTest;
 	}
-	
+
 	public void establishConnexion(Contact c) {
 		networkManager.connexion_tcp(c);
 	}
-	
+
 	public void sendMessageTo(Message m) {
 		networkManager.sendMessage(m);
 	}
-	
+
 	public void newMessageReceived(Contact contact, String text) {
 		dataManager.updateMessagesHistory(contact, text);
 	}
-	
+
 	public void deconnexion() {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
-	
+
 	public static void main(String[] args) {
-		
+
 		Agent main = new Agent();
+		/*InetAddress ip;
+		try {
+			ip = InetAddress.getLocalHost();
+			System.out.print("Mon adresse IP est: ");
+			System.out.println(ip.getHostAddress());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+
+		
 
 	}
 
