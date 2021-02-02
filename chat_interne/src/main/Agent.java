@@ -39,6 +39,7 @@ public class Agent {
 			InetAddress adress = InetAddress.getLocalHost();
 			Contact self = new Contact(9999,9999,"blank",adress,101);
 			this.self = self;
+			System.out.println("adresse: "+ self.getAdresse());
 		} catch (UnknownHostException e) {}
 
 
@@ -110,9 +111,6 @@ public class Agent {
 	public void deconnexion() {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
-
-
-
 
 	public static void main(String[] args) {
 
