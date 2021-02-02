@@ -262,15 +262,15 @@ public class UDPHandler extends Thread{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 				envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
-				for (int i=65500; i>64500;i--)
+				/*for (int i=65500; i>64500;i--)
 				{
 					if(i != portNumReception)
-					{
+					{*/
 					
-						broadcast(message,adress,i,envoie);
+						broadcast(message,adress,1235,envoie);
 
-					}
-				}
+					/*}
+				}*/
 				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
 				manager.getAgent().getServerHandler().notifyServer(1);
