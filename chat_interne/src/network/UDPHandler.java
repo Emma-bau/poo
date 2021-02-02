@@ -40,8 +40,8 @@ public class UDPHandler extends Thread{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
 		this.manager=net;
-		portNumReception = 1235; //(int)(Math.random() * range) + min;
-		portNumEnvoie = 1234;//(int)(Math.random() * range1) + min1;
+		portNumReception =  (int)(Math.random() * range) + min;
+		portNumEnvoie = (int)(Math.random() * range1) + min1;
 	}
 	
 	/*Revoir avec nouvelle norme*/
@@ -49,7 +49,7 @@ public class UDPHandler extends Thread{
 	{
 		System.out.println("Adresse : "+address+" portNum : "+portNum);
 		byte [] buffer = message.getBytes();
-		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, 1235);
+		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
 		envoie.send(packet);	
 	}
 
@@ -262,15 +262,15 @@ public class UDPHandler extends Thread{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 				envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
-				/*for (int i=65500; i>64500;i--)
+				for (int i=65500; i>64500;i--)
 				{
 					if(i != portNumReception)
-					{*/
+					{
 					
-						broadcast(message,adress,1235,envoie);
+						broadcast(message,adress,i,envoie);
 
-					/*}
-				}*/
+					}
+				}
 				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
 				manager.getAgent().getServerHandler().notifyServer(1);
