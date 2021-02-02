@@ -216,7 +216,7 @@ public class UDPHandler extends Thread{
 
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-			for (int i=65500; i>65233;i--)
+			for (int i=65500; i>64500;i--)
 			{
 				if(i != portNumReception)
 				{	
@@ -246,6 +246,8 @@ public class UDPHandler extends Thread{
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
 			manager.getAgent().getSelf().setAdresse(InetAddress.getLocalHost());
 			
+			System.out.println("Reception : "+portNumReception+" Envoie  : "+portNumEnvoie);
+			
 		}
 		catch(UnknownHostException e)
 		{
@@ -257,7 +259,7 @@ public class UDPHandler extends Thread{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 				envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
-				for (int i=65534; i>65400;i--)
+				for (int i=65500; i>64500;i--)
 				{
 					if(i != portNumReception)
 					{
@@ -291,7 +293,7 @@ public class UDPHandler extends Thread{
 		String message =  "etat: 2 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-			for (int i=65534; i>65233;i--)
+			for (int i=65500; i>64500;i--)
 			{
 				if(i != portNumReception)
 				{
