@@ -69,6 +69,7 @@ public class UDPHandler extends Thread{
 					dgramSocketReception.receive(inPacket);
 					//Reception de l'adresse et du port associe//
 					InetAddress clientAddress = inPacket.getAddress();
+					System.out.println(clientAddress);
 					
 					//Recuperation des informations du message						
 					String input="";
@@ -169,6 +170,7 @@ public class UDPHandler extends Thread{
 				{
 					DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 					DatagramPacket packet = new DatagramPacket (buffer, buffer.length, clientAddress, ServPort);
+					System.out.println("reponse envoye a : "+clientAddress+" sur : "+ServPort);
 					envoie.send(packet);
 					envoie.close();
 				}
