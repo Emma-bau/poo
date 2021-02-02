@@ -47,6 +47,7 @@ public class UDPHandler extends Thread{
 	/*Revoir avec nouvelle norme*/
 	public void broadcast(String message, InetAddress address, int portNum, DatagramSocket envoie) throws IOException
 	{
+		System.out.println("Adresse : "+address+" portNum : "+portNum);
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
 		envoie.send(packet);	
