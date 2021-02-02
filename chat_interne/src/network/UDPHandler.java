@@ -251,7 +251,7 @@ public class UDPHandler extends Thread{
 		{
 			System.out.println("Erreur dans le broadcast, hote inconnu");
 		}
-		/*try{
+		try{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
@@ -265,22 +265,22 @@ public class UDPHandler extends Thread{
 
 					}
 				}
-				envoie.close();*/
+				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
 				manager.getAgent().getServerHandler().notifyServer(1);
 				
-			//}
-			/*catch(SocketException e)
+			}
+			catch(SocketException e)
 			{
 				System.out.println("Probleme socket udp premier envoie");
-			}*/
+			}
 			
 			
-		/*}
+		}
 		catch (IOException e)
 		{
 			System.out.println("Première connexion erreur udp io");
-		}*/
+		}
 	}
 
 	public void deconnexion (String pseudo)
