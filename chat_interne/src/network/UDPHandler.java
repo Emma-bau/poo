@@ -40,8 +40,8 @@ public class UDPHandler extends Thread{
 		//Port de broadcast de tous les utilisateurs : 65535 pour envoyer
 		//65534 pour recevoir
 		this.manager=net;
-		portNumReception =  (int)(Math.random() * range) + min;
-		portNumEnvoie = (int)(Math.random() * range1) + min1;
+		portNumReception = 1235; //(int)(Math.random() * range) + min;
+		portNumEnvoie = 1234;//(int)(Math.random() * range1) + min1;
 	}
 	
 	/*Revoir avec nouvelle norme*/
@@ -49,7 +49,7 @@ public class UDPHandler extends Thread{
 	{
 		System.out.println("Adresse : "+address+" portNum : "+portNum);
 		byte [] buffer = message.getBytes();
-		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
+		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, 1235);
 		envoie.send(packet);	
 	}
 
