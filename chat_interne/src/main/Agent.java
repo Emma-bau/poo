@@ -33,7 +33,7 @@ public class Agent {
 		this.networkManager = new NetworkManager(this);
 		this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
-		this.interne = false;
+		this.interne = true;
 
 		try {
 			InetAddress adress = InetAddress.getLocalHost();
