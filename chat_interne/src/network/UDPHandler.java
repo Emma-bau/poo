@@ -14,12 +14,12 @@ import model.Contact;
 public class UDPHandler extends Thread{
 	// define the range 
     int max = 65500; 
-    int min = 65300; 
+    int min = 64500; 
 	int range = max - min + 1; 
 	
 	// define the range 
-    int max1 = 65300; 
-    int min1 = 65000; 
+    int max1 = 64499; 
+    int min1 = 63499; 
 	int range1 = max1 - min1 + 1; 
 	
 	
@@ -216,7 +216,7 @@ public class UDPHandler extends Thread{
 
 		try {
 			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-			for (int i=65534; i>65233;i--)
+			for (int i=65500; i>65233;i--)
 			{
 				if(i != portNumReception)
 				{	
@@ -239,8 +239,8 @@ public class UDPHandler extends Thread{
 		try
 		{
 			start();
-			/*CrÈation du contact nous-mÍme*/
 			this.adress =  InetAddress.getByName("255.255.255.255");
+			/*CrÈation du contact nous-mÍme*/
 			manager.getAgent().getSelf().setPseudo(pseudo);
 			manager.getAgent().getSelf().setTcp_serv_port(manager.getNumPortTcp());
 			manager.getAgent().getSelf().setUdp_serv_port(portNumReception);
@@ -255,8 +255,9 @@ public class UDPHandler extends Thread{
 			try 
 			{
 				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+				envoie.setBroadcast(true);
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
-				for (int i=65534; i>65233;i--)
+				for (int i=65534; i>65400;i--)
 				{
 					if(i != portNumReception)
 					{
@@ -279,7 +280,8 @@ public class UDPHandler extends Thread{
 		}
 		catch (IOException e)
 		{
-			System.out.println("Premi√®re connexion erreur udp io");
+			e.printStackTrace();
+			System.out.println("erreur udp first connexion");
 		}
 	}
 

@@ -87,7 +87,6 @@ public class ServerHandler extends Thread{
 				/*Récupération des informations par le buffer*/
 				while((msg=in.readLine())!=null)
 				{
-					System.out.println(msg);
 					String id_String =  regexSearch("(?<=id: )\\d+", msg);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", msg);
 					String adresse_string = regexSearch("(?<=adresse: )\\S+", msg);
