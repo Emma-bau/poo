@@ -39,12 +39,13 @@ public class ServerHandler extends Thread{
 			connection.setRequestProperty("tcp",Integer.toString(agent.getSelf().getTcp_serv_port()));
 			if (agent.isInterne())
 			{
+				System.out.println("entree ici");
 				connection.setRequestProperty("status","1");
 			}
 			else
 			{
+				System.out.println("ou la");
 				connection.setRequestProperty("status","0");
-
 			}
 
 			if (etat == 0) /*deconnexion*/
@@ -86,6 +87,7 @@ public class ServerHandler extends Thread{
 				/*Récupération des informations par le buffer*/
 				while((msg=in.readLine())!=null)
 				{
+					System.out.println(msg);
 					String id_String =  regexSearch("(?<=id: )\\d+", msg);
 					String pseudo = regexSearch("(?<=pseudo: )\\S+", msg);
 					String adresse_string = regexSearch("(?<=adresse: )\\S+", msg);
@@ -95,11 +97,10 @@ public class ServerHandler extends Thread{
 					
 					int tcpserv = Integer.parseInt(servPortTCP_String);
 					int id = Integer.parseInt(id_String);
-					boolean statut=Boolean.parseBoolean(statut_String);
 					InetAddress adresse =  InetAddress.getByName(adresse_string);
 
 					/*On ne traite le contact que si c'est un utilisateur externe sinon l'ajout passe par l'udp*/
-					if (!statut)
+					if (!statut_String.equals("1"))
 					{
 
 						/*On verifie qu'il n'est pas deja dans la liste*/
@@ -135,7 +136,7 @@ public class ServerHandler extends Thread{
 			loadServer();	
 			try {
 				/*modifier le temps*/
-				Thread.sleep(2000);
+				Thread.sleep(20000);
 			}
 			catch(InterruptedException e) {}
 		}
