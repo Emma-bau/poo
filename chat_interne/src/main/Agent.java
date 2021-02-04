@@ -28,10 +28,10 @@ public class Agent {
 	public Agent() {
 
 		this.idManager = new IDManager();
-		this.dataManager = new DataManager(this);
+		//this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
-		this.serverHandler = new ServerHandler(this);
+		//this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
 		this.interne = true;
 
@@ -115,16 +115,6 @@ public class Agent {
 	public static void main(String[] args) {
 
 		Agent main = new Agent();
-		/*InetAddress ip;
-		try {
-			ip = InetAddress.getLocalHost();
-			System.out.print("Mon adresse IP est: ");
-			System.out.println(ip.getHostAddress());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-
 		
 
 	}

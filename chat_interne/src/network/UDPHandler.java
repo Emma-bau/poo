@@ -45,11 +45,14 @@ public class UDPHandler extends Thread{
 	}
 	
 	/*Revoir avec nouvelle norme*/
-	public void broadcast(String message, InetAddress address, int portNum, DatagramSocket envoie) throws IOException
+	public void broadcast(String message, InetAddress address, int portNum/*, DatagramSocket envoie*/) throws IOException
 	{
+		DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
+		envoie.setBroadcast(true);
 		byte [] buffer = message.getBytes();
 		DatagramPacket packet = new DatagramPacket (buffer, buffer.length, address, portNum);
 		envoie.send(packet);	
+		envoie.close();
 	}
 
 	public void run()
@@ -67,6 +70,7 @@ public class UDPHandler extends Thread{
 				while(manager.isConnexion())
 				{
 					dgramSocketReception.receive(inPacket);
+					System.out.println("Connexion reçue");
 					//Reception de l'adresse et du port associe//
 					InetAddress clientAddress = inPacket.getAddress();
 					
@@ -220,7 +224,7 @@ public class UDPHandler extends Thread{
 			{
 				if(i != portNumReception)
 				{	
-					broadcast(message,adress,i,envoie);
+					broadcast(message,adress,i);
 				}
 			}
 			envoie.close();
@@ -256,21 +260,19 @@ public class UDPHandler extends Thread{
 		try{
 			try 
 			{
-				DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
-				envoie.setBroadcast(true);
+
 				String message = "etat: 1 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 				for (int i=65500; i>64500;i--)
 				{
 					if(i != portNumReception)
 					{
 					
-						broadcast(message,adress,i,envoie);
+						broadcast(message,adress,i);
 
 					}
 				}
-				envoie.close();
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
-				manager.getAgent().getServerHandler().notifyServer(1);
+				//manager.getAgent().getServerHandler().notifyServer(1);
 				
 			}
 			catch(SocketException e)
@@ -298,7 +300,7 @@ public class UDPHandler extends Thread{
 				if(i != portNumReception)
 				{
 				
-					broadcast(message,adress,i,envoie);
+					broadcast(message,adress,i);
 
 				}
 			}
