@@ -120,7 +120,6 @@ public class ServerHandler extends Thread{
 					}
 				}
 				connection.disconnect();
-
 			}
 		}
 		catch(Exception e)

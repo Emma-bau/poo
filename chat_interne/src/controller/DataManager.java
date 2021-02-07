@@ -130,7 +130,6 @@ public class DataManager {
 	}
 	
 	public void updateMessagesHistory(Contact contact, String texte) {
-		System.out.println("datamanager atteint");
 		int hour = LocalDateTime.now().getHour();
 		int minute = LocalDateTime.now().getMinute();
 		Message m = new Message(texte, LocalDate.now(),hour,minute,contact,agent.getSelf());

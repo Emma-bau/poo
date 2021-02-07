@@ -105,7 +105,6 @@ public class Agent {
 	}
 
 	public void newMessageReceived(Contact contact, String text) {
-		System.out.println("agent atteint");
 		dataManager.updateMessagesHistory(contact, text);
 	}
 
