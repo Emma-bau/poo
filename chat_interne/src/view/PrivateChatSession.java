@@ -50,7 +50,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		frame.getContentPane().add(BorderLayout.NORTH,labelH);
 		frame.getContentPane().add(BorderLayout.CENTER,chatHistoryPanel);
 		frame.getContentPane().add(BorderLayout.SOUTH,sendCheckPanel);
-
 		frame.repaint();
 	}
 
@@ -94,7 +93,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		}
 
 		frame.add(chatHistoryPanel);
-		frame.setSize(400,100+size*10);
+		frame.setSize(400,140+size*10);
 		frame.revalidate();
 		frame.repaint();
 	}
