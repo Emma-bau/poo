@@ -111,6 +111,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
+			@SuppressWarnings("unused")
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
 		//Fonctionnement boutons chavardage

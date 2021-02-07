@@ -1,8 +1,6 @@
 package network;
 import java.net.*;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import controller.NetworkManager;
 import model.Contact;

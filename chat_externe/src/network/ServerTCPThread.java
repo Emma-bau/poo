@@ -1,9 +1,6 @@
 package network;
 import java.net.*;
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import controller.NetworkManager;
 import model.Contact;
 import model.Message;
@@ -97,6 +94,7 @@ public class ServerTCPThread implements Runnable {
 				PrintWriter out = new PrintWriter(link.getOutputStream());
 				String msg;
 				msg = message.getMessage();
+				System.out.println(msg);
 				out.println(msg);
 				out.flush();
 			}

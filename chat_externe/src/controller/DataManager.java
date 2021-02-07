@@ -2,7 +2,6 @@ package controller;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.mysql.jdbc.DatabaseMetaData;
 import com.mysql.jdbc.PreparedStatement;
 
 import main.Agent;
@@ -33,7 +32,6 @@ public class DataManager {
     private String url = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_014?useSSL=false";
    
     /*Table*/
-    /*Revoir la taille des messages, pour l'instant à 48 je crois*/
     private final String messages=
     "CREATE TABLE messages ("
             + "AUTHOR INTEGER NOT NULL,"
@@ -54,6 +52,7 @@ public class DataManager {
 		return messagesHistory;
 	}
 
+	/*first connexion to BDD*/
 	public void connexion()
 	{	try
 		{
@@ -79,25 +78,11 @@ public class DataManager {
 	/*use one time*/
 	public void createBDD()
 	{
-		ArrayList<String>listeTable=new ArrayList();
 		try
 		{
 			statement.executeUpdate(messages);	
 			System.out.println("Table created");
-			// Créer un objet MetaData de Base de données
-			DatabaseMetaData mtData=(DatabaseMetaData) con.getMetaData();
-			String[] types = {"TABLE"};
-			// Accéder à la liste des tables
-			ResultSet res = mtData.getTables(null, null, "%", types);
-			while(res.next())
-			{
-				String nomTable=res.getString(3);
-				// Ajouter le nom de la table dans le ArrayList
-				listeTable.add(nomTable);
-
-			}
-			// Afficher les nom des tables sur le console
-			System.out.println(listeTable);
+			
 		}
 		catch(SQLException e)
 		{
@@ -106,7 +91,7 @@ public class DataManager {
 		}
 	}
 
-	/*voir comment rajouter une barre oblique pour chaque apostrophe*/
+	/*add message to history*/
 	public void add (Message m)
 	{
 		try 
@@ -129,6 +114,7 @@ public class DataManager {
 		
 	}
 	
+	/*Update the history of user*/
 	public void updateMessagesHistory(Contact contact, String texte) {
 		int hour = LocalDateTime.now().getHour();
 		int minute = LocalDateTime.now().getMinute();
@@ -196,7 +182,7 @@ public class DataManager {
 	}
 	
 	
-	/*To clean */
+	/*To clean table*/
 	public void delete_table()
 	{
 		try 
@@ -212,6 +198,7 @@ public class DataManager {
 		}
 	}
 	
+	/*Use to delete contain of table*/
 	public void delete_contain()
 	{
 		try 
