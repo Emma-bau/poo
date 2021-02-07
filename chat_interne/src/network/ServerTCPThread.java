@@ -32,9 +32,11 @@ public class ServerTCPThread implements Runnable {
 				try{//tant que le client est connecte
 					while((msg = in.readLine())!=null)
 					{
+						System.out.println("en attente");
 						int x = msg.indexOf("ZQZQZ");
 						String pseudo="";
 						String text = "";
+						System.out.println(msg);
 
 						for (int i = 0; i<msg.length(); i++)
 						{
@@ -51,6 +53,7 @@ public class ServerTCPThread implements Runnable {
 						{
 							if (c.getPseudo().equals(pseudo))
 							{
+								System.out.println("courgette");
 								manager.getAgent().newMessageReceived(c, text);
 							}
 						}

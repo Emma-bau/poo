@@ -219,7 +219,6 @@ public class UDPHandler extends Thread{
 		String message = "etat: 0 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 
 		try {
-			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65500; i>64500;i--)
 			{
 				if(i != portNumReception)
@@ -227,7 +226,6 @@ public class UDPHandler extends Thread{
 					broadcast(message,adress,i);
 				}
 			}
-			envoie.close();
 			manager.getAgent().getServerHandler().notifyServer(2);
 		}
 		catch (IOException e)
@@ -272,7 +270,7 @@ public class UDPHandler extends Thread{
 					}
 				}
 				/*Notification au serveur de la connexion d'un nouvel utilisateur*/
-				//manager.getAgent().getServerHandler().notifyServer(1);
+				manager.getAgent().getServerHandler().notifyServer(1);
 				
 			}
 			catch(SocketException e)
@@ -294,7 +292,6 @@ public class UDPHandler extends Thread{
 		//On envoie en broadcast le changement de pseudo a tous les utilisateurs 
 		String message =  "etat: 2 servPort: "+portNumReception+" tcp: "+manager.getNumPortTcp()+"id: "+manager.getAgent().getSelf().getId()+"pseudo: "+pseudo+" final";
 		try {
-			DatagramSocket envoie = new DatagramSocket(portNumEnvoie);
 			for (int i=65500; i>64500;i--)
 			{
 				if(i != portNumReception)
@@ -304,14 +301,13 @@ public class UDPHandler extends Thread{
 
 				}
 			}
-			envoie.close();
 			//Rajouter la deconnexion au servuer ici et tester les valeurs et le retrait de la liste//
 			manager.getAgent().getServerHandler().notifyServer(0);
 			
 		}
 		catch (IOException e)
 		{
-			System.out.println("Probleme a l'envoi du nouveau login");
+			e.printStackTrace();
 		}
 			
 	}

@@ -70,7 +70,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	
 	public void createChatHistory(int auteur, int dest) {
 		
-		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
 		this.messagesList = agent.getDataManager().loadHistory(auteur,dest);
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
@@ -112,7 +111,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	public void updateHistory(Message m) {
 		System.out.println("Message received: " + m.getMessage() + " from " + m.getAuthor().getPseudo() + "  (ID: " + m.getAuthor().getId() + " )");
 		try {
-			Thread.sleep(100); //permet d'attendre la mise à jour de la bdd
+			Thread.sleep(100); // waits for the database update 
 		}catch(InterruptedException e) {}
 		
 		createChatHistory(m.getAuthor().getId(), m.getReceiver().getId());

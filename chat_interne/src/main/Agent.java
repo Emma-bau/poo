@@ -28,10 +28,10 @@ public class Agent {
 	public Agent() {
 
 		this.idManager = new IDManager();
-		//this.dataManager = new DataManager(this);
+		this.dataManager = new DataManager(this);
 		this.pseudoManager = new PseudoManager(this);	
 		this.networkManager = new NetworkManager(this);
-		//this.serverHandler = new ServerHandler(this);
+		this.serverHandler = new ServerHandler(this);
 		this.first_time_pseudo = true;
 		this.interne = true;
 
@@ -105,6 +105,7 @@ public class Agent {
 	}
 
 	public void newMessageReceived(Contact contact, String text) {
+		System.out.println("agent atteint");
 		dataManager.updateMessagesHistory(contact, text);
 	}
 

@@ -113,7 +113,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		if(ae.getSource() == bChangePseudo) {
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
-		//Fonctionnement boutons chavardage
+		//Chat session buttons operation management
 		else {
 			for(BoutonSession b:listBouton) {
 				if (ae.getSource() == b.getBouton()) {
@@ -129,7 +129,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	public void updateChatSessionMessages(Message m) {
 		for(PrivateChatSession pcs : chatSessionList) {
-			if (pcs.getContact() == m.getAuthor()) {
+			if (pcs.getContact().getId() == m.getAuthor().getId()) {
 				pcs.updateHistory(m);
 			}
 		}
