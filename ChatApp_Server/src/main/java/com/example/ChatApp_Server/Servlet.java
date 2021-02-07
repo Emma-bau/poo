@@ -84,11 +84,6 @@ public class Servlet extends HttpServlet {
 		{
 			User user = (User)it.next();
 			pw.println("id: "+user.getID()+":"+"pseudo: "+user.getPseudo()+" :"+"adresse: "+user.getAdresse()+" :"+"tcp: "+user.getTcp()+":"+" statut: "+user.getInterne()+":"+" etat: "+user.getEtat()+": connected");
-			if(user.getEtat().equals("0"))
-			{
-				
-				it.remove();
-			}
 		}
 		pw.close();
 	}
@@ -111,19 +106,30 @@ public class Servlet extends HttpServlet {
 		{
 			connectedUsers.add(C);
 		}
-		/*change pseudo*/
+		/*change pseudo or deconnexion*/
+		else if(etat.equals("2"))
+		{
+			/*Find it in the list*/
+			for(User U : connectedUsers )
+			{
+				if(U.getID() == C.getID())
+				{
+					connectedUsers.remove(U);
+				}
+			}
+			connectedUsers.add(C);}
 		else
 		{
-			/*On verifie qu'il n'est pas deja dans la liste*/
-			for(Iterator<User> it =  connectedUsers.iterator();it.hasNext();)
+			/*Find it in the list*/
+			for(User U : connectedUsers )
 			{
-				User u = (User)it.next();
-				if(u.getID() == C.getID())
+				if(U.getID() == C.getID())
 				{
-					it.remove();
+					connectedUsers.remove(U);
 				}
 			}
 			connectedUsers.add(C);
+				
 			
 		}
 

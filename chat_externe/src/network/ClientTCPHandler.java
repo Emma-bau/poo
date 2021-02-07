@@ -90,11 +90,13 @@ public class ClientTCPHandler extends Thread {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 				String msg;
 				msg = message.getMessage()+"ZQZQZ"+manager.getAgent().getPseudoManager().getPseudo();
+				System.out.println(msg);
 				out.println(msg);
 				out.flush();
 			}
 			catch(SocketException e)
 			{
+				e.printStackTrace();
 				System.out.println("Erreur ouverture buffer en out dans clienthandler");
 			}
 		}

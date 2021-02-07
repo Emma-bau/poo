@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,13 +52,12 @@ public class ServerHandler extends Thread{
 		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
 		try
 		{
-			String msg;
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("ID",Integer.toString(agent.getSelf().getId()));
-			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo()+"serveur");
+			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo());
 			connection.setRequestProperty("adresse",agent.getSelf().getAdresse().getHostAddress());
 			connection.setRequestProperty("tcp",Integer.toString(agent.getSelf().getTcp_serv_port()));
 			if (agent.isInterne())
@@ -81,6 +79,7 @@ public class ServerHandler extends Thread{
 			else
 				System.out.println("Probleme dans le choix de l'état pour le serveur");
 			
+			@SuppressWarnings("unused")
 			BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
 			
 			connection.disconnect();
@@ -160,7 +159,7 @@ public class ServerHandler extends Thread{
 			loadServer();	
 			try {
 				/*modifier le temps*/
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			}
 			catch(InterruptedException e) {}
 		}

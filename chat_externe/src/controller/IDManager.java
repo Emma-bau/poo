@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import model.User;
 
 public class IDManager {
-	
-	//private ArrayList<Integer> idList;
-	//private String password;
+
 	private ArrayList<User> usersTable;
 	
 	public IDManager() {
@@ -14,7 +12,7 @@ public class IDManager {
 		createUsersTable();
 	}
 	
-	//Retourne un int en fonction de si l'id et le password donnes correspondent
+	//If the password and the login are valid, return true
 	public int verifyID(int id, String password) {
 		for (User u:usersTable) {
 			if (id == u.getId() ) {
@@ -28,7 +26,7 @@ public class IDManager {
 		return 3; // 3 = wrong ID
 	}
 	
-	//Liste des comptes valides
+	//List of login and password
 	private void createUsersTable() {
 		User user1 = new User(1,"toto");
 		User user2 = new User(2,"toto");
