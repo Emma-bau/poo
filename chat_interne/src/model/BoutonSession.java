@@ -13,7 +13,7 @@ public class BoutonSession {
 		this.nb = nb;
 		this.contact = c;
 		this.bouton = new JButton(texte);
-		bouton.setSize(300,100);
+		bouton.setSize(400,200);
 	}
 
 	public String toString() {

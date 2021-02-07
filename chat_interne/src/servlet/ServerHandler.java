@@ -34,7 +34,7 @@ public class ServerHandler extends Thread{
 			connection.setUseCaches(false);
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("ID",Integer.toString(agent.getSelf().getId()));
-			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo()+"serveur");
+			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo());
 			connection.setRequestProperty("adresse",agent.getSelf().getAdresse().getHostAddress());
 			connection.setRequestProperty("tcp",Integer.toString(agent.getSelf().getTcp_serv_port()));
 			if (agent.isInterne())
@@ -120,7 +120,6 @@ public class ServerHandler extends Thread{
 					}
 				}
 				connection.disconnect();
-
 			}
 		}
 		catch(Exception e)
@@ -135,7 +134,7 @@ public class ServerHandler extends Thread{
 			loadServer();	
 			try {
 				/*modifier le temps*/
-				Thread.sleep(20000);
+				Thread.sleep(1000);
 			}
 			catch(InterruptedException e) {}
 		}
