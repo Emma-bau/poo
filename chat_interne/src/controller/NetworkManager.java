@@ -17,14 +17,13 @@ public class NetworkManager extends Thread {
 
 	private Agent agent;
 
-	/*LIste de tous les contacts connectes*/
+	/*List of all connected users*/
 	private ArrayList<Contact> connectedUser ;
-	/*C'est nous qui avons initier la connexion*/
+	/*List of all clientTCPHandler*/
 	private ArrayList<ClientTCPHandler> connectedClient = new ArrayList<ClientTCPHandler>();
-	/*C'est un usage qui l'a initier*/
+	/*List of all ServeurTCPHandler*/
 	private ArrayList<ServerTCPThread> connectedNetwork = new ArrayList<ServerTCPThread>();
-	/*Liste des messages recus*/
-	private ArrayList<Message> message_recu;
+
 
 	private Message ReceiveMessage;
 	private UDPHandler udpserver;
@@ -47,6 +46,16 @@ public class NetworkManager extends Thread {
 	public Agent getAgent() {
 		return agent;
 	}
+	
+
+	public int getNumWaiter() {
+		return numWaiter;
+	}
+
+	public void setNumWaiter(int numWaiter) {
+		this.numWaiter = numWaiter;
+	}
+	
 
 
 	public ArrayList<ServerTCPThread> getConnectedNetwork() {
@@ -103,7 +112,6 @@ public class NetworkManager extends Thread {
 	{
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
-		this.message_recu= new ArrayList<Message>();
 		numPortTcp = (int)(Math.random() * range) + min;
 
 		try
@@ -137,37 +145,8 @@ public class NetworkManager extends Thread {
 		{
 			connectedClient.get(message.getReceiver().getNumClient()).envoie(message);
 		}
-		/*else
-		{
-			connectedNetwork.get((message.getContact().getNumClient())//.envoie(message);
-		}*/
 	}
 
-	
-	public void message_reception()
-	{
-		if(ReceiveMessage != null)
-		{
-			message_recu.add(ReceiveMessage);
-		}
-	}
-
-	public void run()
-	{
-		while (Connexion)
-		{
-			message_reception();
-		}
-	}
-
-	public int getNumWaiter() {
-		return numWaiter;
-	}
-
-	public void setNumWaiter(int numWaiter) {
-		this.numWaiter = numWaiter;
-	}
-	
 
 	
 

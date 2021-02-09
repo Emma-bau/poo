@@ -2,7 +2,6 @@ package controller;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.mysql.jdbc.DatabaseMetaData;
 import com.mysql.jdbc.PreparedStatement;
 
 import main.Agent;
@@ -72,32 +71,17 @@ public class DataManager {
 		}
 		catch (ClassNotFoundException e)
 		{
-			System.out.println("Erreur dans la creation de la BDD");
+			e.printStackTrace();
 		}
 	}
 	
 	/*use one time*/
 	public void createBDD()
 	{
-		ArrayList<String>listeTable=new ArrayList();
 		try
 		{
 			statement.executeUpdate(messages);	
 			System.out.println("Table created");
-			// Créer un objet MetaData de Base de données
-			DatabaseMetaData mtData=(DatabaseMetaData) con.getMetaData();
-			String[] types = {"TABLE"};
-			// Accéder à la liste des tables
-			ResultSet res = mtData.getTables(null, null, "%", types);
-			while(res.next())
-			{
-				String nomTable=res.getString(3);
-				// Ajouter le nom de la table dans le ArrayList
-				listeTable.add(nomTable);
-
-			}
-			// Afficher les nom des tables sur le console
-			System.out.println(listeTable);
 		}
 		catch(SQLException e)
 		{
@@ -106,7 +90,7 @@ public class DataManager {
 		}
 	}
 
-	/*voir comment rajouter une barre oblique pour chaque apostrophe*/
+	/*add message to database*/
 	public void add (Message m)
 	{
 		try 
@@ -118,7 +102,7 @@ public class DataManager {
 			int statut =prSt.executeUpdate();
 			if(statut == 0)
 			{
-				System.out.println("Aucune opération réalisé avec la BDD");
+				System.out.println("No operation realised in BDD");
 			}
 		}
 		catch(SQLException e)
@@ -183,7 +167,7 @@ public class DataManager {
 		        }
 		        else
 		        {
-		        	System.out.println("Erreur au niveau de la recherche d'auteur et de destinataire");
+		        	System.out.println("Error in loadHistory, cannot find message");
 		        }
 		     }
 		}
@@ -212,6 +196,7 @@ public class DataManager {
 		}
 	}
 	
+	/*to delete table*/
 	public void delete_contain()
 	{
 		try 
