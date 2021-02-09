@@ -5,9 +5,15 @@ import controller.NetworkManager;
 
 
 public class ServerTCPHandler extends Thread{
+	
+	/*----------------------------------------------------- Variable ----------------------------------------*/
 
+	/*the class which manage connection*/
 	private NetworkManager manager;
+	/*num port use for the connection*/
 	private int numPortserv; 
+	
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 
     public ServerTCPHandler (NetworkManager networkManager, int numPortserv )
     {
@@ -16,16 +22,16 @@ public class ServerTCPHandler extends Thread{
     }
 
 
+    /*----------------------------------------------------- Function Run ----------------------------------------*/
     public void run () 
 	{
 		try 
 		{
-			/*Creation de notre serveur locale d'ecoute*/
+			/*Creation of our server*/
 			ServerSocket server = new ServerSocket(numPortserv);
-			/*On se met en ecoute tant que la session est ouverte*/
+			/*While we are connected, we listen*/
 			while(manager.isConnexion())
 			{
-				/*Attente de connexion*/
 				Socket SocketTCP = server.accept();
 				int num = manager.getNumWaiter();
 				manager.getConnectedNetwork().add(num,new ServerTCPThread(SocketTCP, manager));

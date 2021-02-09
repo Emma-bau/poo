@@ -19,9 +19,11 @@ import java.sql.Statement;
 /*Need to be connected to INSA VPN*/
 public class DataManager {
 
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 	private Agent agent;
 	private ArrayList<Message> messagesHistory;
 	
+	/*Need for connection to database*/
 	Connection con = null;
 	Statement statement;
     PreparedStatement prSt = null;
@@ -32,7 +34,6 @@ public class DataManager {
     private String url = "jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/tp_servlet_014?useSSL=false";
    
     /*Table*/
-    /*Revoir la taille des messages, pour l'instant à 48 je crois*/
     private final String messages=
     "CREATE TABLE messages ("
             + "AUTHOR INTEGER NOT NULL,"
@@ -42,6 +43,8 @@ public class DataManager {
             + "DATEMESSAGE DATE NOT NULL,"
             + "MESSAGE VARCHAR(200) NOT NULL)";
     
+    /*----------------------------------------------------- Constructor ----------------------------------------*/
+    
 	public DataManager(Agent agent) {
 		this.agent = agent;
 		this.messagesHistory = new ArrayList<Message>();
@@ -49,10 +52,14 @@ public class DataManager {
 		connexion();
 	}
 	
+	/*-----------------------------------------------------Getter ----------------------------------------*/
+	
 	public ArrayList<Message> getMessagesHistory(){
 		return messagesHistory;
 	}
 
+	/*-----------------------------------------------------Function ----------------------------------------*/
+	/*connection to database*/
 	public void connexion()
 	{	try
 		{
@@ -75,7 +82,7 @@ public class DataManager {
 		}
 	}
 	
-	/*use one time*/
+	/*use one time to create table*/
 	public void createBDD()
 	{
 		try
@@ -113,6 +120,7 @@ public class DataManager {
 		
 	}
 	
+	/*Update the interface with the database*/
 	public void updateMessagesHistory(Contact contact, String texte) {
 		int hour = LocalDateTime.now().getHour();
 		int minute = LocalDateTime.now().getMinute();
@@ -179,7 +187,6 @@ public class DataManager {
 		return message;
 	}
 	
-	
 	/*To clean */
 	public void delete_table()
 	{
@@ -196,7 +203,7 @@ public class DataManager {
 		}
 	}
 	
-	/*to delete table*/
+	/*to delete table contain*/
 	public void delete_contain()
 	{
 		try 

@@ -14,6 +14,8 @@ import java.net.*;
 
 
 public class NetworkManager extends Thread {
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private Agent agent;
 
@@ -23,31 +25,30 @@ public class NetworkManager extends Thread {
 	private ArrayList<ClientTCPHandler> connectedClient = new ArrayList<ClientTCPHandler>();
 	/*List of all ServeurTCPHandler*/
 	private ArrayList<ServerTCPThread> connectedNetwork = new ArrayList<ServerTCPThread>();
-
-
-	private Message ReceiveMessage;
+	/*UDP Server*/
 	private UDPHandler udpserver;
-	private int numPortTcp; 
+	
+	/*We are online*/
 	private boolean Connexion = true;
+	/*0 connexion at the beginning*/
 	private int numClient = 0;
 	private int numWaiter = 0;
 	
-	/*Def du serveur pour le num port, pour utilisation sur un seul pc */
-	// define the range of the server
+	// define the range of the server tcp port for a use in one pc
     int max = 3000; 
     int min = 2000; 
 	int range = max - min + 1; 
+	private int numPortTcp; 
 	
 	
 	
 	
-	//getter and setter// 
-
+	/*-----------------------------------------------------Getter and Setter ----------------------------------------*/
+	
 	public Agent getAgent() {
 		return agent;
 	}
 	
-
 	public int getNumWaiter() {
 		return numWaiter;
 	}
@@ -55,15 +56,17 @@ public class NetworkManager extends Thread {
 	public void setNumWaiter(int numWaiter) {
 		this.numWaiter = numWaiter;
 	}
+
+	public void setConnectedNetwork(ArrayList<ServerTCPThread> connectedNetwork) {
+		this.connectedNetwork = connectedNetwork;
+	}
 	
-
-
 	public ArrayList<ServerTCPThread> getConnectedNetwork() {
 		return connectedNetwork;
 	}
 
-	public void setConnectedNetwork(ArrayList<ServerTCPThread> connectedNetwork) {
-		this.connectedNetwork = connectedNetwork;
+	public UDPHandler getUdpserver() {
+		return udpserver;
 	}
 
 	public ArrayList<Contact> getconnectedUser()
@@ -77,28 +80,12 @@ public class NetworkManager extends Thread {
 		this.connectedUser=connectedUser;
 	}
 
-
-	public UDPHandler getUdpserver() {
-		return udpserver;
-	}
-
 	public void setUdpserver(UDPHandler udpserver) {
 		this.udpserver = udpserver;
 	}
 	
-	
-
-	public void setReceiveMessage(Message recieveMessage) {
-
-		ReceiveMessage = recieveMessage;
-	}
-	
 	public boolean isConnexion() {
 		return Connexion;
-	}
-
-	public void setConnexion(boolean connexion) {
-		Connexion = connexion;
 	}
 	
 	public int getNumPortTcp() {
@@ -106,30 +93,31 @@ public class NetworkManager extends Thread {
 	}
 	
 	
-	/* Constructeur*/
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 	
 	public NetworkManager (Agent agent) 
 	{
 		this.agent = agent;
 		this.connectedUser = new ArrayList<Contact>();
+		/*Calcul of tcp port*/
 		numPortTcp = (int)(Math.random() * range) + min;
-
 		try
 		{
-			//Creation de notre insatnce d'UDP
+			//Creation of our udp server
 			udpserver = new UDPHandler(this);
 		}
 		catch(SocketException e)
 		{
 			System.out.println("Erreur des le debut avec le lancement de udp");
-		}
-		
-			
-		//Creation de notre serveur tcp
+		}	
+		//Creation of our tcp server
 		ServerTCPHandler server = new ServerTCPHandler(this, numPortTcp);
 		server.start();	
 	}
 	
+	/*-----------------------------------------------------Functions  ----------------------------------------*/
+	
+	/*Estbalished the connection with a client by a contact ( TCP) */
 	public void connexion_tcp(Contact contact)
 	{
 		connectedClient.add(numClient,new ClientTCPHandler(this,contact));
@@ -139,11 +127,12 @@ public class NetworkManager extends Thread {
 		numClient ++;		
 	}
 
+	/*Use to send a message to another personn*/
 	public void sendMessage(Message message)
 	{
 		if(message.getReceiver().isClient())
 		{
-			connectedClient.get(message.getReceiver().getNumClient()).envoie(message);
+			connectedClient.get(message.getReceiver().getNumClient()).send(message);
 		}
 	}
 

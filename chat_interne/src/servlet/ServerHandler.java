@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,21 +13,41 @@ import main.Agent;
 import model.Contact;
 
 public class ServerHandler extends Thread{
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private Agent agent;
+	
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 
 	public ServerHandler(Agent agent) {
 		this.agent = agent;
 		start();
 	}
+	
+	/*-----------------------------------------------------Function Run ----------------------------------------*/
+	
+	public void run() {
+		while(true) {
+			loadServer();	
+			try {
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/*-----------------------------------------------------Others Functions----------------------------------------*/
 
-	/*Notification au serveur de notre connexion*/
+	/*Notificfy serveur of a new state*/
 	public void notifyServer(int etat)
 	{
 		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
 		try
 		{
-			String msg;
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
@@ -37,30 +56,27 @@ public class ServerHandler extends Thread{
 			connection.setRequestProperty("pseudo",agent.getSelf().getPseudo());
 			connection.setRequestProperty("adresse",agent.getSelf().getAdresse().getHostAddress());
 			connection.setRequestProperty("tcp",Integer.toString(agent.getSelf().getTcp_serv_port()));
+			/*if we are in the company*/
 			if (agent.isInterne())
 			{
-				System.out.println("entree ici");
 				connection.setRequestProperty("status","1");
 			}
 			else
 			{
-				System.out.println("ou la");
 				connection.setRequestProperty("status","0");
 			}
 
-			if (etat == 0) /*deconnexion*/
+			if (etat == 0) /*disconnection*/
 				connection.setRequestProperty("etat", "0");
-			else if (etat==1) /*connexion*/
+			else if (etat==1) /*connection*/
 				connection.setRequestProperty("etat", "1");
-			else if (etat==2) /*changement de pseudo*/
+			else if (etat==2) /*change pseudo*/
 				connection.setRequestProperty("etat", "2");
 			else
-				System.out.println("Probleme dans le choix de l'état pour le serveur");
-			
+				System.out.println("Problem in choice of state for the servlet");	
+			@SuppressWarnings("unused")
 			BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
-			
 			connection.disconnect();
-
 		}
 		catch(Exception e)
 		{
@@ -68,7 +84,7 @@ public class ServerHandler extends Thread{
 		}
 	}
 
-	/*Chargement de la liste des nouveaux utilisateurs distants*/
+	/*Load of distant users*/
 	public void loadServer()
 	{
 		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
@@ -76,7 +92,6 @@ public class ServerHandler extends Thread{
 		try
 		{
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
 			connection.setRequestMethod("GET");
@@ -84,7 +99,7 @@ public class ServerHandler extends Thread{
 			{
 				BufferedReader in= new BufferedReader (new InputStreamReader (connection.getInputStream()));
 				
-				/*Récupération des informations par le buffer*/
+				/*Recovery of information by the buffer*/
 				while((msg=in.readLine())!=null)
 				{
 					String id_String =  regexSearch("(?<=id: )\\d+", msg);
@@ -92,17 +107,16 @@ public class ServerHandler extends Thread{
 					String adresse_string = regexSearch("(?<=adresse: )\\S+", msg);
 					String servPortTCP_String =  regexSearch("(?<=tcp: )\\d+", msg);
 					String statut_String = regexSearch("(?<=statut: )\\d+", msg);
-					String etat_String = regexSearch("(?<=etat: )\\d+", msg);
-					
+					String state_String = regexSearch("(?<=etat: )\\d+", msg);
 					int tcpserv = Integer.parseInt(servPortTCP_String);
 					int id = Integer.parseInt(id_String);
 					InetAddress adresse =  InetAddress.getByName(adresse_string);
 
-					/*On ne traite le contact que si c'est un utilisateur externe sinon l'ajout passe par l'udp*/
+					/*we look at the contact only if it is an extern user*/
 					if (!statut_String.equals("1"))
 					{
 
-						/*On verifie qu'il n'est pas deja dans la liste*/
+						/*Check if he is already in our list*/
 						for(Iterator<Contact> it =  agent.getNetworkManager().getconnectedUser().iterator();it.hasNext();)
 						{
 							Contact c = (Contact)it.next();
@@ -111,9 +125,8 @@ public class ServerHandler extends Thread{
 								it.remove();
 							}
 						}	
-
-						/*On verifie que ce n'est pas nous meme*/
-						if (id!=agent.getSelf().getId()&&!(etat_String.equals("0")))
+						/*Check if it is not ourself or if it is not a disconnected contact*/
+						if (id!=agent.getSelf().getId()&&!(state_String.equals("0")))
 						{
 							agent.getNetworkManager().getconnectedUser().add(new Contact(tcpserv,pseudo,id,adresse));
 						}
@@ -127,19 +140,8 @@ public class ServerHandler extends Thread{
 			e.printStackTrace();
 		}
 	}
-
 	
-	public void run() {
-		while(true) {
-			loadServer();	
-			try {
-				/*modifier le temps*/
-				Thread.sleep(1000);
-			}
-			catch(InterruptedException e) {}
-		}
-	}
-
+	/*Use to search information in a string*/
 	public static String regexSearch(String regex, String input) {
 		Matcher m = Pattern.compile(regex).matcher(input);
 		if (m.find()) return m.group();

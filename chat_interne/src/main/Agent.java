@@ -9,12 +9,11 @@ import controller.PseudoManager;
 import servlet.ServerHandler;
 import model.Contact;
 import model.Message;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.*;
 
 public class Agent {
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private InterfaceManager interfaceManager;
 	private IDManager idManager;
@@ -24,6 +23,8 @@ public class Agent {
 	private ServerHandler serverHandler;
 	private Contact self;
 	private boolean first_time_pseudo, interne;
+	
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 
 	public Agent() {
 
@@ -52,6 +53,8 @@ public class Agent {
 		}
 	}
 
+	
+	/*-----------------------------------------------------Getter and Setter ----------------------------------------*/
 	public InterfaceManager getInterfaceManager() {
 		return interfaceManager;
 	}
@@ -80,6 +83,9 @@ public class Agent {
 		return interne;
 	}
 
+	/*-----------------------------------------------------Function ----------------------------------------*/
+	
+	/*Test if the pseudo is valid or not */
 	public int setPseudo(String pseudo) {
 		int pseudoTest = pseudoManager.setPseudo(pseudo);
 		if (pseudoTest == 0) {		
@@ -96,27 +102,32 @@ public class Agent {
 		return pseudoTest;
 	}
 
+	/*Launch connection with contact C*/
 	public void establishConnexion(Contact c) {
 		networkManager.connexion_tcp(c);
 	}
 
+	/*Send message m*/
 	public void sendMessageTo(Message m) {
 		networkManager.sendMessage(m);
 	}
 
+	/*receive a message from contact*/
 	public void newMessageReceived(Contact contact, String text) {
 		dataManager.updateMessagesHistory(contact, text);
 	}
 
+	/*Launch disconnection*/
 	public void deconnexion() {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
 
+	
+	/*----------------------------------------------------- MAIN ----------------------------------------*/
 	public static void main(String[] args) {
 
+		@SuppressWarnings("unused")
 		Agent main = new Agent();
-		
-
 	}
 
 

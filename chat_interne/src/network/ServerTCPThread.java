@@ -6,12 +6,18 @@ import controller.NetworkManager;
 import model.Contact;
 import model.Message;
 
-/*Serveur en attente d'une connexion de quelqu'un a notre client */
+
 
 public class ServerTCPThread implements Runnable {
+	
+	/*----------------------------------------------------- Variable ----------------------------------------*/
 
+	/*socket use for the connection*/
 	private final Socket link;
+	/*the class which manage connection*/
 	private final NetworkManager manager;
+	
+	/*----------------------------------------------------- Constructor  ----------------------------------------*/
 
 	public ServerTCPThread(Socket link, NetworkManager networkManager) {
 		this.link = link;
@@ -19,7 +25,8 @@ public class ServerTCPThread implements Runnable {
 
 	}
 
-	@Override
+	/*-----------------------------------------------------Function Run  ----------------------------------------*/
+
 	public void run()
 	{
 		try 
@@ -27,7 +34,8 @@ public class ServerTCPThread implements Runnable {
 			BufferedReader in= new BufferedReader (new InputStreamReader (link.getInputStream()));
 			String msg ;
 			try {
-				try{//tant que le client est connecte
+				try{
+					//While our contact is connected
 					while((msg = in.readLine())!=null)
 					{
 						System.out.println("en attente");
@@ -36,6 +44,7 @@ public class ServerTCPThread implements Runnable {
 						String text = "";
 						System.out.println(msg);
 
+						/*Looking for the string "ZQZQZ", after that, there is the pseudo of our contact*/
 						for (int i = 0; i<msg.length(); i++)
 						{
 							if(i<x)
@@ -47,6 +56,7 @@ public class ServerTCPThread implements Runnable {
 								pseudo +=msg.charAt(i);
 							}
 						}
+						/*Looking the pseudo in the user list of connected people*/
 						for (Contact c : manager.getconnectedUser())
 						{
 							if (c.getPseudo().equals(pseudo))
@@ -56,39 +66,30 @@ public class ServerTCPThread implements Runnable {
 							}
 						}
 					}
-
 				}
 				catch(SocketException e)
 				{
-					//sortir de la boucle si le client a deconecte
-					System.out.println("Client serveur deconnecte");
+					//if our contact disconnect, we close our socket
 					in.close();
-					//fermer le flux et la session socket
 					link.close();
 				}
-
 			} 
 			catch (IOException e) 
 			{
 				System.err.println(e);
 				e.printStackTrace();
 			}
-
-
 		}
-
 		catch(Exception e)
 		{
 			System.err.println(e);
 			e.printStackTrace();
 		}
-
-
-
-
 	}
+	
+	/*-----------------------------------------------------Others Function  ----------------------------------------*/
 
-	public void envoie (Message message)
+	public void send (Message message)
 	{
 		try{
 			try

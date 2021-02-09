@@ -4,18 +4,22 @@ import java.net.InetAddress;
 public class Contact
 {
     
+	/*----------------------------------------------------- Variable ----------------------------------------*/
     private String pseudo;
     private InetAddress adresse;
     private int id;
     
+    /*Server port*/
     private int udp_serv_port;
     private int tcp_serv_port;
     
-    /*Identification pour le client handle*/
+    /*Identification for client handle*/
     private int numClient;
     private boolean isClient; 
     
-    /*Pour les contacts externes à l'entreprise qui n'ont pas besoin d'un port udp*/
+    /*----------------------------------------------------- CONSTRUCTOR ----------------------------------------*/
+    
+    /*for external users*/
     public Contact( int tcp_port, String pseudo,int id,InetAddress adresse)
     {
         this.tcp_serv_port=tcp_port;
@@ -24,7 +28,7 @@ public class Contact
         this.adresse=adresse;
     }
     
-    /*Pour les contacts internes à l'entreprise*/
+    /*for intern users*/
 	public Contact(int udp_port, int tcp_port, String pseudo, InetAddress adresse, int id)
     {
         this.udp_serv_port=udp_port;
@@ -34,6 +38,8 @@ public class Contact
         this.id=id;
     }
 	
+	
+	/*----------------------------------------------------- GETTER AND SETTER ----------------------------------------*/
 	public int getUdp_serv_port() {
 		return udp_serv_port;
 	}
@@ -66,18 +72,6 @@ public class Contact
         this.adresse = adresse;
     }
 
-   /* public void afficher ()
-    {
-        System.out.println("CONTACT : Port UDP: " + udp_serv_port + " / Port TCP: " +  tcp_serv_port + " / Login : " + pseudo + " / adresse : " +  adresse+ " /ID :"+id);
-    }*/
-    
-    public void afficher ()
-    {
-        System.out.println("CONTACT : Port TCP: " +  tcp_serv_port + " / Login : " + pseudo +" /ID :"+id);
-    }
-    
-    
-
     public int getTcp_serv_port() {
         return tcp_serv_port;
     }
@@ -101,9 +95,12 @@ public class Contact
     public void setClient(boolean isClient) {
         this.isClient = isClient;
     }
-
     
-
-
+	/*----------------------------------------------------- Function ----------------------------------------*/
     
+    public void print ()
+    {
+        System.out.println("CONTACT : Port TCP: " +  tcp_serv_port + " / Login : " + pseudo +" /ID :"+id);
+    }
+      
 } 

@@ -3,6 +3,8 @@ import java.time.LocalDate;
 
 
 public class Message {
+	
+	/*----------------------------------------------------- Variable ----------------------------------------*/
 
 	private String message;
 	private LocalDate date;
@@ -10,6 +12,7 @@ public class Message {
 	private Contact receiver, author;
 
 
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 	public Message(String message, LocalDate date, int hour, int minute, Contact author, Contact receiver) {
 		this.author = author;
 		this.receiver = receiver;
@@ -18,6 +21,8 @@ public class Message {
 		this.hour = hour;
 		this.minute = minute;
 	}
+	
+	/*----------------------------------------------------- Getters and setters ----------------------------------------*/
 
 	public String toString() {
 		return ("From: "+author.getPseudo()+" to: "+receiver.getPseudo()+" / message is: "+message);
