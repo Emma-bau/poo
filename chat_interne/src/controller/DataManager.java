@@ -59,6 +59,8 @@ public class DataManager {
 	}
 
 	/*-----------------------------------------------------Function ----------------------------------------*/
+	
+	
 	/*connection to database*/
 	public void connexion()
 	{	try

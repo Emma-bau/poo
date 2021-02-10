@@ -5,16 +5,22 @@ import main.Agent;
 import model.Contact;
 
 public class PseudoManager {
-	/*pseudo de l'hote*/
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
+	
+	/*host pseudo*/
 	private String pseudo;
-	/*Liste des pseudos des utilisateurs en ligne*/
+	/*List of pseudo of users'online*/
 	private ArrayList<String> usersPseudoList;
 	public Agent agent;
 
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 	public PseudoManager(Agent agent) {
 		this.agent = agent;
 		this.usersPseudoList = new ArrayList<String>();
 	}
+	
+	/*-----------------------------------------------------Getter and Setter ----------------------------------------*/
 
 	public String getPseudo() {
 		return pseudo;

@@ -9,6 +9,8 @@ import java.awt.event.*;
 
 
 public class InterfaceManager extends JFrame implements ActionListener {
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private static final long serialVersionUID = 1L;
 	final static String LOOKANDFEEL = "System";
@@ -22,7 +24,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	private final JTextField  inputId, inputPassword;
 	private MainInterface mInterface;
 
-	
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 	public InterfaceManager(Agent agent) 
 	{
 		this.agent = agent;
@@ -55,6 +57,7 @@ public class InterfaceManager extends JFrame implements ActionListener {
 	    frame.setVisible(true);
 	}
 	
+	/*-----------------------------------------------------Function ----------------------------------------*/
 	
 	public MainInterface getMainInterface() {
 		return this.mInterface;

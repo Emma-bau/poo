@@ -12,6 +12,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class MainInterface extends JFrame implements ActionListener, Runnable {
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 	private static final long serialVersionUID = 1L;
 	final static String LOOKANDFEEL = "System";
 	final static float TitleFontSize = 12;
@@ -26,6 +28,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	private JButton bChangePseudo;
 	private JLabel welcomeText;
 
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 
 	public MainInterface(Agent agent, InterfaceManager interfaceM) {
 		this.agent = agent;
@@ -54,8 +57,57 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		layout();
 		toScreenSize();
 	}
+	
+	
+	/*-----------------------------------------------------Getter ----------------------------------------*/
+	
 
-	//action a la deconnexion
+	public InterfaceManager getInterfaceM() {
+		return this.interfaceM;
+	}
+	
+	/*----------------------------------------------------- Function Run ----------------------------------------*/
+	
+	@Override
+	public void run() {
+		/*List of buttons which launch a contact*/
+		listBouton = new ArrayList<BoutonSession>();
+		while(true) {
+			/*erase button which are already present*/
+			for (BoutonSession b : listBouton) {
+				b.getBouton().setVisible(false);
+				frame.remove(b.getBouton());
+			}
+
+			listBouton.clear();
+
+			int i = 0;
+			/*create a button by connected contact and add it to the interface*/
+			for (Contact c: agent.getNetworkManager().getconnectedUser()) {
+				i++;
+				bContact = new BoutonSession(c.getPseudo(),i,c);
+				listBouton.add(bContact);
+				bContact.getBouton().setSize(100,30);
+				panel2.add(bContact.getBouton());
+				bContact.getBouton().addActionListener(this);
+				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);			
+			}
+			panel2.repaint();
+			frame.revalidate();
+			frame.repaint();
+			try {
+				Thread.sleep(5000);
+			}
+			catch(InterruptedException e) {}
+		}
+	}
+	
+	
+	
+	
+	/*-----------------------------------------------------Function ----------------------------------------*/
+
+	/*action to do at disconnection */
 	public void onExit() {
 		for(PrivateChatSession pcs : chatSessionList) {
 			pcs.dispose();
@@ -64,11 +116,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		System.exit(0);
 	}
 
-	public InterfaceManager getInterfaceM() {
-		return this.interfaceM;
-	}
-
-
+	/*Principal interface*/
 	public void layout() {
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
 		welcomeText.setFont(welcomeText.getFont().deriveFont(TitleFontSize+3));
@@ -111,6 +159,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	public void actionPerformed(ActionEvent ae){
 		if(ae.getSource() == bChangePseudo) {
+			@SuppressWarnings("unused")
 			ChangePseudoInterface cpi = new ChangePseudoInterface(agent);
 		}
 		//Chat session buttons operation management
@@ -127,6 +176,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	}
 
 
+	/*Update the message interface*/
 	public void updateChatSessionMessages(Message m) {
 		for(PrivateChatSession pcs : chatSessionList) {
 			if (pcs.getContact().getId() == m.getAuthor().getId()) {
@@ -135,41 +185,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		}
 	}
 
-
-	@Override
-	public void run() {
-		//liste des boutons qui lancent un contact
-		listBouton = new ArrayList<BoutonSession>();
-		while(true) {
-			//efface les boutons deja presents de l'ecran et vide la liste
-			for (BoutonSession b : listBouton) {
-				b.getBouton().setVisible(false);
-				frame.remove(b.getBouton());
-			}
-
-			listBouton.clear();
-
-			int i = 0;
-			//cree un bouton par contact connecte et l'ajoute a la liste
-			for (Contact c: agent.getNetworkManager().getconnectedUser()) {
-				i++;
-				bContact = new BoutonSession(c.getPseudo(),i,c);
-				listBouton.add(bContact);
-				bContact.getBouton().setSize(100,30);
-				panel2.add(bContact.getBouton());
-				bContact.getBouton().addActionListener(this);
-				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);			
-			}
-			panel2.repaint();
-			frame.revalidate();
-			frame.repaint();
-			try {
-				Thread.sleep(5000);
-			}
-			catch(InterruptedException e) {}
-		}
-	}
-
+	/*To change the pseudo of ourselves*/ 
 	public void updatePseudo() {
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
 	}
