@@ -10,7 +10,11 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
 
-class User{
+/*-----------------------------------------------------CLASS CONTACT ----------------------------------------*/
+
+class Contact{
+
+	/*----------------------------------------------------- Variable ----------------------------------------*/
 	private String pseudo;
 	private String ID;
 	private String tcp;
@@ -18,7 +22,9 @@ class User{
 	private String interne;
 	private String etat;
 
-	public User (String pseudo, String ID, String interne, String tcp, String adresse, String etat ){
+
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
+	public Contact (String pseudo, String ID, String interne, String tcp, String adresse, String etat ){
 		this.pseudo=pseudo;
 		this.ID=ID;
 		this.interne=interne;
@@ -27,6 +33,8 @@ class User{
 		this.etat=etat;
 	}
 
+
+	/*----------------------------------------------------- Getter and Setter ----------------------------------------*/
 	public String getEtat() {
 		return etat;
 	}
@@ -39,8 +47,6 @@ class User{
 	public String getTcp() {
 		return tcp;
 	}
-
-
 
 	public String getID() {
 		return ID;
@@ -62,81 +68,69 @@ class User{
 
 }
 
+
+/*-----------------------------------------------------CLASS SERVLET ----------------------------------------*/
 @WebServlet(name = "Servlet", value = "/servlet")
 public class Servlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
-	private ArrayList<User> connectedUsers;
 
+	/*----------------------------------------------------- Variable ----------------------------------------*/
+	private static final long serialVersionUID = 1L;
+	private ArrayList<Contact> connectedUsers;
+
+
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 	public Servlet() {
 		this.connectedUsers = new ArrayList<>();
 	}
 
+
+	/*----------------------------------------------------- Function ----------------------------------------*/
+	
 	public void init() {
 	}
-
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException 
 	{
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
-		for (Iterator<User> it =  connectedUsers.iterator();it.hasNext();) 
+		for (Iterator<Contact> it =  connectedUsers.iterator();it.hasNext();) 
 		{
-			User user = (User)it.next();
+			Contact user = (Contact)it.next();
 			pw.println("id: "+user.getID()+":"+"pseudo: "+user.getPseudo()+" :"+"adresse: "+user.getAdresse()+" :"+"tcp: "+user.getTcp()+":"+" statut: "+user.getInterne()+":"+" etat: "+user.getEtat()+": connected");
 		}
 		pw.close();
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
 		String ID = request.getHeader("ID");
 		String pseudo = request.getHeader("pseudo");
 		String adresse = request.getHeader("adresse");
 		String tcp = request.getHeader("tcp");
 		String interne = request.getHeader("status");
 		String etat = request.getHeader("etat");
-	
 		response.setContentType("text/plain");
 		PrintWriter pw =response.getWriter();
-		User C = new User(pseudo,ID,interne,tcp,adresse,etat);
+		Contact C = new Contact(pseudo,ID,interne,tcp,adresse,etat);
 		
-		/*connexion*/
+		/*connection*/
 		if(etat.equals("1"))
 		{
 			connectedUsers.add(C);
 		}
-		/*change pseudo or deconnexion*/
-		else if(etat.equals("2"))
-		{
-			/*Find it in the list*/
-			for(User U : connectedUsers )
-			{
-				if(U.getID() == C.getID())
-				{
-					connectedUsers.remove(U);
-				}
-			}
-			connectedUsers.add(C);}
+		/*change pseudo or disconnection*/
 		else
 		{
 			/*Find it in the list*/
-			for(User U : connectedUsers )
+			for(Contact U : connectedUsers )
 			{
 				if(U.getID() == C.getID())
 				{
 					connectedUsers.remove(U);
 				}
 			}
-			connectedUsers.add(C);
-				
-			
+			connectedUsers.add(C);}		
 		}
-
-
-	}
-
-
 
 	public void destroy() {
 	}

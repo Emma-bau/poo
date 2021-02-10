@@ -123,8 +123,6 @@ public class Agent {
 		serverHandler.deconnexion(pseudoManager.getPseudo());
 	}
 
-
-
 	/*----------------------------------------------------- MAIN ----------------------------------------*/
 
 	public static void main(String[] args) {
