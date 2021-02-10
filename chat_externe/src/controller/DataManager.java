@@ -19,9 +19,11 @@ import java.sql.Statement;
 /*Need to be connected to INSA VPN*/
 public class DataManager {
 
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 	private Agent agent;
 	private ArrayList<Message> messagesHistory;
 	
+	/*Need for connection to database*/
 	Connection con = null;
 	Statement statement;
     PreparedStatement prSt = null;
@@ -41,6 +43,8 @@ public class DataManager {
             + "DATEMESSAGE DATE NOT NULL,"
             + "MESSAGE VARCHAR(200) NOT NULL)";
     
+    /*----------------------------------------------------- Constructor ----------------------------------------*/
+    
 	public DataManager(Agent agent) {
 		this.agent = agent;
 		this.messagesHistory = new ArrayList<Message>();
@@ -48,11 +52,16 @@ public class DataManager {
 		connexion();
 	}
 	
+	/*-----------------------------------------------------Getter ----------------------------------------*/
+	
 	public ArrayList<Message> getMessagesHistory(){
 		return messagesHistory;
 	}
 
-	/*first connexion to BDD*/
+	/*-----------------------------------------------------Function ----------------------------------------*/
+	
+	
+	/*connection to database*/
 	public void connexion()
 	{	try
 		{
@@ -71,18 +80,17 @@ public class DataManager {
 		}
 		catch (ClassNotFoundException e)
 		{
-			System.out.println("Erreur dans la creation de la BDD");
+			e.printStackTrace();
 		}
 	}
 	
-	/*use one time*/
+	/*use one time to create table*/
 	public void createBDD()
 	{
 		try
 		{
 			statement.executeUpdate(messages);	
 			System.out.println("Table created");
-			
 		}
 		catch(SQLException e)
 		{
@@ -91,7 +99,7 @@ public class DataManager {
 		}
 	}
 
-	/*add message to history*/
+	/*add message to database*/
 	public void add (Message m)
 	{
 		try 
@@ -103,7 +111,7 @@ public class DataManager {
 			int statut =prSt.executeUpdate();
 			if(statut == 0)
 			{
-				System.out.println("Aucune opération réalisé avec la BDD");
+				System.out.println("No operation realised in BDD");
 			}
 		}
 		catch(SQLException e)
@@ -114,7 +122,7 @@ public class DataManager {
 		
 	}
 	
-	/*Update the history of user*/
+	/*Update the interface with the database*/
 	public void updateMessagesHistory(Contact contact, String texte) {
 		int hour = LocalDateTime.now().getHour();
 		int minute = LocalDateTime.now().getMinute();
@@ -169,7 +177,7 @@ public class DataManager {
 		        }
 		        else
 		        {
-		        	System.out.println("Erreur au niveau de la recherche d'auteur et de destinataire");
+		        	System.out.println("Error in loadHistory, cannot find message");
 		        }
 		     }
 		}
@@ -181,8 +189,7 @@ public class DataManager {
 		return message;
 	}
 	
-	
-	/*To clean table*/
+	/*To clean */
 	public void delete_table()
 	{
 		try 
@@ -198,7 +205,7 @@ public class DataManager {
 		}
 	}
 	
-	/*Use to delete contain of table*/
+	/*to delete table contain*/
 	public void delete_contain()
 	{
 		try 

@@ -14,6 +14,8 @@ import java.net.*;
 
 public class Agent {
 
+	/*----------------------------------------------------- Variable ----------------------------------------*/
+	
 	private InterfaceManager interfaceManager;
 	private IDManager idManager;
 	private DataManager dataManager; 
@@ -23,6 +25,8 @@ public class Agent {
 	private Contact self;
 	private boolean first_time_pseudo, interne;
 
+
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 	public Agent() {
 
 		this.idManager = new IDManager();
@@ -48,6 +52,9 @@ public class Agent {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
+	
+
+	/*----------------------------------------------------- Getter and setter ----------------------------------------*/
 
 	public InterfaceManager getInterfaceManager() {
 		return interfaceManager;
@@ -96,6 +103,9 @@ public class Agent {
 		}
 		return pseudoTest;
 	}
+	
+
+	/*----------------------------------------------------- Function ----------------------------------------*/
 
 	public void establishConnexion(Contact c) {
 		networkManager.connexion_tcp(c);
@@ -115,9 +125,11 @@ public class Agent {
 
 
 
+	/*----------------------------------------------------- MAIN ----------------------------------------*/
 
 	public static void main(String[] args) {
 
+		@SuppressWarnings("unused")
 		Agent main = new Agent();
 	}
 

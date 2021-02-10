@@ -10,41 +10,47 @@ import model.Message;
 
 public class ClientTCPHandler extends Thread {
 
+	
+	/*----------------------------------------------------- Variable ----------------------------------------*/
+	/*the class which manage connection*/
 	private final NetworkManager manager;
+	/*Our contact*/
 	private final Contact user;
+	/*socket use for the connection*/
 	private Socket clientSocket;
-
+	
+	
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 	public ClientTCPHandler(NetworkManager Manager, Contact contact)
 	{
 		this.manager = Manager;
 		this.user = contact;
-		System.out.println("adresse : "+user.getAdresse()+" tcp "+user.getTcp_serv_port());
 		try
 		{
+			/*opening the socket with an address and a given port*/
 			clientSocket = new Socket(user.getAdresse(),user.getTcp_serv_port());
-
 		}
 		catch(IOException e)
 		{
-			System.out.println("Erreur dans l'ouverture du socket client");
+			e.printStackTrace();
 		}
-
 	}
 
+	
+	/*----------------------------------------------------- Function Run  ----------------------------------------*/
 	public void run()
 	{
 		try {
 			BufferedReader in= new BufferedReader (new InputStreamReader (clientSocket.getInputStream()));
 			String msg ;
 			try{
-				//tant que le client est connecte
+				//While our contact is connected
 				while((msg = in.readLine())!=null)
 				{
-					System.out.println("message reçu");
 					int x = msg.indexOf("ZQZQZ");
 					String pseudo="";
 					String text = "";
-
+					/*Looking for the string "ZQZQZ", after that, there is the pseudo of our contact*/
 					for (int i = 0; i<msg.length(); i++)
 					{
 						if(i<x)
@@ -56,6 +62,7 @@ public class ClientTCPHandler extends Thread {
 							pseudo +=msg.charAt(i);
 						}
 					}
+					/*Looking the pseudo in the user list of connected people*/
 					for (Contact c : manager.getconnectedUser())
 					{
 						if (c.getPseudo().equals(pseudo))
@@ -67,22 +74,21 @@ public class ClientTCPHandler extends Thread {
 			}
 			catch(SocketException e)
 			{
-				//sortir de la boucle si le client a deconecte
-				System.out.println("Client serveur deconnecte");
+				//if our contact disconnect, we close our socket
 				in.close();
-				//fermer le flux et la session socket
 				clientSocket.close();
 			}
-
 		} 
 		catch (IOException e) 
 		{
-			System.out.println("Connection reset (serveur deconnecte)");
+			e.printStackTrace();
 		}
 	}
 
+	/*----------------------------------------------------- Other Functions ----------------------------------------*/
 
-	public void envoie (Message message)
+	/*To send a message to a contact*/
+	public void send (Message message)
 	{
 		try{
 			try
@@ -90,27 +96,25 @@ public class ClientTCPHandler extends Thread {
 				PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 				String msg;
 				msg = message.getMessage()+"ZQZQZ"+manager.getAgent().getPseudoManager().getPseudo();
-				System.out.println(msg);
 				out.println(msg);
 				out.flush();
 			}
 			catch(SocketException e)
 			{
 				e.printStackTrace();
-				System.out.println("Erreur ouverture buffer en out dans clienthandler");
 			}
 		}
 		catch(IOException e)
 		{
-			System.out.println("Erreur ouverture buffer en out dans clienthandler");
+			e.printStackTrace();
 		}
-
-
 	}
-
-	public void afficher()
+	 
+	 
+	/*To print the connection*/
+	public void print()
 	{
-		System.out.print ("Contact avec : ");
-		user.afficher();;
+		System.out.print ("Contact with : ");
+		user.print();;
 	}
 }

@@ -3,19 +3,24 @@ import javax.swing.*;
 
 public class BoutonSession {
 	
+	/*----------------------------------------------------- Variable ----------------------------------------*/
+	
 	private String texte;
 	private int nb;
 	private JButton bouton;
 	private Contact contact;
+	
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 	
 	public BoutonSession(String text, int nb, Contact c) {
 		this.texte = text;
 		this.nb = nb;
 		this.contact = c;
 		this.bouton = new JButton(texte);
-		bouton.setSize(300,100);
+		bouton.setSize(400,200);
 	}
-
+	
+	/*----------------------------------------------------- GETTER AND SETTER ----------------------------------------*/
 	public String toString() {
 		String strself = "Bouton du contact " + contact.getPseudo();
 		return strself;

@@ -4,15 +4,22 @@ import java.util.ArrayList;
 import model.User;
 
 public class IDManager {
-
+	
+	/*----------------------------------------------------- Variable  ----------------------------------------*/
+	
 	private ArrayList<User> usersTable;
+	
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
+	
 	
 	public IDManager() {
 		this.usersTable = new ArrayList<User>();
 		createUsersTable();
 	}
 	
-	//If the password and the login are valid, return true
+	/*-----------------------------------------------------Function ----------------------------------------*/
+	
+	/*Return 1 if id and password are good, 2 else*/
 	public int verifyID(int id, String password) {
 		for (User u:usersTable) {
 			if (id == u.getId() ) {
@@ -26,7 +33,7 @@ public class IDManager {
 		return 3; // 3 = wrong ID
 	}
 	
-	//List of login and password
+	/*List of valid account*/
 	private void createUsersTable() {
 		User user1 = new User(1,"toto");
 		User user2 = new User(2,"toto");

@@ -7,6 +7,9 @@ import main.Agent;
 import javax.swing.*;
 
 public class ChangePseudoInterface extends JFrame implements ActionListener{
+	
+	
+	/*-----------------------------------------------------Variable  ----------------------------------------*/
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JPanel panel;
@@ -14,6 +17,8 @@ public class ChangePseudoInterface extends JFrame implements ActionListener{
 	private JButton send;
 	private Agent agent;
 	private JLabel text;
+	
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 	
 	public ChangePseudoInterface(Agent agent) {
 		this.agent = agent;
@@ -39,7 +44,8 @@ public class ChangePseudoInterface extends JFrame implements ActionListener{
 		frame.setResizable(false);
 	}
 	
-	@Override
+	/*-----------------------------------------------------Function ----------------------------------------*/
+	
 	public void actionPerformed(ActionEvent arg0) {
 		String strpseudo = inputText.getText();
 		agent.setPseudo(strpseudo);

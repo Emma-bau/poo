@@ -108,8 +108,6 @@ public class ClientTCPHandler extends Thread {
 		{
 			e.printStackTrace();
 		}
-
-
 	}
 	 
 	 

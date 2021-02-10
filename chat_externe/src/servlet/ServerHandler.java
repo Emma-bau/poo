@@ -14,39 +14,59 @@ import main.Agent;
 import model.Contact;
 
 public class ServerHandler extends Thread{
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private Agent agent;
+	
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
 
 	public ServerHandler(Agent agent) {
 		this.agent = agent;
 		start();
 	}
 	
-	/*notifiaction d'une premiere connexion*/
+	
+	/*-----------------------------------------------------Function Run ----------------------------------------*/
+	
+
+	public void run() {
+		while(true) {
+			loadServer();	
+			try {
+				Thread.sleep(1000);
+			}
+			catch(InterruptedException e) {}
+		}
+	}
+	
+	/*----------------------------------------------------- Others Functions ----------------------------------------*/
+	
+	/*first connection notification*/
 	public void first_connexion (String pseudo) throws UnknownHostException
 	{
-			/*Création du contact nous-même*/
+			/*Creation of ourselves*/
 			agent.getSelf().setPseudo(pseudo);
 			agent.getSelf().setTcp_serv_port(agent.getNetworkManager().getNumPortTcp());
 			agent.getSelf().setAdresse(InetAddress.getLocalHost());
-			/*envoie de nos informations au serveur*/
+			/*send information*/
 			notifyServer(1);			
 	}
 
-	/*changement de pseudo*/
+	/*change pseudo*/
 	public void change_pseudo (String pseudo)
 	{
 			notifyServer(2);	
 	}
 	
-	/*deconnexion*/
+	/*disconnection*/
 	public void deconnexion (String pseudo)
 	{
 			notifyServer(0);	
 	}
 
 
-	/*Notification au serveur de notre connexion*/
+	/*Notify servlet of a change*/
 	public void notifyServer(int etat)
 	{
 		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
@@ -70,11 +90,11 @@ public class ServerHandler extends Thread{
 
 			}
 
-			if (etat == 0) /*deconnexion*/
+			if (etat == 0) /*disconnection*/
 				connection.setRequestProperty("etat", "0");
-			else if (etat==1) /*connexion*/
+			else if (etat==1) /*connection*/
 				connection.setRequestProperty("etat", "1");
-			else if (etat==2) /*changement de pseudo*/
+			else if (etat==2) /*change pseudo*/
 				connection.setRequestProperty("etat", "2");
 			else
 				System.out.println("Probleme dans le choix de l'état pour le serveur");
@@ -91,7 +111,7 @@ public class ServerHandler extends Thread{
 		}
 	}
 
-	/*Chargement de la liste des nouveaux utilisateurs distants*/
+	/*load information of the servlet*/
 	public void loadServer()
 	{
 		String url = "https://srv-gei-tomcat.insa-toulouse.fr/Server_Jacques_Baudoint/servlet";
@@ -152,19 +172,8 @@ public class ServerHandler extends Thread{
 			e.printStackTrace();
 		}
 	}
-
 	
-	public void run() {
-		while(true) {
-			loadServer();	
-			try {
-				/*modifier le temps*/
-				Thread.sleep(1000);
-			}
-			catch(InterruptedException e) {}
-		}
-	}
-
+	/*Use to search information in a string*/
 	public static String regexSearch(String regex, String input) {
 		Matcher m = Pattern.compile(regex).matcher(input);
 		if (m.find()) return m.group();

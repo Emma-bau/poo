@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 
 
 public class PrivateChatSession extends JFrame implements ActionListener{
+	
+	/*-----------------------------------------------------Variable ----------------------------------------*/
 
 	private static final long serialVersionUID = 1L;
 	
@@ -24,6 +26,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	private ArrayList<Message> messagesList;
 	private JTextField inputText;
 	private JLabel labelH;
+	
+	/*-----------------------------------------------------Constructor ----------------------------------------*/
 
 	public PrivateChatSession(Contact contact, Agent agent) {   
 
@@ -50,9 +54,10 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		frame.getContentPane().add(BorderLayout.NORTH,labelH);
 		frame.getContentPane().add(BorderLayout.CENTER,chatHistoryPanel);
 		frame.getContentPane().add(BorderLayout.SOUTH,sendCheckPanel);
-
 		frame.repaint();
 	}
+	
+	/*-----------------------------------------------------Getter and Setter ----------------------------------------*/
 
 	public String toString() {
 		return ("Chat session avec "+ this.contact.getPseudo());
@@ -70,7 +75,6 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	
 	public void createChatHistory(int auteur, int dest) {
 		
-		// LA MESSAGESLIST DOIT ETRE EGALE A LA BDD A CHAQUE APPEL DE CETTE FONCTION /!\ donc mise a jour ici
 		this.messagesList = agent.getDataManager().loadHistory(auteur,dest);
 		int size = messagesList.size();
 		this.frame.remove(this.chatHistoryPanel);
@@ -95,7 +99,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		}
 
 		frame.add(chatHistoryPanel);
-		frame.setSize(400,100+size*10);
+		frame.setSize(400,140+size*10);
 		frame.revalidate();
 		frame.repaint();
 	}
@@ -112,7 +116,7 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	public void updateHistory(Message m) {
 		System.out.println("Message received: " + m.getMessage() + " from " + m.getAuthor().getPseudo() + "  (ID: " + m.getAuthor().getId() + " )");
 		try {
-			Thread.sleep(100); //wait for the database update
+			Thread.sleep(100); // waits for the database update 
 		}catch(InterruptedException e) {}
 		
 		createChatHistory(m.getAuthor().getId(), m.getReceiver().getId());
