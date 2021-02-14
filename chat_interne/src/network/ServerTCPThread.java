@@ -61,7 +61,6 @@ public class ServerTCPThread implements Runnable {
 						{
 							if (c.getPseudo().equals(pseudo))
 							{
-								System.out.println("courgette");
 								manager.getAgent().newMessageReceived(c, text);
 							}
 						}

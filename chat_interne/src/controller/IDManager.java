@@ -39,11 +39,21 @@ public class IDManager {
 		User user2 = new User(2,"toto");
 		User user3 = new User(3,"toto");
 		User user4 = new User(4,"toto");
+		User user5 = new User(5,"toto");
+		User user6 = new User(6,"toto");
+		User user7 = new User(7,"toto");
+		User user8 = new User(8,"toto");
+		User user9 = new User(9,"toto");
 		User admin = new User(999,"admin");
 		usersTable.add(user1);
 		usersTable.add(user2);
 		usersTable.add(user3);
 		usersTable.add(user4);
+		usersTable.add(user5);
+		usersTable.add(user6);
+		usersTable.add(user7);
+		usersTable.add(user8);
+		usersTable.add(user9);
 		usersTable.add(admin);
 	}
 }

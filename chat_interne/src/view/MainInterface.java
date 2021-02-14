@@ -39,7 +39,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		this.frame = new JFrame("Chat Session");
 		frame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
-		//gere la deconnexion
+		//disconnection handling
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent evt) {
 				onExit();
@@ -87,7 +87,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 				i++;
 				bContact = new BoutonSession(c.getPseudo(),i,c);
 				listBouton.add(bContact);
-				bContact.getBouton().setSize(100,30);
+				//bContact.getBouton().setSize(200,60);
 				panel2.add(bContact.getBouton());
 				bContact.getBouton().addActionListener(this);
 				bContact.getBouton().setAlignmentX(Component.RIGHT_ALIGNMENT);			
@@ -116,7 +116,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 		System.exit(0);
 	}
 
-	/*Principal interface*/
+	/*Principal interface layout*/
 	public void layout() {
 		welcomeText.setText("Hello "+ agent.getPseudoManager().getPseudo() + "!");
 		welcomeText.setFont(welcomeText.getFont().deriveFont(TitleFontSize+3));

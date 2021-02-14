@@ -1,5 +1,6 @@
 package model;
 import javax.swing.*;
+//import java.awt.Dimension;
 
 public class BoutonSession {
 	
@@ -17,7 +18,7 @@ public class BoutonSession {
 		this.nb = nb;
 		this.contact = c;
 		this.bouton = new JButton(texte);
-		bouton.setSize(400,200);
+		//bouton.setPreferredSize(new Dimension(300, 50));
 	}
 	
 	/*----------------------------------------------------- GETTER AND SETTER ----------------------------------------*/

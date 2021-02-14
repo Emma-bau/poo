@@ -14,8 +14,9 @@ import java.time.LocalDateTime;
 
 public class PrivateChatSession extends JFrame implements ActionListener{
 
-	private static final long serialVersionUID = 1L;
+	/*----------------------------------------------------- Variable ----------------------------------------*/
 	
+	private static final long serialVersionUID = 1L;
 	private Agent agent;
 	private Contact contact;
 	
@@ -25,6 +26,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	private JTextField inputText;
 	private JLabel labelH;
 
+	/*----------------------------------------------------- Constructor ----------------------------------------*/
+	
 	public PrivateChatSession(Contact contact, Agent agent) {   
 
 		this.contact = contact;
@@ -53,6 +56,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		frame.repaint();
 	}
 
+	/*----------------------------------------------------- Getters and setters ----------------------------------------*/
+	
 	public String toString() {
 		return ("Chat session avec "+ this.contact.getPseudo());
 	}
@@ -66,6 +71,8 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 	public ArrayList<Message> getMessagesList() {
 		return this.messagesList;
 	}
+	
+	/*-----------------------------------------------------Function ----------------------------------------*/
 	
 	public void createChatHistory(int auteur, int dest) {
 		
@@ -122,12 +129,18 @@ public class PrivateChatSession extends JFrame implements ActionListener{
 		LocalDate date = LocalDate.now();
 		int hour = LocalDateTime.now().getHour();
 		int minute = LocalDateTime.now().getMinute();
+		
 		if (inputText.getText().length() > 30) {
-			
+			System.out.println("message trop long");
+			JOptionPane.showMessageDialog(this,"Message is too long",
+					"Error",JOptionPane.ERROR_MESSAGE);
 		}
-		Message newMessage = new Message(inputText.getText(),date,hour,minute,agent.getSelf(),contact);
-		agent.sendMessageTo(newMessage);
-		agent.getDataManager().add(newMessage);
-		createChatHistory(newMessage.getAuthor().getId(),newMessage.getReceiver().getId());
+		else {
+			Message newMessage = new Message(inputText.getText(),date,hour,minute,agent.getSelf(),contact);
+			agent.sendMessageTo(newMessage);
+			agent.getDataManager().add(newMessage);
+			createChatHistory(newMessage.getAuthor().getId(),newMessage.getReceiver().getId());
+		}
+		inputText.setText("");
 	}
 }

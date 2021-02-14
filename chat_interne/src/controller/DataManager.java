@@ -48,7 +48,7 @@ public class DataManager {
 	public DataManager(Agent agent) {
 		this.agent = agent;
 		this.messagesHistory = new ArrayList<Message>();
-		/*Connexion to BDD*/
+		/*Connection to BDD*/
 		connexion();
 	}
 	
