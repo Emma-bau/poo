@@ -22,7 +22,6 @@ public class ServerTCPThread implements Runnable {
 	public ServerTCPThread(Socket link, NetworkManager networkManager) {
 		this.link = link;
 		this.manager = networkManager;
-
 	}
 
 	/*-----------------------------------------------------Function Run  ----------------------------------------*/
@@ -40,7 +39,7 @@ public class ServerTCPThread implements Runnable {
 					{
 						System.out.println("en attente");
 						int x = msg.indexOf("ZQZQZ");
-						String pseudo="";
+						String pseudo = "";
 						String text = "";
 						System.out.println(msg);
 

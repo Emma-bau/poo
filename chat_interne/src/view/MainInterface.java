@@ -107,7 +107,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 	
 	/*-----------------------------------------------------Function ----------------------------------------*/
 
-	/*action to do at disconnection */
+	/*action to do on disconnection */
 	public void onExit() {
 		for(PrivateChatSession pcs : chatSessionList) {
 			pcs.dispose();
@@ -167,6 +167,7 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 			for(BoutonSession b:listBouton) {
 				if (ae.getSource() == b.getBouton()) {
 					agent.establishConnexion(b.getContact());
+					b.getBouton().setForeground(Color.BLACK);
 					PrivateChatSession pcs = new PrivateChatSession(b.getContact(),agent);
 					chatSessionList.add(pcs);
 					pcs.getFrame().setVisible(true);
@@ -178,9 +179,19 @@ public class MainInterface extends JFrame implements ActionListener, Runnable {
 
 	/*Update the message interface*/
 	public void updateChatSessionMessages(Message m) {
+		Boolean pcsOpened = false;
 		for(PrivateChatSession pcs : chatSessionList) {
 			if (pcs.getContact().getId() == m.getAuthor().getId()) {
+				pcsOpened = true;
 				pcs.updateHistory(m);
+			}
+		}
+		//notification
+		if (!pcsOpened) {
+			for(BoutonSession bts : this.listBouton) {
+				if (m.getAuthor().getId() == bts.getContact().getId()) {
+					bts.getBouton().setForeground(Color.RED);
+				}
 			}
 		}
 	}

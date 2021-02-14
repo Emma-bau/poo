@@ -117,7 +117,7 @@ public class Agent {
 		dataManager.updateMessagesHistory(contact, text);
 	}
 
-	/*Launch disconnection*/
+	/*launch disconnection*/
 	public void deconnexion() {
 		networkManager.getUdpserver().deconnexion(pseudoManager.getPseudo());
 	}
