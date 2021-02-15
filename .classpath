@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="chat_externe/src"/>
+	<classpathentry kind="src" path="chat_interne/src"/>
+	<classpathentry kind="src" path="chat_plage_de_port/backup sauvegarde/Sauvegarde1"/>
+	<classpathentry kind="src" path="chat_plage_de_port/backup sauvegarde/Sauvegarde2/src"/>
+	<classpathentry kind="src" path="chat_plage_de_port/src"/>
+	<classpathentry kind="src" path="ChatApp_Server/src/main/java"/>
+	<classpathentry kind="lib" path="chatExterne.jar"/>
+	<classpathentry kind="lib" path="chatInterne.jar"/>
+	<classpathentry kind="output" path="ChatApp_Server/target/ChatApp_Server-1.0-SNAPSHOT/WEB-INF/classes"/>
+</classpath>
